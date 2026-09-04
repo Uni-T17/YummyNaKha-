@@ -46,14 +46,13 @@ The main goal is to reduce the effort and the risk of choosing a dish from an un
 
 | Role | Name | Responsibilities |
 | :---- | :---- | :---- |
-| Project Owner | _TBD_ | Owns the project vision, defines requirements, and manages scope, priorities, and timeline. |
-| QA / Tester | _TBD_ | Verifies specs against the backlog, checks traceability and legal requirements, and tests acceptance criteria — including the allergy-safety copy rules. |
-| AI Lead | _TBD_ | Owns the OCR / translation / dish-understanding pipeline, the agents and skills, AI disclosure, and governance. |
-| Tech Lead | _TBD_ | Oversees the GitHub repository, code standards, and technical decisions. |
-| Designer | _TBD_ | Creates the scan → results → order experience, including how warnings are shown without causing false confidence. |
+| Project Owner | Aike Paung Bra - 6631503052 | Owns the project vision, defines requirements, and manages scope, priorities, and timeline. |
+| QA / Tester | Tay Zar Tun - 6631503089 | Verifies specs against the backlog, checks traceability and legal requirements, and tests acceptance criteria — including the allergy-safety copy rules. |
+| AI Lead | Chan Nyein Thu - 6631503055 | Owns the OCR / translation / dish-understanding pipeline, the agents and skills, AI disclosure, and governance. |
+| Tech Lead | Thiri Kyaw Khaing - 6631503093 | Oversees the GitHub repository, code standards, and technical decisions. |
+| Designer | Yoon Nadi - 6631503099 | Creates the scan → results → order experience, including how warnings are shown without causing false confidence. |
 | Target Users | International students & travellers in Thailand | Scan real restaurant menus, use the personalized categories to choose a dish, and use the generated Thai text to order. |
 
-> **TODO before W5:** replace `_TBD_` with the real team member names and student IDs, and mirror them into `rule.md`.
 
 # **5\. Scope and Key Features**
 
