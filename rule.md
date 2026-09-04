@@ -1,17 +1,17 @@
 **YummyNaKha! — Legal & Compliance Rules (rule.md)**
 
-_TBD_  Project Owner
-_TBD_  QA / Tester
-_TBD_  AI Lead
-_TBD_  Tech Lead
-_TBD_  Designer
+Aike Paung Bra(6631503052) - Project Owner
+Tay Zar Tun(6631503089) - QA / Tester
+Chan Nyein Thu(6631503055) - AI Lead
+Thiri Kyaw Khaing(6631503093) - Tech Lead
+Yoon Nadi(6631503099) - Designer
 
-> **TODO before W5:** replace `_TBD_` with the real student IDs and names, matching
-> the Charter's stakeholder table.
-
-**Product: YummyNaKha!** (saved food profile, restaurant menu photo scan, dish
-and price extraction, translation, dietary conflict detection, uncertainty-aware
-recommendation, restaurant-ready Thai communication)
+**Product: YummyNaKha!** 
+YummyNaKha! is a personalized restaurant menu assistant. Users take or upload a menu photo, and the system:
+- Translates the menu into their preferred language
+- Identifies possible allergy or dietary conflicts
+- Recommends dishes based on favorite foods and dislikes
+- Generates translated questions or ordering messages for restaurant staff
 
 **PDPA (Personal Data Protection Act)**
 
