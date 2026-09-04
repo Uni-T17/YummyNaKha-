@@ -98,4 +98,4 @@ The system focuses on one core workflow: **food profile in → menu photo → pe
 
 # **8\. Authorization**
 
-**Team Members:** _TBD_
+**Team Members:** Ai Paung Bra_6631503052,Chan Nyein Thu_6631503055, Tay Zar Tun_6631503089,Thiri Kyaw Khaing_6631503093, Yoon Nadi_6631503099
