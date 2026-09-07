@@ -989,7 +989,7 @@ Understand
 Choose
  ↓
 Order
-```
+``
 
 Avoid unnecessary features that make the experience more complicated.
 
