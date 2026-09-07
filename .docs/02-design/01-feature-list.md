@@ -42,7 +42,7 @@ Covers **F3, F4, F5** (+ F17, F22) · implements **LR2, LR3** · relieves **P1**
 
 | # | Acceptance criteria |
 |---|---|
-| AC1 | A user can take a photo or upload one from the gallery; no restaurant-side setup of any kind is required (F3) |
+| AC1 | A user can add the menu as one still image — pick from the photo gallery or take a single in-app photo; there is no live/continuous camera scanning, and no restaurant-side setup of any kind is required (F3) |
 | AC2 | ≥ 90% of dish entries are extracted with the correct dish name, with ≤ 5% spurious entries, on ≥ 50 real photographed Thai menus (NFR2) |
 | AC3 | Where a price is printed, it is attached to the correct dish in ≥ 90% of cases (NFR3) |
 | AC4 | The outbound request carries the menu image or extracted text plus dietary flags only — no email, name, phone, or device id (LR2) |

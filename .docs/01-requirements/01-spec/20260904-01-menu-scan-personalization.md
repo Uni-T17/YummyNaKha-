@@ -14,6 +14,13 @@
 > real person. Before the W5 gate these must be confirmed (or refuted) by ≥15
 > interviews and the `(H)` markers removed with an evidence row attached.
 
+> **Terminology — "scan":** in this document and the backlog, a *scan* means
+> **one still image of a menu — chosen from the device photo gallery or taken as
+> a single photo with the in-app camera — run once through the pipeline**. There
+> is no live or continuous camera scanning: the camera captures one photo,
+> handled exactly like an uploaded one. "Scan", "scan history", "rescan", and
+> "scan latency" are shorthand for this and nothing more.
+
 ## 1. Problem & users
 
 ### Users
@@ -49,7 +56,7 @@
 |----|-----------|--------|--------|
 | F1 | As a diner, I want to save a food profile once — allergies, dietary restrictions, dislikes, preferences, and preferred language — so that I do not re-enter it at every restaurant. | Must | solves P3 |
 | F2 | As a diner, I want the four profile categories kept distinct (allergy / restriction / dislike / preference), so that a serious allergy is never treated like a mild dislike. | Must | solves P2 |
-| F3 | As a diner, I want to take or upload a photo of the printed menu, so that I can use the menu that is already on the table without the restaurant doing anything. | Must | solves P1 |
+| F3 | As a diner, I want to provide the printed menu as a single still image — either picked from my photo gallery or captured as one photo with the in-app camera (no live camera scanning) — so that I can use the menu that is already on the table without the restaurant doing anything. | Must | solves P1 |
 | F4 | As a diner, I want the system to extract the dish names from my menu photo, so that I get a structured list instead of a wall of unreadable text. | Must | solves P1 |
 | F5 | As a diner, I want the price of each dish extracted alongside its name, so that I can choose within my budget. | Must | solves P1 |
 | F6 | As a diner, I want each dish name translated into my preferred language, so that I can read what the dish is. | Must | solves P1 |
@@ -215,7 +222,7 @@
 
 ### In scope
 - Food profile with four distinct categories and preferred language (F1, F2, LR1).
-- Menu photo capture/upload (F3).
+- Menu input as one still image — gallery pick or a single in-app photo, no live scanning (F3).
 - Dish name and price extraction from the photo (F4, F5).
 - Translation into the preferred language (F6).
 - Ingredient understanding with Explicit / Inferred / Unknown evidence levels (F7).
