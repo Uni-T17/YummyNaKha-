@@ -175,7 +175,7 @@ Generate restaurant-ready order/question
 
 The ideal experience is:
 
-> **Open → Scan → Decide → Order**
+> **Open → Upload menu → Decide → Order**
 
 ---
 
@@ -802,7 +802,7 @@ Upload
 
 YummyNaKha!:
 Profile already saved
-→ Scan menu
+→ Upload menu
 → See personalized categories
 → Select dish
 → Show restaurant
@@ -982,7 +982,7 @@ The project should remain focused on simplicity:
 ```text
 Open YummyNaKha!
  ↓
-Scan Menu
+Upload menu
  ↓
 Understand
  ↓

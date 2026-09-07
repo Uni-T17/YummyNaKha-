@@ -10,7 +10,7 @@ YummyNaKha! is a mobile-first platform that helps a diner understand a restauran
 
 The system requires **no restaurant registration, no restaurant API, no QR-code infrastructure, no administrator maintaining menu data, and no community-contributed database**. The first user gets full value on their first scan. The only input is a photo of a menu that already exists on the table.
 
-The product principle is one line: **Open → Scan → Decide → Order.**
+The product principle is one line: **Open → Upload menu → Decide → Order.**
 
 # **2\. Problem Statement**
 

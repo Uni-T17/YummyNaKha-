@@ -8,7 +8,7 @@
   *Illustrative — replace with a real interviewee once interviews are done.*
 - Workflow: **food profile in → menu photo → extraction & translation →
   dietary matching → three categories → restaurant-ready order out**
-- Product line: **Open → Scan → Decide → Order**
+- Product line: **Open → Upload menu → Decide → Order**
 
 ---
 

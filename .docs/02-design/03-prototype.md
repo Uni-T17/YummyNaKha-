@@ -228,8 +228,8 @@ ways to survive a loud restaurant (F15, F16).
 └─────────────────────────────────┘
 ```
 The modification checkboxes are pre-filled from the profile's dislikes, so the
-order line writes itself. This is the last step of *Open → Scan → Decide →
-Order* — the journey ends with food ordered, not with a list displayed.
+order line writes itself. This is the last step of *Open → Upload menu → Decide
+→ Order* — the journey ends with food ordered, not with a list displayed.
 
 ## S7 — Extraction unavailable · F18, NFR10
 

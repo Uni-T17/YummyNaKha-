@@ -140,5 +140,5 @@ Covers **F21, F22, F23** · relieves **P1, P2**
 ## Month-2 BUILD commitment
 
 **FE1 → FE2 → FE3 → FE4 → FE5 → FE6**, with FE8 running behind them.
-That chain is the one core workflow — *Open → Scan → Decide → Order*.
+That chain is the one core workflow — *Open → Upload menu → Decide → Order*.
 FE7 follows if the chain lands early. Everything else waits.

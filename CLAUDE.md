@@ -80,8 +80,8 @@ separate file only.
   price extraction → translation → dietary matching → three categories →
   restaurant-ready Thai order out.* Anything outside that chain is
   Should/Could/Won't.
-- **Open → Scan → Decide → Order.** If a proposed feature adds a step to that
-  line, it needs a strong reason.
+- **Open → Upload menu → Decide → Order.** If a proposed feature adds a step to
+  that line, it needs a strong reason.
 - **No restaurant-side dependency.** No restaurant registration, POS
   integration, QR setup, admin-maintained menu data, or community-contributed
   menu database. The first user must get full value from their first scan.
