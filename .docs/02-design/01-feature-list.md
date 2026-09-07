@@ -20,13 +20,14 @@ Covers **F1, F2, F3, F4** · implements **LR1, LR6** · relieves **P3**
 
 | # | Acceptance criteria |
 |---|---|
-| AC1 | A user can create an account and sign in, and the saved profile is present on the next session (F1). **Mechanism `TBD`** — this AC is verifiable once the team fixes it |
+| AC1 | A user can create an account and sign in with **either OAuth or email/password**, and the saved profile is present on the next session (F1). The OAuth provider name is `TBD`; the mechanism is not |
 | AC2 | A user can save favorite foods and ordinary food preferences (F2) |
 | AC3 | Allergies and doctor-advised restrictions are entered in a **separate section behind an explicit opt-in**, never as a silent default (F3, LR1) |
 | AC4 | A new account has **no** allergy or medical flag set until an opt-in record exists (LR1) |
 | AC5 | Ordinary preferences are **not** placed behind the sensitive-data opt-in — the two data classes are handled separately (LR1) |
 | AC6 | A user can view, edit, and delete any profile field, including the allergy and medical section (F4, LR1) |
-| AC7 | The credential store holds a verification token only, with no password field (LR6) |
+| AC7 | An email/password account stores a **salted password hash only** — a credential-store scan finds no plaintext password field (LR6a) |
+| AC8 | OAuth login stores a verification or session token only, never a provider password; tokens are transmitted and stored securely (LR6b, LR6c) |
 
 ## FE2 — Consent & Disclosure Gate · **Must**
 
@@ -36,7 +37,7 @@ Covers **F15, F16** · implements **LR2, LR9** · relieves **P4**
 |---|---|
 | AC1 | Terms, privacy notice, and the AI & Accuracy Disclaimer must be accepted before the first menu is processed (F15) |
 | AC2 | Consent to send data to the third-party OCR/AI provider is a **separate** action from accepting the Terms (F15, LR2) |
-| AC3 | The consent screen states what is processed and that an external provider receives it (LR2) |
+| AC3 | The consent screen states what is processed and that an external provider — the **Google Gemini API** — receives it (LR2) |
 | AC4 | An account with no stored consent record cannot reach a categorized result (LR2) |
 | AC5 | Each acceptance stores user ID, document and version, timestamp, and the acceptance action, and can be fetched back by user ID (LR9) |
 | AC6 | A user can withdraw a consent, and the withdrawal is stored the same way and is equally retrievable (F16, LR9) |
@@ -51,7 +52,8 @@ Covers **F5, F6** (Must) + **F19** (Should) · implements **LR3** · relieves **
 | AC2 | Upload is the only input path — no live camera scanning (F22, Brief §8) |
 | AC3 | Dish-name extraction accuracy is **≥ 90%** on the defined test set of readable Thai menu photographs (NFR2) `[engineering target]` |
 | AC4 | Price extraction accuracy is **≥ 95%** where a clearly visible price is present (NFR2) `[engineering target]` |
-| AC5 | The outbound request carries menu text and the needed profile flags only — no account email, real name, or other identifier (LR3) |
+| AC5 | The outbound Gemini request carries menu text and the needed profile flags only — no account email, real name, or other identifier (LR3) |
+| AC7 | Every Gemini call is made from the backend; a frontend bundle scan finds no Gemini API key and no direct provider call (LR3, LR6d) |
 | AC6 | A user can upload more than one menu image in a single session (F19, Should) |
 
 ## FE4 — Menu Translation · **Must**
@@ -103,7 +105,7 @@ Covers **F13, F14** · relieves **P1, P2, P5**
 
 ## FE8 — Failure & Degradation Handling · **Must**
 
-Covers **F18** · relieves **P4**
+Covers **F18, F26** · implements **LR5** · relieves **P4, P5**
 
 | # | Acceptance criteria |
 |---|---|
@@ -111,6 +113,7 @@ Covers **F18** · relieves **P4**
 | AC2 | A provider outage or rate limit produces a plain-language message, never a raw error (F18, NFR7) |
 | AC3 | The app is available **≥ 95%** during scheduled user-testing and demo periods (NFR7) `[engineering target — MVP operational target, not a commercial SLA]` |
 | AC4 | A photo that is not a Thai-language menu is reported as such rather than processed into meaningless results (F18, F24) |
+| AC5 | After a failed extraction the uploaded image is **still on screen**, and the user can review it, crop it, and retry without taking the photo again (F26, LR5) |
 
 ## FE9 — Data Rights & Compliance Layer · **Must** *(cross-cutting)*
 
@@ -118,12 +121,13 @@ Covers **F17** · implements **LR4, LR5, LR7, LR8, LR10, LR11** · no single scr
 
 | # | Acceptance criteria |
 |---|---|
-| AC1 | Account deletion removes the food profile, uploaded menu images, extracted results, and any history (F17, LR5) |
-| AC2 | A menu image is processed and then discarded by default; any temporary retention is time-bounded, technically justified, and disclosed (LR5) |
+| AC1 | Account deletion removes the food profile, any temporary image, and extracted results (F17, LR5) |
+| AC2 | The uploaded image is retained **only for the active scan session**, and is deleted when that session completes or is abandoned — duration `TBD` (LR5, F26) |
+| AC8 | No image store outlives a scan session; there is no permanent scan history (LR5, F20 Won't) |
 | AC3 | No data flow exists from the profile store to an advertising or profiling sink (LR4) |
 | AC4 | Where the CCA §26 obligation applies, traffic data — account identifier, IP, timestamp — is retained **≥ 90 days** by explicit configuration and stored separately from content (LR7, NFR9) |
 | AC5 | Deleting a menu image does not delete its traffic-log row before that row's retention period ends (LR7) |
-| AC6 | Profiles, menu images, history, and selected dishes are **not** retained 90 days merely because of §26 — they follow the PDPA schedule (LR8) |
+| AC6 | Profiles, the temporary scan-session image, and selected dishes are **not** retained 90 days merely because of §26 — they follow the PDPA schedule (LR8) |
 | AC7 | Given a scan ID, the stored AI-processing record reproduces what the user was shown: model/version, OCR result, translation, profile snapshot, timestamp, recommendation (LR10, internal quality measure) |
 
 ---
@@ -132,7 +136,7 @@ Covers **F17** · implements **LR4, LR5, LR7, LR8, LR10, LR11** · no single scr
 
 | Excluded | MoSCoW | Source |
 |---|---|---|
-| Scan history — reopen a previously scanned menu (F20, B32) | Could | Brief §5, outside core scope |
+| Scan history — reopen a previously scanned menu (F20, B32) | **Won't** | Team decision 2026-09-07 — not part of the MVP; images are never kept as permanent history (LR5) |
 | Rate a recommendation (F21, B33) | Could | Brief §5 |
 | Live camera scanning (F22, B34) | Won't | Brief §8 |
 | Voice output (F23, B35) | Won't | Brief §8 |
@@ -140,6 +144,7 @@ Covers **F17** · implements **LR4, LR5, LR7, LR8, LR10, LR11** · no single scr
 | Restaurant-side registration or supplied menu data (F25, B37) | Won't | Brief §8 |
 | Any certification claim | — | LR11 |
 | Any statement that a dish is safe, and any safety score | — | LR12 |
+| Any permanent storage of menu images | — | LR5 |
 
 ## Coverage check
 
@@ -153,29 +158,33 @@ Covers **F17** · implements **LR4, LR5, LR7, LR8, LR10, LR11** · no single scr
 | F13, F14 | FE7 |
 | F15, F16 | FE2 |
 | F17 | FE9 |
-| F18 | FE8 |
+| F18, F26 | FE8 |
 | F20–F25 | not built — see table above |
 | LR1, LR6 | FE1 |
 | LR2, LR9 | FE2 |
 | LR3 | FE3 |
-| LR4, LR5, LR7, LR8, LR10 | FE9 |
+| LR4, LR7, LR8, LR10 | FE9 |
+| LR5 | FE8, FE9 |
 | LR11 | FE6, FE9 |
 | LR12 | FE5, FE6 |
 
 Every Must `F` and every `LR` is covered by a feature.
 
 Pain coverage: **P1** → FE3, FE4, FE7 · **P2** → FE4, FE7 · **P3** → FE1, FE5 ·
-**P4** → FE2, FE5, FE6, FE8 · **P5** → FE3, FE7.
+**P4** → FE2, FE5, FE6, FE8 · **P5** → FE3, FE7, FE8.
 
 ## Acceptance criteria that cannot be tested yet
 
 | AC | Blocked by |
 |---|---|
-| FE1 AC1 (sign-in) | Authentication mechanism `TBD` |
-| FE3 AC5, FE5 AC4–AC6 | OCR/AI provider undecided — the test set and conditions depend on it |
+| FE1 AC1, OAuth half only | OAuth provider name `TBD` — the email/password half is testable now |
+| FE9 AC2 | Temporary-retention duration `TBD` |
 | No AC yet for NFR1 | Baseline time and steps not measured; the project metric has no target |
-| No AC yet for NFR6 | Usage / cost cap `TBD` until provider and cost model are chosen |
+| No AC yet for NFR6 | Usage cap `TBD` until the Gemini cost model and quota are settled |
 | No AC yet for NFR8 | Usability target `TBD` until the first usability test |
+
+FE3 AC3–AC5 and FE5 AC4–AC6 are **no longer blocked**: the provider is fixed
+(Google Gemini API), so the test set and test conditions can now be defined.
 
 ## Month-2 BUILD commitment
 

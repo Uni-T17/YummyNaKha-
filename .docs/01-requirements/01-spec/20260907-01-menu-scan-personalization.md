@@ -14,6 +14,16 @@
 > `[engineering target]`, not derived from user research;
 > **(c) `TBD`** — not yet known. Nothing is filled in by assumption.
 
+## Team decisions confirmed 2026-09-07
+
+| Decision | Settled | Still open |
+|---|---|---|
+| Authentication | **OAuth + email/password**. Passwords stored only as a salted hash, never plaintext; OAuth/session tokens handled securely (F1, LR6) | The **OAuth provider name** |
+| External AI provider | **Google Gemini API**, called from the **backend only** — the API key is never exposed to the frontend (LR3, LR6) | Cost model and usage cap (NFR6) |
+| Menu image handling | Kept **temporarily for the active scan session** so the user can review, crop, or retry after a failure; deleted when the session completes or is abandoned (F26, LR5) | The retention **duration** |
+| Scan history | **Won't this phase.** Menu images are never kept as permanent history (F20, LR5) | — |
+| Project metric | — | NFR1 baseline and target stay `TBD` until real timed observations exist |
+
 ---
 
 ## 1. Problem & users
@@ -117,7 +127,7 @@ MoSCoW. Every **Must** stays inside the one core workflow of §5.
 
 | ID | User story | MoSCoW | Traces |
 |----|-----------|--------|--------|
-| F1 | As a diner, I want to create an account and sign in, so that my food profile is saved and available the next time I use the app. | Must | enables P3; LR1, LR6, LR9. **Authentication mechanism `TBD`** — not fixed by the Brief or Charter |
+| F1 | As a diner, I want to create an account and sign in, so that my food profile is saved and available the next time I use the app. | Must | enables P3; LR1, LR6, LR9. Authentication is **OAuth + email/password**; only the **OAuth provider name is `TBD`** |
 | F2 | As a diner, I want to save my favorite foods and ordinary food preferences, so that the app can recommend dishes that suit my taste. | Must | solves P3 (U2, U5) |
 | F3 | As a diner, I want to record my allergies and doctor-advised food restrictions under a separate, explicit opt-in, so that dishes that may conflict with them are flagged. | Must | solves P3 (U3, U5); LR1 |
 | F4 | As a diner, I want to view, edit, and delete any part of my food profile, including the allergy and medical-restriction section, so that I stay in control of my own data. | Must | LR1, LR5 |
@@ -136,12 +146,13 @@ MoSCoW. Every **Must** stays inside the one core workflow of §5.
 | F17 | As a diner, I want to delete my account and have my food profile, uploaded images, and results removed, so that nothing of mine is kept after I leave. | Must | LR5 |
 | F18 | As a diner, I want a plain-language message when a menu photo cannot be read or the AI service is unavailable, so that I know what to do next instead of seeing a raw error. | Must | solves P4 (U4 usability); NFR7 |
 | F19 | As a diner, I want to upload more than one menu image in one session, so that a multi-page menu is handled in one go. | Should | Charter §5 #10; solves P5 |
-| F20 | As a diner, I want past scans kept in a history, so that I can reopen a menu I scanned before. | Could | Brief §5; **outside core scope this phase** |
+| F20 | Scan history — keeping past scans so a menu can be reopened later. | Won't | Team decision 2026-09-07: **not part of the MVP this phase**. Menu images are never kept as permanent history (LR5) |
 | F21 | As a diner, I want to rate a recommendation, so that the team can improve accuracy. | Could | Brief §5; relates to P4 |
 | F22 | Live camera scanning of a menu. | Won't | Brief §8 — upload only |
 | F23 | Voice output of dishes or results. | Won't | Brief §8 |
 | F24 | Any language pair other than Thai → English. | Won't | Brief §8 |
 | F25 | Restaurant-side registration, setup, or supplied menu data. | Won't | Brief §8 |
+| F26 | As a diner, I want the menu photo I just uploaded kept on screen during the scan so that I can review it, crop it, or retry when extraction fails, instead of taking the photo again. | Must | solves P5, P4; LR5. *Added 2026-09-07 with the temporary-image-retention decision; numbered after F25 so existing traces stay valid* |
 
 ---
 
@@ -179,9 +190,10 @@ means the team proposed it for review; it is **not** a user-research result.
   **90%** of supported menu scans under the defined test conditions, measured
   from upload to categorized result. *Traces: F5–F9, P5.*
 
-- **NFR6 — usage / cost ceiling.** **`TBD`** after the OCR/AI provider and cost
-  model are selected. No scans-per-user cap is invented here. *Traces: Charter
-  §6 (AI cost & availability).*
+- **NFR6 — usage / cost ceiling.** The provider is now fixed (**Google Gemini
+  API**), but the cap remains **`TBD`** until the Gemini cost model and quota are
+  settled. No scans-per-user cap is invented here. *Traces: Charter §6 (AI cost
+  & availability).*
 
 - **NFR7 — availability.** `[engineering target — MVP operational target, not a
   commercial SLA]` **≥ 95%** availability during scheduled user-testing and demo
@@ -204,10 +216,10 @@ means the team proposed it for review; it is **not** a user-research result.
 |---|---|---|
 | NFR1 baseline time and steps | `TBD` | Timed observation with real users |
 | NFR1 target improvement | `TBD` | The baseline above |
-| NFR6 usage cap | `TBD` | Provider + cost-model decision |
+| NFR6 usage cap | `TBD` | Gemini cost model and quota decision |
 | NFR8 usability target | `TBD` | First usability test |
-| F1 authentication mechanism | `TBD` | Team technical decision |
-| OCR/AI provider | Undecided | Team technical decision — requirements stay provider-neutral until then |
+| F1 OAuth provider name | `TBD` | Team decision — the auth **mechanism** (OAuth + email/password) is settled; only which OAuth provider is open |
+| LR5 temporary-image retention duration | `TBD` | Team decision on the temporary-retention rule |
 
 `/audit-backlog` flags an NFR with no number. NFR1, NFR6, and NFR8 are expected
 hits and are deliberate — they are recorded above rather than filled by
@@ -229,16 +241,19 @@ assumption.
   explicit opt-in record exists.*
 
 - **LR2 (PDPA — third-party transfer disclosure and consent).** Before any
-  profile or menu data is sent to a third-party OCR/AI provider, the system
-  tells the user what is processed and that an external provider receives it,
+  profile or menu data is sent to the third-party OCR/AI provider — the
+  **Google Gemini API** — the system tells the user what is processed and that
+  an external provider receives it,
   and obtains consent before the first send. *Testable: a new account cannot
   reach a categorized result without a stored consent record.*
 
-- **LR3 (PDPA — data minimisation).** Each outbound request to the provider
-  carries only the menu/dish text and the profile flags the recommendation
-  needs. It carries no account email, real name, or other identifier the
-  recommendation does not require. *Testable: capture the outbound payload → it
-  contains no identifier field.*
+- **LR3 (PDPA — data minimisation).** Each outbound request to the Google
+  Gemini API carries only the menu/dish text and the profile flags the
+  recommendation needs. It carries no account email, real name, or other
+  identifier the recommendation does not require. Every Gemini call is made from
+  the **backend**; the frontend never calls the provider directly (see LR6).
+  *Testable: capture the outbound payload → it contains no identifier field; no
+  Gemini request originates from the client.*
 
 - **LR4 (PDPA — purpose limitation).** Profile and menu data are used only for
   menu understanding and personalized recommendation — not for advertising,
@@ -246,17 +261,28 @@ assumption.
   flow exists from the profile store to an advertising or analytics-profiling
   sink.*
 
-- **LR5 (PDPA — deletion).** On account deletion the food profile, uploaded
-  menu images, extracted results, and any history are removed within the stated
-  retention window. By default a menu image is processed and then **discarded
-  after processing**; any temporary retention must be technically justified,
-  time-bounded, and disclosed. Permanent menu-image storage is not an MVP
-  requirement. *Testable: delete account → no profile, image, or result row
-  remains; a completed scan leaves no stored image beyond the stated window.*
+- **LR5 (PDPA — deletion and temporary image retention).** An uploaded menu
+  image is **kept temporarily for the duration of the active scan session**, so
+  the user can review it, crop it, or retry when extraction or processing fails
+  (F26). It is **not** discarded immediately after the first processing attempt.
+  The temporary copy is deleted when the scan session **completes or is
+  abandoned**, under a defined temporary-retention rule (**duration `TBD`**).
+  Menu images are **never** kept as permanent scan history — scan history is
+  Won't this phase (F20). On account deletion the food profile, any temporary
+  image, and extracted results are removed within the stated retention window.
+  *Testable: complete or abandon a scan → the temporary image is gone within the
+  defined window; no image store outlives a scan session; delete account → no
+  profile, image, or result row remains.*
 
-- **LR6 (PDPA — credential protection).** If social or email login is used, only
-  a verification token is stored, never a provider password or credential.
-  *Testable: the credential store holds no password field.*
+- **LR6 (PDPA — credential and key protection).** Authentication is OAuth plus
+  email/password. (a) An email/password account **never stores a plaintext
+  password** — only a salted, computationally hard password hash. (b) OAuth
+  login stores only a verification or session token, never a provider password
+  or credential. (c) Session and OAuth tokens are transmitted and stored
+  securely. (d) The **Google Gemini API key is held server-side only** and is
+  never shipped to, embedded in, or reachable from the frontend. *Testable: the
+  credential store holds no plaintext password field; a frontend bundle scan
+  finds no Gemini API key; every Gemini call originates from the backend.*
 
 ### Computer Crime Act §26
 
@@ -267,8 +293,9 @@ assumption.
   upload action has a matching traffic-log row stored apart from the menu image;
   deleting the image does not remove that row before its retention period ends.*
 
-- **LR8 (CCA §26 — no over-retention).** Food profiles, menu images, scan
-  history, and selected dishes are **not** retained for 90 days merely because
+- **LR8 (CCA §26 — no over-retention).** Food profiles, menu images including
+  the temporary scan-session image, and selected dishes are **not** retained
+  for 90 days merely because
   of §26. Their retention follows their own purpose and LR4/LR5. *Testable: the
   purge job deletes profile and image data on the PDPA schedule regardless of
   the traffic-log schedule.*
@@ -313,7 +340,8 @@ assumption.
 
 ### In scope
 
-- Account and sign-in so a profile persists; mechanism `TBD` (F1).
+- Account and sign-in so a profile persists — **OAuth + email/password**;
+  OAuth provider name `TBD` (F1, LR6).
 - Food profile: favorite foods and ordinary preferences (F2); allergies and
   doctor-advised restrictions under a separate opt-in (F3); view/edit/delete
   (F4).
@@ -326,16 +354,18 @@ assumption.
 - Terms, disclaimer, and separate transfer consent before the first send (F15);
   consent withdrawal (F16); account deletion (F17).
 - Plain-language failure handling for unreadable photos and provider outages
-  (F18).
+  (F18), with the uploaded image kept on screen for review, crop, or retry for
+  the length of the scan session (F26, LR5).
 - The legal duties LR1–LR12.
 - Should-have: multiple menu images per session (F19).
 
 ### Out of scope this phase
 
-- Scan history (F20) and recommendation rating (F21) — Could, not core.
-- Won't-haves, explicitly: live camera scanning (F22), voice output (F23), any
-  language pair other than Thai → English (F24), restaurant-side registration or
-  supplied menu data (F25).
+- Recommendation rating (F21) — Could, not core.
+- Won't-haves, explicitly: **scan history (F20)**, live camera scanning (F22),
+  voice output (F23), any language pair other than Thai → English (F24), and
+  restaurant-side registration or supplied menu data (F25).
+- Any permanent storage of menu images — excluded by LR5.
 - Any "certified", "doctor-approved", or "100% accurate" claim — excluded by
   LR11.
 - Any statement that a dish is safe, and any safety score or percentage —
