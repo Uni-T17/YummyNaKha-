@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1820" height="1260" viewBox="0 0 1820 1260" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M 0 0 L 10 5 L 0 10 z" fill="#1a1a2e"/></marker>
+<style>
+.ent{stroke:#1a1a2e;stroke-width:2.5;}
+.en{font-size:19px;font-weight:700;fill:#1a1a2e;text-anchor:middle;}
+.es{font-size:13.5px;fill:#4a4a6a;text-anchor:middle;}
+.flow{fill:none;stroke:#1a1a2e;stroke-width:2.2;marker-end:url(#ah);}
+.lbl{font-size:15.0px;fill:#1a1a2e;text-anchor:middle;}
+</style></defs>
+<rect width="1820" height="1260" fill="#ffffff"/>
+<text x="910.0" y="54" text-anchor="middle" font-size="32" font-weight="700" fill="#1a1a2e">Context Diagram &#8212; YummyNaKha! Personalized Menu App</text>
+<path class="flow" d="M 293.7 381.1 L 752.1 575.1"/>
+<path class="flow" d="M 779.5 510.7 L 321.9 314.9"/>
+<path class="flow" d="M 763.0 661.2 L 302.4 867.0"/>
+<path class="flow" d="M 621.5 1091.7 L 849.5 741.2"/>
+<path class="flow" d="M 790.9 702.9 L 561.3 1052.3"/>
+<path class="flow" d="M 1486.7 270.7 L 1015.4 504.1"/>
+<path class="flow" d="M 1046.3 566.9 L 1518.5 335.3"/>
+<path class="flow" d="M 1500.8 661.0 L 1049.6 588.8"/>
+<path class="flow" d="M 1038.4 657.9 L 1489.2 732.0"/>
+<path class="flow" d="M 1309.2 1049.4 L 1018.9 691.5"/>
+<path class="flow" d="M 964.4 735.5 L 1253.2 1094.6"/>
+<text class="lbl" x="483.7" y="552.1">Account credentials, taste profile</text>
+<text class="lbl" x="483.7" y="572.1">(favourites / avoid + reason),</text>
+<text class="lbl" x="483.7" y="592.1">menu photo, dish selection</text>
+<text class="lbl" x="589.9" y="302.8">Auth result, colour-coded menu</text>
+<text class="lbl" x="589.9" y="322.8">(Top Picks / Check First / Avoid),</text>
+<text class="lbl" x="589.9" y="342.8">dish detail, order summary</text>
+<text class="lbl" x="560.5" y="818.2">Order in Thai</text>
+<text class="lbl" x="560.5" y="838.2">(Thai dish names)</text>
+<text class="lbl" x="832.6" y="971.9">Log disclosure request</text>
+<text class="lbl" x="832.6" y="991.9">(CCA §26)</text>
+<text class="lbl" x="535.2" y="887.4">Retained access logs</text>
+<text class="lbl" x="535.2" y="907.4">(≥ 90 days)</text>
+<text class="lbl" x="1210.4" y="296.9">Menu text + dietary flags ONLY</text>
+<text class="lbl" x="1210.4" y="316.9">(no identity, no avoid-reason)</text>
+<text class="lbl" x="1333.7" y="547.2">Extracted text, Thai–English translation,</text>
+<text class="lbl" x="1333.7" y="567.2">ingredient inference, dish categorisation</text>
+<text class="lbl" x="1369.8" y="500.2">OAuth authorisation request</text>
+<text class="lbl" x="1254.2" y="756.2">Verified identity token only</text>
+<text class="lbl" x="1283.8" y="813.1">Reset request (email address</text>
+<text class="lbl" x="1283.8" y="833.1">+ one-time reset link)</text>
+<text class="lbl" x="1049.7" y="964.8">Delivery status</text>
+<rect class="ent" x="70.0" y="252.0" width="250" height="96" fill="#E6E6FA"/>
+<text class="en" x="195" y="296">Diner</text>
+<text class="es" x="195" y="322">(primary user)</text>
+<rect class="ent" x="70.0" y="867.0" width="250" height="96" fill="#E6E6FA"/>
+<text class="en" x="195" y="911">Restaurant Staff</text>
+<text class="es" x="195" y="937">(order recipient)</text>
+<rect class="ent" x="430.0" y="1072.0" width="260" height="96" fill="#E6E6FA"/>
+<text class="en" x="560" y="1116">Thai Authority</text>
+<text class="es" x="560" y="1142">(competent authority)</text>
+<rect class="ent" x="1455.0" y="207.0" width="290" height="96" fill="#FFD6D6"/>
+<text class="en" x="1600" y="251">Third-party AI Service</text>
+<text class="es" x="1600" y="277">(Google Gemini API)</text>
+<rect class="ent" x="1495.0" y="672.0" width="290" height="96" fill="#FFD6D6"/>
+<text class="en" x="1640" y="716">Identity Provider</text>
+<text class="es" x="1640" y="742">(Google OAuth)</text>
+<rect class="ent" x="1175.0" y="1072.0" width="290" height="96" fill="#FFD6D6"/>
+<text class="en" x="1320" y="1116">Email Service</text>
+<text class="es" x="1320" y="1142">(password-reset delivery)</text>
+<circle cx="900" cy="600" r="150" fill="#2F4FD8" stroke="#1a1a2e" stroke-width="3"/>
+<text x="900" y="564" text-anchor="middle" font-size="30" font-weight="700" fill="#fff">0</text>
+<text x="900" y="602" text-anchor="middle" font-size="20" font-weight="700" fill="#fff">YummyNaKha!</text>
+<text x="900" y="629" text-anchor="middle" font-size="20" font-weight="700" fill="#fff">Personalized</text>
+<text x="900" y="656" text-anchor="middle" font-size="20" font-weight="700" fill="#fff">Menu App</text>
+<text x="910.0" y="1238" text-anchor="middle" font-size="17" font-style="italic" fill="#555">11.1  Context Diagram</text>
+</svg>
