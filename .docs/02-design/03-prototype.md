@@ -106,7 +106,7 @@ The same flow, with every decision point, is in
 
 ### S2 · Sign In · covers FE1
 
-<img src="images/02-sign-in.png" alt="Sign In screen with email and password fields, Forgot password link, Sign In button and Continue with Google" width="320">
+<img src="images/login.jpg" alt="Sign In screen with email and password fields, Forgot password link, Sign In button and Continue with Google" width="320">
 <img src="images/03-sign-in-validation-error.png" alt="Sign In screen showing the inline error Please enter your email and password" width="320">
 
 | | |
