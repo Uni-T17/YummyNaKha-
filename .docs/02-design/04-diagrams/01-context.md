@@ -7,4 +7,4 @@ read and categorize the menu — which receives menu text plus dietary flags
 sign-in and token exchange (LR6), and the **Thai authority** that may request
 traffic-log data retained for ≥ 90 days under CCA §26 (LR7).
 
-![Context diagram](context-diagram.png)
+![Context diagram](context-diagram.svg)
