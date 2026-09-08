@@ -86,7 +86,7 @@ Welcome ──► Auth ────────────────► My Ta
   Order in Thai returns with a text link, `← Back to English`.
 
 The same flow, with every decision point, is in
-[ActivityDiagram.png](#activity-diagram--main-user-activity).
+[ActivityDiagram.jpg](#activity-diagram--main-user-activity).
 
 ---
 
@@ -94,7 +94,7 @@ The same flow, with every decision point, is in
 
 ### S1 · Welcome — *entry* · covers FE1
 
-<img src="images/01-welcome.png" alt="Welcome screen: YummyNaKha! logo, tagline, four value bullets and a Get Started button" width="320">
+<img src="images/01-welcome.jpg" alt="Welcome screen: YummyNaKha! logo, tagline, four value bullets and a Get Started button" width="320">
 
 | | |
 |---|---|
@@ -107,7 +107,6 @@ The same flow, with every decision point, is in
 ### S2 · Sign In · covers FE1
 
 <img src="images/login.jpg" alt="Sign In screen with email and password fields, Forgot password link, Sign In button and Continue with Google" width="320">
-<img src="images/03-sign-in-validation-error.png" alt="Sign In screen showing the inline error Please enter your email and password" width="320">
 
 | | |
 |---|---|
@@ -119,7 +118,7 @@ The same flow, with every decision point, is in
 
 ### S3 · Create account · covers FE1
 
-<img src="images/04-create-account.png" alt="Create account screen with name, email and password fields" width="320">
+<img src="images/04-create-account.jpg" alt="Create account screen with name, email and password fields" width="320">
 
 | | |
 |---|---|
@@ -132,7 +131,7 @@ The same flow, with every decision point, is in
 
 ### S4 · Reset password · covers FE1
 
-<img src="images/05-reset-password.png" alt="Reset password screen with an email field and Send Reset Link button" width="320">
+<img src="images/05-reset-password.jpg" alt="Reset password screen with an email field and Send Reset Link button" width="320">
 
 | | |
 |---|---|
@@ -146,8 +145,8 @@ The same flow, with every decision point, is in
 Two tabs in one screen. This is the onboarding step after first sign-in, and the
 same screen is reachable later from the `My Taste` tab or the `Edit` link on Home.
 
-<img src="images/06-my-taste-favs.png" alt="My Taste screen, Favs tab, with removable preference chips and suggestion chips" width="320">
-<img src="images/07-my-taste-avoid.png" alt="My Taste screen, Avoid tab, listing Peanuts with an Allergy badge, Pork with a Doctor advised badge and Mushroom with a Just avoid badge" width="320">
+<img src="images/06-my-taste-favs.jpg" alt="My Taste screen, Favs tab, with removable preference chips and suggestion chips" width="320">
+<img src="images/07-my-taste-avoid.jpg" alt="My Taste screen, Avoid tab, listing Peanuts with an Allergy badge, Pork with a Doctor advised badge and Mushroom with a Just avoid badge" width="320">
 
 | | |
 |---|---|
@@ -161,7 +160,7 @@ same screen is reachable later from the `My Taste` tab or the `Edit` link on Hom
 
 #### S5a · Avoid-reason sheet
 
-<img src="images/08-avoid-reason-sheet.png" alt="Bottom sheet asking Why do you avoid Shrimp with options Just don't like it, Allergy, Doctor advised and a Skip link" width="320">
+<img src="images/08-avoid-reason-sheet.jpg" alt="Bottom sheet asking Why do you avoid Shrimp with options Just don't like it, Allergy, Doctor advised and a Skip link" width="320">
 
 Adding an item to the Avoid list opens a bottom sheet:
 
@@ -174,8 +173,7 @@ Adding an item to the Avoid list opens a bottom sheet:
 
 ### S6 · Home · covers FE3 (F5, F19)
 
-<img src="images/09-home.png" alt="Home screen with a Your Taste summary card, two ready menu images and a Find My Food button" width="320">
-<img src="images/10-home-empty-upload.png" alt="Home screen with an empty dashed dropzone reading Drop your menu here" width="320">
+<img src="images/09-home.jpg" alt="Home screen with a Your Taste summary card, two ready menu images and a Find My Food button" width="320">
 
 | | |
 |---|---|
@@ -188,7 +186,7 @@ Adding an item to the Avoid list opens a bottom sheet:
 
 ### S7 · Analyzing · covers FE3–FE5 (F6, F7, F8, F9)
 
-<img src="images/11-analyzing.png" alt="Analyzing screen titled Finding your yummy with six progress steps and a progress bar" width="320">
+<img src="images/11-analyzing.jpg" alt="Analyzing screen titled Finding your yummy with six progress steps and a progress bar" width="320">
 
 | | |
 |---|---|
@@ -200,14 +198,14 @@ Adding an item to the Avoid list opens a bottom sheet:
 | **Traces** | F6, F7, F8, F9, NFR5 |
 
 The six steps are the visible form of the pipeline in
-[Architecture.png](#architecture-diagram--logical-architecture): image →
+[Architecture.jpg](#architecture-diagram--logical-architecture): image →
 OCR → translation → classification → preference matching → ranking.
 
 ### S8 · Your Menu — the result · covers FE6 (F9, F10, F11, F12)
 
-<img src="images/12-menu-all.png" alt="Your Menu screen with All, Top Picks, Check First and Avoid filters and two green Top Pick cards" width="320">
-<img src="images/13-menu-check-first.png" alt="Your Menu filtered to Check First, showing two yellow cards with conflict lines" width="320">
-<img src="images/14-menu-avoid.png" alt="Your Menu filtered to Avoid, showing two red cards with Pork in your Avoid list" width="320">
+<img src="images/12-menu-all.jpg" alt="Your Menu screen with All, Top Picks, Check First and Avoid filters and two green Top Pick cards" width="320">
+<img src="images/13-menu-check-first.jpg" alt="Your Menu filtered to Check First, showing two yellow cards with conflict lines" width="320">
+<img src="images/14-menu-avoid.jpg" alt="Your Menu filtered to Avoid, showing two red cards with Pork in your Avoid list" width="320">
 
 | | |
 |---|---|
@@ -225,7 +223,7 @@ the three categories carry the whole message (LR12).
 
 #### S8a · About food warnings sheet
 
-<img src="images/15-about-food-warnings.png" alt="Bottom sheet titled About food warnings with the accuracy disclaimer and a Got it button" width="320">
+<img src="images/15-about-food-warnings.jpg" alt="Bottom sheet titled About food warnings with the accuracy disclaimer and a Got it button" width="320">
 
 > "YummyNaKha! helps identify possible food conflicts from menu information,
 > but restaurant ingredients and preparation can vary. Always confirm serious
@@ -236,8 +234,8 @@ surface (LR11, LR12) — see gap **G1** for what it does not yet do.
 
 ### S9 · Dish Detail — bottom sheet · covers FE6 (F12)
 
-<img src="images/16-dish-detail-check-first.png" alt="Dish detail sheet for Chicken Pad Thai showing Why you might like it and Check before ordering with a peanut allergy note" width="320">
-<img src="images/17-dish-detail-avoid.png" alt="Dish detail sheet for Pork Fried Rice showing only a Check before ordering panel" width="320">
+<img src="images/16-dish-detail-check-first.jpg" alt="Dish detail sheet for Chicken Pad Thai showing Why you might like it and Check before ordering with a peanut allergy note" width="320">
+<img src="images/17-dish-detail-avoid.jpg" alt="Dish detail sheet for Pork Fried Rice showing only a Check before ordering panel" width="320">
 
 | | |
 |---|---|
@@ -250,7 +248,7 @@ surface (LR11, LR12) — see gap **G1** for what it does not yet do.
 
 ### S10 · My Order · covers FE7 (F13)
 
-<img src="images/18-my-order.png" alt="My Order screen listing one selected dish, a total, Add More and Show in Thai" width="320">
+<img src="images/18-my-order.jpg" alt="My Order screen listing one selected dish, a total, Add More and Show in Thai" width="320">
 
 | | |
 |---|---|
@@ -263,7 +261,7 @@ surface (LR11, LR12) — see gap **G1** for what it does not yet do.
 
 ### S10a · Order in Thai · covers FE7 (F14)
 
-<img src="images/19-order-in-thai.png" alt="Order in Thai screen with the heading Show this to your server and a large Thai dish card" width="320">
+<img src="images/19-order-in-thai.jpg" alt="Order in Thai screen with the heading Show this to your server and a large Thai dish card" width="320">
 
 | | |
 |---|---|
@@ -277,7 +275,7 @@ surface (LR11, LR12) — see gap **G1** for what it does not yet do.
 
 ### S11 · My Profile · covers FE1 (F4)
 
-<img src="images/20-profile.png" alt="My Profile screen with avatar, name, email, username with Edit, Change Password and Sign Out" width="320">
+<img src="images/20-profile.jpg" alt="My Profile screen with avatar, name, email, username with Edit, Change Password and Sign Out" width="320">
 
 | | |
 |---|---|
@@ -290,7 +288,7 @@ surface (LR11, LR12) — see gap **G1** for what it does not yet do.
 
 ### S12 · Change Password · covers FE1 (LR6)
 
-<img src="images/21-change-password.png" alt="Change Password screen with current, new and confirm password fields" width="320">
+<img src="images/21-change-password.jpg" alt="Change Password screen with current, new and confirm password fields" width="320">
 
 | | |
 |---|---|
@@ -348,13 +346,13 @@ the too-many-Check-First risk.
 
 Who and what sits outside YummyNaKha!, and exactly what crosses the boundary.
 
-![System context diagram: the diner and restaurant staff on one side, Google auth and the OCR/AI provider on the other, with the data that crosses each boundary](Context.png)
+![System context diagram: the diner and restaurant staff on one side, Google auth and the OCR/AI provider on the other, with the data that crosses each boundary](Context.jpg)
 
 Editable source: [`Context.mmd`](Context.mmd)
 
 ### Use case diagram
 
-![Use case diagram showing the traveller/diner actor, the Google auth and restaurant staff actors, and twelve use cases with include and extend relationships](UseCaseDiagram.png)
+![Use case diagram showing the traveller/diner actor, the Google auth and restaurant staff actors, and twelve use cases with include and extend relationships](UseCaseDiagram.jpg)
 
 Editable source: [`UseCaseDiagram.mmd`](UseCaseDiagram.mmd)
 
@@ -374,13 +372,13 @@ Two things to read carefully:
   there is no conflict *and* the menu information is complete; anything
   uncertain or incomplete resolves to 🟡 Check First, never to 🟢 (F10, LR12).
 
-![Activity diagram of the main user flow from Welcome through authentication, taste profile, upload, the consent gate marked as not built, six-step analysis, the branch into Top Picks, Check First and Avoid, order building and the Thai order screen](ActivityDiagram.png)
+![Activity diagram of the main user flow from Welcome through authentication, taste profile, upload, the consent gate marked as not built, six-step analysis, the branch into Top Picks, Check First and Avoid, order building and the Thai order screen](ActivityDiagram.jpg)
 
 Editable source: [`ActivityDiagram.mmd`](ActivityDiagram.mmd)
 
 ### Architecture diagram — logical architecture
 
-![Logical architecture diagram with a presentation layer, an application/API layer of five services, a backend-only menu intelligence pipeline, a persistence layer, and a boxed trade-off note](Architecture.png)
+![Logical architecture diagram with a presentation layer, an application/API layer of five services, a backend-only menu intelligence pipeline, a persistence layer, and a boxed trade-off note](Architecture.jpg)
 
 Editable source: [`Architecture.mmd`](Architecture.mmd)
 
