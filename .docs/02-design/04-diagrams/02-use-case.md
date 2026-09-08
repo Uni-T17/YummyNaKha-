@@ -13,4 +13,4 @@ four areas and each mapped to its `F` requirement in the spec:
   (F13), view the order in Thai (F14).
 - **Data rights** — withdraw consent (F16), delete the account (F17).
 
-![Use case diagram](</images/use-case-diagram.png>)
+![Use case diagram](<images/use-case-diagram.png>)
