@@ -13,4 +13,4 @@ four areas and each mapped to its `F` requirement in the spec:
   (F13), view the order in Thai (F14).
 - **Data rights** — withdraw consent (F16), delete the account (F17).
 
-![Use case diagram showing the diner actor and twelve use cases in four grouped areas — account and profile, menu and consent, results and ordering, and data rights — with the include relationship into menu generation and the call out to the third-party AI service](../../images/diagrams/use-case-diagram.png)
+![Use case diagram](use-case-diagram.png)

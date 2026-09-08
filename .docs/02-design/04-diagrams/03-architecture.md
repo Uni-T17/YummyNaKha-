@@ -28,4 +28,4 @@ A second, smaller trade-off: **the uploaded image lives in storage for the scan
 session only**, so a diner cannot reopen an old scan. That is deliberate — no
 permanent image store, no scan history (LR5, F20 Won't).
 
-![Architecture diagram with the client and identity provider on the left, a backend API of six services above a shared AI gateway, the third-party Gemini API on the right, and four data stores below with the write path from each service labelled](../../images/diagrams/architecture-diagram.png)
+![Architecture diagram](architecture-diagram.png)
