@@ -11,4 +11,4 @@ incomplete resolves to Check First, never to Recommended (F10, LR12) — and the
 selection and Thai order screen, which never re-runs the analysis and never
 shows English (F13, F14).
 
-![Activity diagram](activity-diagram.png)
+![Activity diagram](images/activity-diagram.png)

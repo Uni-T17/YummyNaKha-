@@ -28,4 +28,4 @@ A second, smaller trade-off: **the uploaded image lives in storage for the scan
 session only**, so a diner cannot reopen an old scan. That is deliberate — no
 permanent image store, no scan history (LR5, F20 Won't).
 
-![Architecture diagram](architecture-diagram.png)
+![Architecture diagram](images/architecture-diagram.png)
