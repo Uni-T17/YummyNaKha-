@@ -26,7 +26,12 @@ export function AnalysisProgress() {
     let cancelled = false;
     analyzeMenu(uploads)
       .then((menu) => !cancelled && setResult(menu))
-      .catch((e) => !cancelled && setError(e instanceof ApiError ? e.message : "We couldn't read this menu."));
+      .catch((e) => {
+        if (cancelled) return;
+        // Consent withdrawn or missing (server-side check) → back to the consent screen.
+        if (e instanceof ApiError && e.code === "CONSENT_REQUIRED") return router.replace("/consent");
+        setError(e instanceof ApiError ? e.message : "We couldn't read this menu.");
+      });
     return () => {
       cancelled = true;
     };
@@ -34,14 +39,15 @@ export function AnalysisProgress() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [attempt]);
 
-  // Advance the checklist; finish once every step is shown and the result is in.
+  // Advance the checklist; the last step waits for the server's result.
   useEffect(() => {
     if (error) return;
-    if (step < ANALYSIS_STEPS.length) {
+    const last = ANALYSIS_STEPS.length - 1;
+    if (step < last || (step === last && result)) {
       const t = setTimeout(() => setStep((s) => s + 1), STEP_MS);
       return () => clearTimeout(t);
     }
-    if (!result) return;
+    if (step < ANALYSIS_STEPS.length || !result) return;
     const t = setTimeout(() => {
       appActions.setMenu(result);
       router.replace("/menu");

@@ -18,7 +18,7 @@ export function SignUpForm() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    run("form", () => signUp(name, email, password), true);
+    run("form", () => signUp(name, email, password));
   }
 
   function clearError<T>(setter: (v: T) => void) {

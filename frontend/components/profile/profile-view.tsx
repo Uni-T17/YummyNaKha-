@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Check, ChevronRight, KeyRound, Loader2, LogOut } from "lucide-react";
+import { Check, ChevronRight, KeyRound, Loader2, LogOut, ShieldCheck } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { FieldError } from "@/components/ui/feedback";
@@ -138,6 +138,16 @@ export function ProfileView() {
             <span className="flex items-center gap-3">
               <IconTile icon={KeyRound} className="bg-brand-tint text-brand" />
               <span className="text-sm font-bold text-ink">Change Password</span>
+            </span>
+            <ChevronRight size={16} className="text-subtle" aria-hidden />
+          </Link>
+          <Link
+            href="/profile/privacy"
+            className="flex min-h-14 w-full items-center justify-between border-b border-line px-4 py-4 transition-colors hover:bg-cream"
+          >
+            <span className="flex items-center gap-3">
+              <IconTile icon={ShieldCheck} className="bg-top-50 text-success" />
+              <span className="text-sm font-bold text-ink">Privacy &amp; consents</span>
             </span>
             <ChevronRight size={16} className="text-subtle" aria-hidden />
           </Link>

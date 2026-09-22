@@ -1,0 +1,184 @@
+// YummyNaKha! database schema (PostgreSQL, Prisma 7).
+// Every user-owned table cascades on user deletion so an account delete removes
+// the food profile, menu images and results (rule.md, PDPA).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Accounts ────────────────────────────────────────────────────────────────
+
+model User {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  /// scrypt hash in the form `scrypt$N$r$p$salt$hash` — never a plaintext password.
+  passwordHash String
+  /// Set when the user first saves My Taste; drives the onboarding redirect.
+  onboardedAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  sessions       Session[]
+  preferences    UserPreference[]
+  menuImages     MenuImage[]
+  menuAnalyses   MenuAnalysis[]
+  consentRecords ConsentRecord[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  /// SHA-256 of the random token in the session cookie; the raw token is never stored.
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+// ─── Food preferences (My Taste: Favs + Avoid list) ─────────────────────────
+
+/// A normalized food term shared by all users ("peanut", "chicken", …).
+model FoodItem {
+  id        String   @id @default(cuid())
+  /// Normalized lookup key (lower-case, singular) — see lib/matching.ts normalizeTerm.
+  key       String   @unique
+  /// Display label as first entered ("Peanuts").
+  label     String
+  createdAt DateTime @default(now())
+
+  preferences UserPreference[]
+}
+
+enum PreferenceType {
+  FAVORITE
+  DISLIKE
+}
+
+/// Why an item is on the Avoid list. ALLERGY / DOCTOR are sensitive health data (LR1).
+enum AvoidReason {
+  DISLIKE
+  ALLERGY
+  DOCTOR
+}
+
+/// One row per (user, food item): the unique constraint makes FAVORITE and
+/// DISLIKE mutually exclusive — switching type updates the same row.
+model UserPreference {
+  id         String         @id @default(cuid())
+  userId     String
+  foodItemId String
+  type       PreferenceType
+  /// Only for DISLIKE; null when the user skipped the reason question.
+  reason     AvoidReason?
+  /// The label as this user typed it (FoodItem.label may come from another user).
+  label      String
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  foodItem FoodItem @relation(fields: [foodItemId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, foodItemId])
+  @@index([userId, type])
+}
+
+// ─── Menu content & AI processing ───────────────────────────────────────────
+
+enum ProcessingStatus {
+  UPLOADED
+  PROCESSING
+  PROCESSED
+  FAILED
+}
+
+/// An uploaded menu photo and what was read from it.
+model MenuImage {
+  id               String           @id @default(cuid())
+  userId           String
+  fileName         String
+  mimeType         String
+  sizeBytes        Int
+  /// Raw image bytes; cleared once OCR succeeds (images are kept only for the scan session).
+  data             Bytes?
+  status           ProcessingStatus @default(UPLOADED)
+  extractedText    String?
+  translatedText   String?
+  ocrModel         String?
+  translationModel String?
+  /// Provider metadata worth keeping (provider, token usage, finish reason…).
+  metadata         Json?
+  /// Safe, user-facing failure reason (no provider internals).
+  error            String?
+  processedAt      DateTime?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  user     User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  analyses MenuAnalysisImage[]
+
+  @@index([userId, createdAt])
+  @@index([status])
+}
+
+/// One Gemini analysis run over one or more menu images.
+model MenuAnalysis {
+  id                  String           @id @default(cuid())
+  userId              String
+  status              ProcessingStatus @default(PROCESSING)
+  model               String?
+  /// The minimal profile flags sent to Gemini (no name / email — LR3).
+  preferencesSnapshot Json?
+  /// Validated structured result (dishes + notes).
+  result              Json?
+  error               String?
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+
+  user   User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  images MenuAnalysisImage[]
+
+  @@index([userId, createdAt])
+}
+
+model MenuAnalysisImage {
+  analysisId String
+  imageId    String
+
+  analysis MenuAnalysis @relation(fields: [analysisId], references: [id], onDelete: Cascade)
+  image    MenuImage    @relation(fields: [imageId], references: [id], onDelete: Cascade)
+
+  @@id([analysisId, imageId])
+  @@index([imageId])
+}
+
+// ─── Consent (FE2 / LR2, LR9) ────────────────────────────────────────────────
+
+enum ConsentAction {
+  ACCEPTED
+  WITHDRAWN
+}
+
+/// Append-only: every acceptance and withdrawal stays retrievable by user.
+model ConsentRecord {
+  id        String        @id @default(cuid())
+  userId    String
+  /// Document id from lib/consent.ts ("terms", "privacy", "ai-disclaimer", "ai-transfer").
+  document  String
+  version   String
+  action    ConsentAction
+  createdAt DateTime      @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, document, createdAt])
+}

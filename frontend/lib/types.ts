@@ -45,7 +45,8 @@ export interface ExtractedDish {
   id: string;
   nameThai: string;
   nameEn: string;
-  price: number;
+  /** null when no price is printed for the dish (never guessed). */
+  price: number | null;
   /** Lower-case keywords used to match the user's Favs (flavours, bases, proteins). */
   tags: string[];
   ingredients: InferredIngredient[];
@@ -68,8 +69,12 @@ export interface Dish extends ExtractedDish {
 }
 
 export interface MenuUpload {
+  /** Server image id once uploaded; a temporary client id while uploading. */
   id: string;
   fileName: string;
-  /** Object URL for a real file picked by the user; absent for sample uploads. */
+  status: "uploading" | "ready" | "error";
+  /** User-facing reason when status is "error". */
+  error?: string;
+  /** Object URL for the picked file (this browser session only). */
   previewUrl?: string;
 }

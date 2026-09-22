@@ -1,7 +1,7 @@
 import type { AvoidItem, AvoidReason } from "./types";
 
-export function formatPrice(price: number) {
-  return `฿${price.toLocaleString("en-US")}`;
+export function formatPrice(price: number | null) {
+  return price === null ? "Price not listed" : `฿${price.toLocaleString("en-US")}`;
 }
 
 export function pluralizeDishes(count: number) {
@@ -28,4 +28,20 @@ export function summarizeAvoid(items: AvoidItem[]) {
   return items
     .map((a) => a.name + (a.reason === "allergy" ? " (Allergy)" : a.reason === "doctor" ? " (Dr.)" : ""))
     .join(" · ");
+}
+
+/** "22 Sep 2026" */
+export function formatDate(iso: string) {
+  return new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+}
+
+/** "22 Sep 2026, 14:05" */
+export function formatDateTime(iso: string) {
+  return new Date(iso).toLocaleString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }

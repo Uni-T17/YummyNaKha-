@@ -41,7 +41,9 @@ export function ThaiOrder() {
           {items.map((dish) => (
             <li key={dish.id} className="rounded-2xl border-2 border-line p-5">
               <p className="font-thai text-[2rem] leading-[1.3] font-bold text-ink md:text-[2.5rem]">{dish.nameThai}</p>
-              <p className="mt-2 font-thai text-2xl font-black text-brand">{dish.price} บาท</p>
+              {dish.price !== null && (
+                <p className="mt-2 font-thai text-2xl font-black text-brand">{dish.price} บาท</p>
+              )}
             </li>
           ))}
         </ul>

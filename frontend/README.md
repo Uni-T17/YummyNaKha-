@@ -34,3 +34,27 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Backend setup
+
+The API lives in `app/api/*` (thin route handlers) with services in `lib/server/*`.
+PostgreSQL via Prisma 7; Hugging Face (OCR + translation) and Google Gemini
+(menu analysis) are called only from the server.
+
+```bash
+cp .env.example .env        # fill in DATABASE_URL, AUTH_SECRET and the API keys
+npm install                 # also runs `prisma generate`
+npm run db:deploy           # apply migrations (use `npm run db:migrate` while developing)
+npm run dev
+```
+
+| Endpoint | Purpose |
+| --- | --- |
+| `POST /api/auth/register`, `/login`, `/logout` · `GET/PATCH /api/auth/me` · `POST /api/auth/password` | Accounts and sessions (httpOnly cookie, DB-backed) |
+| `GET /api/preferences` · `POST/DELETE /api/preferences/favorite` · `POST/DELETE /api/preferences/dislike` | My Taste (Favs / Avoid list) |
+| `POST /api/images` · `GET/DELETE /api/images/:id` | Menu photo upload (JPG/PNG/WebP ≤ 8 MB) |
+| `POST /api/ai/extract-text` | Photo → Hugging Face OCR → translation |
+| `POST /api/ai/analyze` | Full pipeline → Gemini → dishes for the Menu screen |
+| `GET/POST /api/consents` · `POST /api/consents/withdraw` | Terms & AI-transfer consent records |
+
+Errors are returned as `{ "error": { "code", "message", "fields?" } }`.

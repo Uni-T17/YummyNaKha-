@@ -2,16 +2,15 @@
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Camera, Check, Plus, ScanLine, Sparkles, Trash2 } from "lucide-react";
+import { AlertTriangle, Camera, Check, Loader2, Plus, ScanLine, Sparkles, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/ui/feedback";
 import { IconTile } from "@/components/ui/icon-tile";
-import { createId } from "@/lib/api/client";
 import { cn } from "@/lib/cn";
 import { appActions, useAppState } from "@/lib/store/app-store";
-import type { MenuUpload } from "@/lib/types";
 
-const MAX_FILE_MB = 10;
+const MAX_FILE_MB = 8;
+const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 export function MenuUploader() {
   const router = useRouter();
@@ -22,17 +21,21 @@ export function MenuUploader() {
 
   function addFiles(files: FileList | null) {
     if (!files?.length) return;
-    const accepted: MenuUpload[] = [];
+    const accepted: File[] = [];
     let rejected = 0;
     for (const file of Array.from(files)) {
-      if (!file.type.startsWith("image/") || file.size > MAX_FILE_MB * 1024 * 1024) {
+      if (!ACCEPTED_TYPES.includes(file.type) || file.size > MAX_FILE_MB * 1024 * 1024) {
         rejected++;
         continue;
       }
-      accepted.push({ id: createId("upload"), fileName: file.name, previewUrl: URL.createObjectURL(file) });
+      accepted.push(file);
     }
-    appActions.addUploads(accepted);
-    setError(rejected ? `${rejected} file${rejected > 1 ? "s were" : " was"} skipped — use images under ${MAX_FILE_MB} MB.` : "");
+    if (accepted.length) appActions.addFiles(accepted);
+    setError(
+      rejected
+        ? `${rejected} file${rejected > 1 ? "s were" : " was"} skipped — use JPG, PNG or WebP photos under ${MAX_FILE_MB} MB.`
+        : "",
+    );
   }
 
   function openPicker() {
@@ -43,7 +46,7 @@ export function MenuUploader() {
     <input
       ref={inputRef}
       type="file"
-      accept="image/*"
+      accept="image/jpeg,image/png,image/webp"
       multiple
       className="sr-only"
       tabIndex={-1}
@@ -107,10 +110,24 @@ export function MenuUploader() {
                 )}
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-bold text-ink">{upload.fileName}</p>
-                  <p className="mt-0.5 flex items-center gap-1 text-xs font-semibold text-success">
-                    <Check size={11} strokeWidth={3} aria-hidden />
-                    Ready to analyze
-                  </p>
+                  {upload.status === "ready" && (
+                    <p className="mt-0.5 flex items-center gap-1 text-xs font-semibold text-success">
+                      <Check size={11} strokeWidth={3} aria-hidden />
+                      Ready to analyze
+                    </p>
+                  )}
+                  {upload.status === "uploading" && (
+                    <p className="mt-0.5 flex items-center gap-1 text-xs font-semibold text-subtle" role="status">
+                      <Loader2 size={11} strokeWidth={3} className="animate-spin" aria-hidden />
+                      Uploading…
+                    </p>
+                  )}
+                  {upload.status === "error" && (
+                    <p className="mt-0.5 flex items-center gap-1 text-xs font-semibold text-danger" role="alert">
+                      <AlertTriangle size={11} strokeWidth={3} aria-hidden />
+                      {upload.error ?? "Upload failed."}
+                    </p>
+                  )}
                 </div>
                 <button
                   type="button"
@@ -136,7 +153,12 @@ export function MenuUploader() {
             Add another
           </button>
 
-          <Button fullWidth onClick={() => router.push("/analyzing")} className="mt-1 shadow-lg">
+          <Button
+            fullWidth
+            onClick={() => router.push("/analyzing")}
+            className="mt-1 shadow-lg"
+            disabled={!uploads.some((u) => u.status === "ready") || uploads.some((u) => u.status === "uploading")}
+          >
             <Sparkles size={18} aria-hidden />
             Find My Food
           </Button>

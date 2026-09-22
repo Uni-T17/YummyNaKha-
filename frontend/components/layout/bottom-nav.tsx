@@ -13,7 +13,7 @@ const ITEMS: { href: string; label: string; icon: LucideIcon; matches: string[] 
 ];
 
 /** Screens that are full-screen in Figma (no tab bar). */
-const HIDDEN_ON = ["/analyzing", "/order/thai", "/profile"];
+const HIDDEN_ON = ["/analyzing", "/consent", "/order/thai", "/profile"];
 
 export function BottomNav() {
   const pathname = usePathname();
