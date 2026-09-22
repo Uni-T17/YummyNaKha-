@@ -24,7 +24,11 @@ export interface ChatResult {
 
 interface RawResponse {
   model?: string;
-  choices?: { message?: { content?: string | null }; finish_reason?: string | null }[];
+  error?: unknown;
+  choices?: {
+    message?: { content?: string | ContentPart[] | null; reasoning?: string; reasoning_content?: string };
+    finish_reason?: string | null;
+  }[];
   usage?: { prompt_tokens?: number; completion_tokens?: number };
 }
 
@@ -63,19 +67,43 @@ export async function chatCompletion(params: {
     const excerpt = (await response.text().catch(() => "")).slice(0, 300);
     console.error(`[huggingface] ${params.model} → HTTP ${response.status}: ${excerpt}`);
     if (response.status === 401 || response.status === 403) throw errors.serviceUnavailable();
+    if (response.status === 402) {
+      console.error("[huggingface] account is out of Inference Providers credits — add credits at huggingface.co/settings/billing");
+      throw errors.serviceUnavailable("The menu reader is temporarily unavailable. Please try again later.");
+    }
     if (response.status === 429) throw errors.serviceUnavailable("The menu reader is busy right now. Please try again in a minute.");
     throw errors.badGateway();
   }
 
   const data = (await response.json().catch(() => null)) as RawResponse | null;
   const choice = data?.choices?.[0];
-  if (!choice || typeof choice.message?.content !== "string") {
-    console.error("[huggingface] unexpected response shape");
+  const raw = choice?.message?.content;
+  // Some providers return content as an array of text parts.
+  const content = Array.isArray(raw)
+    ? raw.map((part) => (part.type === "text" ? part.text : "")).join("")
+    : (raw ?? "");
+
+  if (!choice || !content.trim()) {
+    const reasoned = Boolean(choice?.message?.reasoning || choice?.message?.reasoning_content);
+    // Log only structure, never the model output or keys.
+    console.error(
+      `[huggingface] ${params.model} returned no text`,
+      JSON.stringify({
+        hasChoice: Boolean(choice),
+        finishReason: choice?.finish_reason ?? null,
+        messageKeys: choice?.message ? Object.keys(choice.message) : [],
+        onlyReasoning: reasoned,
+        providerError: data?.error ? true : false,
+      }),
+    );
+    if (choice?.finish_reason === "length") {
+      throw errors.badGateway("Reading the menu took too long. Please try a photo with fewer dishes.");
+    }
     throw errors.badGateway();
   }
 
   return {
-    content: choice.message.content,
+    content,
     model: data?.model ?? params.model,
     finishReason: choice.finish_reason ?? null,
     usage: data?.usage
