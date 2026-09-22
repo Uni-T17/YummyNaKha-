@@ -12,11 +12,16 @@ import { acceptDocuments } from "@/lib/api/consent";
 import { ApiError } from "@/lib/api/client";
 import { cn } from "@/lib/cn";
 import { getConsentStatus, hasAccepted, TERMS_BUNDLE, type ConsentDocumentId } from "@/lib/consent";
+import { OCR_PROVIDER } from "@/lib/ai-provider";
 import { formatDate } from "@/lib/format";
 import { DocumentSheet } from "./document-sheet";
 import { useConsentRecords } from "./use-consent-records";
 
-const SENT = ["Your menu photos (to Hugging Face)", "Menu text, Favs and Avoid list with reasons (to Google Gemini)"];
+const SENT =
+  OCR_PROVIDER === "gemini"
+    ? ["Your menu photos", "Your Favs and Avoid list, with reasons"]
+    : ["Your menu photos (to Hugging Face)", "Menu text, Favs and Avoid list with reasons (to Google Gemini)"];
+const PROVIDER_NAMES = OCR_PROVIDER === "gemini" ? "the Google Gemini API" : "Hugging Face and the Google Gemini API";
 const NEVER_SENT = ["Your name", "Your email address", "Your account details"];
 
 function StepCard({
@@ -171,9 +176,18 @@ export function ConsentForm() {
 
         <StepCard step={2} title="Send your menu to our AI providers" icon={Sparkles} done={transferDone}>
           <p className="mb-3 text-sm leading-relaxed text-body">
-            To read and sort your menu, we use two external AI providers:{" "}
-            <span className="font-bold text-ink">Hugging Face</span> reads and translates the photo, and the{" "}
-            <span className="font-bold text-ink">Google Gemini API</span> matches the dishes to your taste.
+            {OCR_PROVIDER === "gemini" ? (
+              <>
+                To read and sort your menu, we use the <span className="font-bold text-ink">Google Gemini API</span>,
+                an external AI provider.
+              </>
+            ) : (
+              <>
+                To read and sort your menu, we use two external AI providers:{" "}
+                <span className="font-bold text-ink">Hugging Face</span> reads and translates the photo, and the{" "}
+                <span className="font-bold text-ink">Google Gemini API</span> matches the dishes to your taste.
+              </>
+            )}
           </p>
 
           <div className="mb-3 grid gap-3 sm:grid-cols-2">
@@ -222,7 +236,7 @@ export function ConsentForm() {
                 </p>
               )}
               <Checkbox checked={transferChecked} onChange={setTransferChecked}>
-                I agree to send this data to Hugging Face and the Google Gemini API to analyze my menu.
+                I agree to send this data to {PROVIDER_NAMES} to analyze my menu.
               </Checkbox>
             </>
           )}

@@ -163,7 +163,7 @@ export function PrivacySettings() {
       <BottomSheet open={confirming} onClose={() => !pending && setConfirming(false)} label="Withdraw consent?">
         <h2 className="mb-2 text-lg font-black text-ink">Withdraw consent?</h2>
         <p className="mb-5 text-sm leading-relaxed text-muted">
-          We&apos;ll stop sending your menus and taste profile to our AI providers (Hugging Face and Google Gemini). You won&apos;t be able to analyze a new
+          We&apos;ll stop sending your menus and taste profile to our AI providers. You won&apos;t be able to analyze a new
           menu until you give consent again. Menus you already analyzed stay on this device until you sign out.
         </p>
         <FormError className="mb-3">{error}</FormError>
