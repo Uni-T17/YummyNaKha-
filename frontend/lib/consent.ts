@@ -3,6 +3,8 @@
 // the final legal text, and bump `version` whenever a document changes so users
 // are asked to accept the new version.
 
+import { OCR_PROVIDER } from "./ai-provider";
+
 export type ConsentDocumentId = "terms" | "privacy" | "ai-disclaimer" | "ai-transfer";
 
 export interface ConsentDocument {
@@ -64,12 +66,19 @@ export const CONSENT_DOCUMENTS: Record<ConsentDocumentId, ConsentDocument> = {
   "ai-transfer": {
     id: "ai-transfer",
     title: "Send data to AI providers",
-    // 0.2: Hugging Face added as a second provider — users must accept again.
-    version: "0.2-draft",
+    // The text names the providers actually in use (OCR_PROVIDER), and each
+    // provider setup has its own version so switching asks users again.
+    version: OCR_PROVIDER === "gemini" ? "0.2-draft-gemini" : "0.2-draft",
     withdrawable: true,
     summary: [
-      "To read your menu, we send your menu photos to Hugging Face, an external AI provider, which reads and translates the text.",
-      "To sort the dishes, we send the menu text and the Favs and Avoid items needed for matching to the Google Gemini API, another external AI provider.",
+      ...(OCR_PROVIDER === "gemini"
+        ? [
+            "To read, translate and sort your menu, we send your menu photos and the Favs and Avoid items needed for matching to the Google Gemini API, an external AI provider.",
+          ]
+        : [
+            "To read your menu, we send your menu photos to Hugging Face, an external AI provider, which reads and translates the text.",
+            "To sort the dishes, we send the menu text and the Favs and Avoid items needed for matching to the Google Gemini API, another external AI provider.",
+          ]),
       "We never send your name, email address or account details.",
       "The requests are made from our server, not from your device.",
       "You can withdraw this consent any time in My Profile → Privacy & consents. Menus can't be analyzed without it.",

@@ -20,7 +20,9 @@ export function getAuthSecret(): string {
 }
 
 export const DEFAULT_HF_MODEL = "Qwen/Qwen3.8-27B";
-export const DEFAULT_GEMINI_MODEL = "gemini-3.8-flash";
+export const DEFAULT_GEMINI_MODEL = "gemini-3.6-flash";
+/** Models tried in order when the primary one is overloaded, rate-limited or unavailable. */
+export const DEFAULT_GEMINI_FALLBACK_MODELS = "gemini-3.5-flash-lite,gemini-3.1-flash-lite";
 
 export function getHuggingFaceConfig() {
   return {
@@ -34,5 +36,9 @@ export function getGeminiConfig() {
   return {
     apiKey: read(z.string().min(1), process.env.GEMINI_API_KEY, "GEMINI_API_KEY"),
     model: process.env.GEMINI_MODEL?.trim() || DEFAULT_GEMINI_MODEL,
+    fallbackModels: (process.env.GEMINI_FALLBACK_MODELS?.trim() || DEFAULT_GEMINI_FALLBACK_MODELS)
+      .split(",")
+      .map((m) => m.trim())
+      .filter(Boolean),
   };
 }

@@ -24,9 +24,21 @@ export function deleteMenuImage(id: string): Promise<void> {
   return apiFetch<void>(`/api/images/${encodeURIComponent(id)}`, { method: "DELETE" });
 }
 
-export async function analyzeMenu(uploads: MenuUpload[]): Promise<ExtractedDish[]> {
+// One in-flight analysis per set of photos, so a re-mounted screen (React
+// Strict Mode, fast navigation) reuses the running request instead of racing it.
+const inFlight = new Map<string, Promise<ExtractedDish[]>>();
+
+export function analyzeMenu(uploads: MenuUpload[]): Promise<ExtractedDish[]> {
   const imageIds = uploads.filter((u) => u.status === "ready").map((u) => u.id);
-  if (imageIds.length === 0) throw new ApiError("Add at least one menu image first.");
-  const { dishes } = await apiFetch<{ dishes: ExtractedDish[] }>("/api/ai/analyze", { body: { imageIds } });
-  return dishes;
+  if (imageIds.length === 0) return Promise.reject(new ApiError("Add at least one menu image first."));
+
+  const key = imageIds.join(",");
+  const running = inFlight.get(key);
+  if (running) return running;
+
+  const request = apiFetch<{ dishes: ExtractedDish[] }>("/api/ai/analyze", { body: { imageIds } })
+    .then((r) => r.dishes)
+    .finally(() => inFlight.delete(key));
+  inFlight.set(key, request);
+  return request;
 }
