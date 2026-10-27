@@ -45,7 +45,7 @@ export function OrderSummary() {
                   <p lang="th" className="font-thai text-sm text-subtle">
                     {dish.nameThai}
                   </p>
-                  <p className="text-sm font-black text-brand">{formatPrice(dish.price)}</p>
+                  <p className="text-sm font-black text-brand">{formatPrice(dish.price, dish.priceFrom)}</p>
                 </div>
                 <button
                   type="button"

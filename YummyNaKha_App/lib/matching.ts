@@ -1,5 +1,6 @@
 import type {
   AvoidItem,
+  ChoiceResult,
   Dish,
   DishConflict,
   DishStatus,
@@ -33,7 +34,7 @@ function ingredientMatches(ing: InferredIngredient, avoidName: string) {
   return termsMatch(ing.key, avoidName) || (ing.groups ?? []).some((g) => termsMatch(g, avoidName));
 }
 
-function conflictFor(dish: ExtractedDish, item: AvoidItem): { conflict: DishConflict; severe: boolean } | null {
+function conflictFor(dish: Pick<ExtractedDish, "ingredients">, item: AvoidItem): { conflict: DishConflict; severe: boolean } | null {
   const hits = dish.ingredients.filter((ing) => ingredientMatches(ing, item.name));
   if (hits.length === 0) return null;
   // A listed ingredient outweighs one that is only sometimes added.
@@ -52,10 +53,57 @@ function conflictFor(dish: ExtractedDish, item: AvoidItem): { conflict: DishConf
   };
 }
 
+/**
+ * Checks each meat choice. Some choices in conflict → the dish needs care
+ * (check, telling the diner which to pick); every choice in a listed allergy /
+ * doctor conflict → avoid, as no choice is left.
+ */
+function checkChoices(dish: ExtractedDish, profile: TasteProfile) {
+  const checked = (dish.choices ?? []).map((choice) => {
+    const hits = profile.avoid
+      .map((item) => ({ item, hit: conflictFor(choice, item) }))
+      .filter((h) => h.hit !== null);
+    return { result: { ...choice, avoid: hits.map((h) => h.item.name) }, severe: hits.some((h) => h.hit!.severe) };
+  });
+  const results: ChoiceResult[] = checked.map((c) => c.result);
+  const ok = results.filter((r) => r.avoid.length === 0);
+  const bad = results.filter((r) => r.avoid.length > 0);
+  if (bad.length === 0) return { results, found: [] };
+
+  const noChoiceLeft = ok.length === 0 && checked.every((c) => c.severe);
+  const reasons = profile.avoid.filter((item) => bad.some((r) => r.avoid.includes(item.name)));
+  const found =
+    ok.length === 0
+      ? [
+          {
+            conflict: {
+              name: reasons[0].name,
+              reason: reasons[0].reason,
+              note: `Every meat choice on this menu contains something in your Avoid list. ${STAFF}`,
+            } satisfies DishConflict,
+            severe: noChoiceLeft,
+          },
+        ]
+      : reasons.map((item) => ({
+          conflict: {
+            name: item.name,
+            reason: item.reason,
+            note: `Don't pick ${bad
+              .filter((r) => r.avoid.includes(item.name))
+              .map((r) => r.name)
+              .join(", ")} — they contain ${item.name.toLowerCase()}. The other meats are fine. ${STAFF}`,
+          } satisfies DishConflict,
+          severe: false,
+        }));
+  return { results, found };
+}
+
 export function categorizeDish(dish: ExtractedDish, profile: TasteProfile): Dish {
-  const found = profile.avoid
-    .map((item) => conflictFor(dish, item))
-    .filter((c): c is NonNullable<typeof c> => c !== null);
+  const choices = checkChoices(dish, profile);
+  const found = [
+    ...profile.avoid.map((item) => conflictFor(dish, item)).filter((c): c is NonNullable<typeof c> => c !== null),
+    ...choices.found,
+  ];
 
   const uncertain = (dish.uncertainties?.length ?? 0) > 0 || dish.inGuide === false;
   const status: DishStatus = found.some((c) => c.severe)
@@ -64,10 +112,24 @@ export function categorizeDish(dish: ExtractedDish, profile: TasteProfile): Dish
       ? "check"
       : "top";
 
+  // A Fav also counts when it's one of the meat choices the diner can pick without a conflict.
+  const okChoiceIngredients = choices.results.filter((r) => r.avoid.length === 0).flatMap((r) => r.ingredients);
   const favMatches =
-    status === "avoid" ? [] : profile.favs.filter((fav) => dish.tags.some((tag) => termsMatch(tag, fav)));
+    status === "avoid"
+      ? []
+      : profile.favs.filter(
+          (fav) =>
+            dish.tags.some((tag) => termsMatch(tag, fav)) ||
+            okChoiceIngredients.some((ing) => ing.certainty === "listed" && ingredientMatches(ing, fav)),
+        );
 
-  return { ...dish, status, favMatches, conflicts: found.map((c) => c.conflict) };
+  return {
+    ...dish,
+    status,
+    favMatches,
+    conflicts: found.map((c) => c.conflict),
+    ...(dish.choices?.length ? { choiceResults: choices.results } : {}),
+  };
 }
 
 export function categorizeMenu(menu: ExtractedDish[], profile: TasteProfile): Dish[] {

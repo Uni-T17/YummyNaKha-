@@ -26,9 +26,14 @@ export function deleteMenuImage(id: string): Promise<void> {
 
 // One in-flight analysis per set of photos, so a re-mounted screen (React
 // Strict Mode, fast navigation) reuses the running request instead of racing it.
-const inFlight = new Map<string, Promise<ExtractedDish[]>>();
+export interface AnalyzedMenu {
+  analysisId: string;
+  dishes: ExtractedDish[];
+}
 
-export function analyzeMenu(uploads: MenuUpload[]): Promise<ExtractedDish[]> {
+const inFlight = new Map<string, Promise<AnalyzedMenu>>();
+
+export function analyzeMenu(uploads: MenuUpload[]): Promise<AnalyzedMenu> {
   const imageIds = uploads.filter((u) => u.status === "ready").map((u) => u.id);
   if (imageIds.length === 0) return Promise.reject(new ApiError("Add at least one menu image first."));
 
@@ -36,9 +41,23 @@ export function analyzeMenu(uploads: MenuUpload[]): Promise<ExtractedDish[]> {
   const running = inFlight.get(key);
   if (running) return running;
 
-  const request = apiFetch<{ dishes: ExtractedDish[] }>("/api/ai/analyze", { body: { imageIds } })
-    .then((r) => r.dishes)
+  const request = apiFetch<AnalyzedMenu>("/api/ai/analyze", { body: { imageIds } })
+    .then((r) => ({ analysisId: r.analysisId, dishes: r.dishes }))
     .finally(() => inFlight.delete(key));
   inFlight.set(key, request);
   return request;
+}
+
+/**
+ * Asks the optional Menu helper (Gemini) about dishes that aren't in our guide.
+ * "off" = the helper isn't turned on; "unavailable" = no answer this time.
+ */
+export async function describeUnlisted(analysisId: string): Promise<{ dishes: ExtractedDish[] } | "off" | "unavailable"> {
+  try {
+    const r = await apiFetch<{ dishes: ExtractedDish[]; available: boolean }>("/api/ai/describe", { body: { analysisId } });
+    return r.available ? { dishes: r.dishes } : "unavailable";
+  } catch (e) {
+    if (e instanceof ApiError && e.code === "CONSENT_REQUIRED") return "off";
+    return "unavailable";
+  }
 }

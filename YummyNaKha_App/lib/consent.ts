@@ -47,6 +47,7 @@ export const CONSENT_DOCUMENTS: Record<ConsentDocumentId, ConsentDocument> = {
       "We keep your account name and email, your food profile and, for the length of a scan, your menu photos.",
       "If you sign in with Google, we receive only your name, email address and Google account ID. We don't keep any Google password or access token.",
       "Your menu photos are read on our own server. We don't send your photos, food profile or account details to any outside AI provider.",
+      "Only if you turn on the optional Menu helper, the text of a menu's dish and meat lists is sent to Google Gemini to pair them.",
       "This data is used only to understand menus and recommend dishes — never for advertising, resale or profiling.",
       "Allergies and doctor-advised restrictions are sensitive health data. We store them only with your separate Health information consent, which you can withdraw at any time in Privacy & consents.",
       "You can delete your account at any time in My Profile. This permanently removes your account, food profile, menu photos, results and agreement history.",
@@ -81,13 +82,15 @@ export const CONSENT_DOCUMENTS: Record<ConsentDocumentId, ConsentDocument> = {
   },
   "ai-transfer": {
     id: "ai-transfer",
-    title: "Send data to AI providers (no longer used)",
-    version: "0.2-draft",
-    withdrawable: false,
-    retired: true,
+    title: "Menu helper (Google Gemini)",
+    version: "0.4-draft",
+    withdrawable: true,
     summary: [
-      "Earlier versions of YummyNaKha! sent menu photos and the Favs and Avoid items needed for matching to external AI providers (Hugging Face and the Google Gemini API).",
-      "Since version 0.3 menus are read on our own server and nothing is sent to an outside AI provider, so this consent is no longer needed.",
+      "Optional. Some menus list dishes and meats separately (ข้าวผัด + หมู 50 / กุ้ง 60). With this helper, Google Gemini pairs them so each combination gets its own card and price.",
+      "Only the text read from that part of the menu is sent to Google. Never your photo, name, email, Favs, Avoid list or allergies.",
+      "Gemini only pairs lines. Every price comes from the menu and every ingredient from our Thai dish guide, checked by our own rules.",
+      "Google processes the text under its Gemini API terms. We use it only to understand the menu.",
+      "Without this helper you still get the same menu, with a \"choose your meat\" list instead of separate cards. You can turn it off at any time in Privacy & consents.",
     ],
   },
 };
@@ -99,6 +102,9 @@ export const REQUIRED_DOCUMENTS: ConsentDocumentId[] = TERMS_BUNDLE;
 
 /** Separate, optional opt-in: needed only to save an allergy or doctor-advised reason (PDPA sensitive data). */
 export const HEALTH_CONSENT: ConsentDocumentId = "health-data";
+
+/** Separate, optional opt-in for the Gemini menu helper (rule.md: consent before menu data goes to a third-party AI). */
+export const AI_HELPER_CONSENT: ConsentDocumentId = "ai-transfer";
 
 /** Avoid reasons that are health data and need HEALTH_CONSENT. */
 export const HEALTH_REASONS = ["allergy", "doctor"] as const;

@@ -26,7 +26,7 @@ export function DishCard({ dish, selected, onToggle, onOpen }: DishCardProps) {
         "flex cursor-pointer flex-col rounded-2xl border p-4 transition-all hover:shadow-md active:scale-[0.99]",
         selected ? cn(style.cardSelected, "border-brand shadow-[0_0_0_2px_#FF654230]") : cn(style.card, style.border, "shadow-[0_1px_3px_rgba(0,0,0,0.04)]"),
       )}
-      aria-label={`${dish.nameEn}, ${style.label}, ${formatPrice(dish.price)}${selected ? ", selected" : ""}`}
+      aria-label={`${dish.nameEn}, ${style.label}, ${formatPrice(dish.price, dish.priceFrom)}${selected ? ", selected" : ""}`}
     >
       <div className="flex flex-1 items-start gap-3">
         <IconTile
@@ -36,12 +36,22 @@ export function DishCard({ dish, selected, onToggle, onOpen }: DishCardProps) {
         />
         <div className="min-w-0 flex-1">
           <StatusBadge status={dish.status} className="mb-1.5" />
-          <h3 className="text-base leading-tight font-black text-ink">{dish.nameEn}</h3>
+          <h3 className="text-base leading-tight font-black text-ink">
+            {dish.aiGuess?.nameEn ?? dish.nameEn}
+            {dish.aiGuess && (
+              <span className="ml-1.5 inline-block rounded-full bg-stone-soft px-1.5 py-0.5 align-middle text-[10px] font-bold text-muted">
+                AI guess
+              </span>
+            )}
+          </h3>
           <p lang="th" className="font-thai text-sm font-medium text-subtle">
             {dish.nameThai}
           </p>
           {dish.nameOnMenu && <p className="text-xs text-subtle">On the menu: {dish.nameOnMenu}</p>}
-          <p className="mt-0.5 text-sm font-black text-brand">{formatPrice(dish.price)}</p>
+          <p className="mt-0.5 text-sm font-black text-brand">
+            {formatPrice(dish.price, dish.priceFrom)}
+            {dish.choices && <span className="ml-1.5 text-xs font-bold text-subtle">· choose your meat</span>}
+          </p>
 
           {dish.favMatches.length > 0 && (
             <div className="mt-2 flex flex-wrap gap-1">

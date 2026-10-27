@@ -10,3 +10,8 @@ export const analyzeSchema = z.object({
     .max(10, "Analyze up to 10 menu photos at a time.")
     .refine((ids) => new Set(ids).size === ids.length, "Each photo can be added only once."),
 });
+
+/** POST /api/ai/describe — the analysis whose unlisted dishes to look up. */
+export const describeSchema = z.object({
+  analysisId: z.string({ error: "Missing analysis." }).trim().min(1, "Missing analysis.").max(64),
+});

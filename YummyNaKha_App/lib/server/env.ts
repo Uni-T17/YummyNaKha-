@@ -43,3 +43,16 @@ export function getAppUrl(request: Request): string {
   const configured = process.env.APP_URL?.trim();
   return (configured || new URL(request.url).origin).replace(/\/+$/, "");
 }
+
+/**
+ * Google Gemini, used only for the optional menu helper (pairing dishes with a
+ * menu's meat list). null when no key is set — the app then works without it.
+ */
+export function getGeminiConfig(): { apiKey: string; models: string[] } | null {
+  const apiKey = process.env.GEMINI_API_KEY?.trim();
+  if (!apiKey) return null;
+  const models = [process.env.GEMINI_MODEL, ...(process.env.GEMINI_FALLBACK_MODELS ?? "").split(",")]
+    .map((m) => m?.trim())
+    .filter((m): m is string => !!m);
+  return { apiKey, models: models.length > 0 ? Array.from(new Set(models)) : ["gemini-2.5-flash"] };
+}

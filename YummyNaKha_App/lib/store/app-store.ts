@@ -1,7 +1,7 @@
 import { useMemo, useSyncExternalStore } from "react";
 import { fetchSession, markOnboarded, signOutRequest } from "../api/auth";
 import { createId } from "../api/client";
-import { deleteMenuImage, uploadMenuImage } from "../api/menu";
+import { deleteMenuImage, describeUnlisted, uploadMenuImage } from "../api/menu";
 import { addDislike, addFavorite, getTasteProfile, removeDislike, removeFavorite } from "../api/preferences";
 import { categorizeMenu } from "../matching";
 import type { AppUser, AvoidItem, Dish, ExtractedDish, MenuUpload, TasteProfile } from "../types";
@@ -20,6 +20,13 @@ export interface AppState {
   uploads: MenuUpload[];
   /** Extracted dishes from the latest analysis; null = nothing analyzed yet. */
   menu: ExtractedDish[] | null;
+  /** The server's id for that analysis (for the background lookup of unlisted dishes). */
+  menuAnalysisId: string | null;
+  /**
+   * The optional Menu helper's lookup of dishes not in our guide: running,
+   * finished, not turned on, or no answer this time.
+   */
+  aiLookup: "idle" | "pending" | "done" | "off" | "unavailable";
   selectedIds: string[];
 }
 
@@ -34,6 +41,8 @@ const initialState: AppState = {
   profile: EMPTY_PROFILE,
   uploads: [],
   menu: null,
+  menuAnalysisId: null,
+  aiLookup: "idle",
   selectedIds: [],
 };
 
@@ -52,6 +61,8 @@ function load() {
     // Storage unavailable (private mode, blocked) — start fresh.
   }
   state = { ...initialState, ...saved, hydrated: true };
+  // A lookup still running when the page was reloaded is started again by the Menu screen.
+  if (state.aiLookup === "pending") state = { ...state, aiLookup: "idle" };
 }
 
 function persist() {
@@ -256,9 +267,26 @@ export const appActions = {
     setState((s) => ({ ...s, uploads: s.uploads.filter((u) => u.id !== id) }));
   },
 
-  setMenu(menu: ExtractedDish[]) {
+  setMenu(menu: ExtractedDish[], analysisId: string) {
     // A new analysis starts a new order.
-    setState((s) => ({ ...s, menu, selectedIds: [] }));
+    setState((s) => ({ ...s, menu, menuAnalysisId: analysisId, aiLookup: "idle", selectedIds: [] }));
+    appActions.lookUpUnlisted();
+  },
+
+  /**
+   * In the background, asks the Menu helper about dishes not in our guide; the
+   * rest of the menu is already on screen. Guesses replace those dishes in place.
+   */
+  lookUpUnlisted() {
+    const analysisId = state.menuAnalysisId;
+    if (!analysisId || !state.menu?.some((d) => d.inGuide === false && !d.aiGuess)) return;
+    setState((s) => ({ ...s, aiLookup: "pending" }));
+    describeUnlisted(analysisId).then((answer) => {
+      if (state.menuAnalysisId !== analysisId) return; // a newer scan replaced this menu
+      if (typeof answer === "string") return setState((s) => ({ ...s, aiLookup: answer }));
+      const byId = new Map(answer.dishes.map((d) => [d.id, d]));
+      setState((s) => ({ ...s, aiLookup: "done", menu: s.menu?.map((d) => byId.get(d.id) ?? d) ?? null }));
+    });
   },
 
   toggleDish(id: string) {

@@ -1,6 +1,7 @@
 "use client";
 
-import { AlertTriangle, Check, CircleHelp, Flame, Heart, Info, ShoppingCart } from "lucide-react";
+import Link from "next/link";
+import { AlertTriangle, Check, CircleHelp, Flame, Heart, Info, ShoppingCart, Sparkles, X } from "lucide-react";
 import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { Button } from "@/components/ui/button";
 import { IconTile } from "@/components/ui/icon-tile";
@@ -67,20 +68,74 @@ export function DishDetailSheet({ dish, selected, onToggle, onClose }: DishDetai
             />
             <div>
               <StatusBadge status={dish.status} className="mb-1.5" />
-              <h2 className="text-xl leading-tight font-black text-ink">{dish.nameEn}</h2>
+              <h2 className="text-xl leading-tight font-black text-ink">{dish.aiGuess?.nameEn ?? dish.nameEn}</h2>
               <p lang="th" className="font-thai text-base font-medium text-subtle">
                 {dish.nameThai}
               </p>
               {dish.nameOnMenu && <p className="text-sm text-subtle">On the menu: {dish.nameOnMenu}</p>}
-              <p className="text-lg font-black text-brand">{formatPrice(dish.price)}</p>
+              <p className="text-lg font-black text-brand">{formatPrice(dish.price, dish.priceFrom)}</p>
             </div>
           </div>
+
+          {dish.aiGuess && (
+            <section className="mb-4 rounded-2xl border border-dashed border-line p-4">
+              <p className="mb-1 flex items-center gap-1.5 text-xs font-black tracking-wider text-subtle uppercase">
+                <Sparkles size={12} aria-hidden />
+                AI guess · not from our dish guide
+              </p>
+              <p className="text-sm leading-relaxed text-body">{dish.aiGuess.description}</p>
+              <p className="mt-2 text-xs text-muted">
+                Google Gemini guessed this from the dish name. Ingredients it suggested are listed below as &ldquo;often added&rdquo; and only
+                ever add warnings. The restaurant&apos;s recipe may differ — ask staff.
+              </p>
+            </section>
+          )}
 
           {dish.description && (
             <section className="mb-4">
               {dish.romanized && <p className="mb-0.5 text-xs font-bold text-subtle">{dish.romanized}</p>}
               <p className="mb-1.5 text-sm leading-relaxed text-body">{dish.description}</p>
               {dish.spice !== undefined && <SpiceLevel level={dish.spice} />}
+            </section>
+          )}
+
+          {dish.choiceResults && (
+            <section className="mb-4 rounded-2xl border border-line p-4">
+              <h3 className="mb-1 text-sm font-black text-ink">Choose your meat</h3>
+              <p className="mb-3 text-xs text-muted">This menu lets you pick one. Tell staff your choice — show them the Thai name.</p>
+              <p className="mb-3 rounded-xl bg-stone-soft px-3 py-2 text-xs text-muted">
+                Want each meat as its own card with its price? Turn on the optional Menu helper in{" "}
+                <Link href="/profile/privacy" className="font-bold text-brand hover:underline">
+                  Privacy &amp; consents
+                </Link>{" "}
+                and scan again.
+              </p>
+              <ul className="flex flex-col gap-2">
+                {dish.choiceResults.map((c) => {
+                  const ok = c.avoid.length === 0;
+                  return (
+                    <li key={c.nameThai} className="flex items-center justify-between gap-3">
+                      <span className="flex min-w-0 items-center gap-2">
+                        {ok ? (
+                          <Check size={14} className="shrink-0 text-success" aria-label="No conflict detected" />
+                        ) : (
+                          <X size={14} className="shrink-0 text-danger" aria-label="In your Avoid list" />
+                        )}
+                        <span className="min-w-0">
+                          <span lang="th" className={cn("font-thai text-sm font-bold", ok ? "text-ink" : "text-muted line-through")}>
+                            {c.nameThai}
+                          </span>
+                          <span className="ml-1.5 text-xs text-subtle">
+                            {c.name}
+                            {!ok && ` — ${c.avoid.join(", ")}`}
+                          </span>
+                        </span>
+                      </span>
+                      <span className="shrink-0 text-xs font-bold text-muted">{formatPrice(c.price)}</span>
+                    </li>
+                  );
+                })}
+              </ul>
             </section>
           )}
 

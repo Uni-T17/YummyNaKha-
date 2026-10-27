@@ -19,8 +19,8 @@ const PRICE_SUFFIX = String.raw`(?:\s*(?:บาท|บ\.|฿|\.-|-|\.00|THB|[Bb]
 const PRICE_PREFIX = String.raw`(?:฿|THB)?`;
 /** A letter a dish name can contain: Thai, or Latin on an English menu. */
 const LETTER = "[ก-ฮA-Za-z]";
-/** "60", or a range "200-250" / "200- 250" (sold by size); the lowest price is kept. */
-const PRICE = String.raw`(\d{2,5})(?:\s*[-–]\s*\d{2,5})?`;
+/** "60", or a range "200-250" / "200- 250" / "120.00 - 150.00" (sold by size); the lowest price is kept. */
+const PRICE = String.raw`(\d{2,5})(?:\.00)?(?:\s*[-–]\s*\d{2,5}(?:\.00)?)?`;
 /** A box that is only a price: "60", "60 บาท", "฿60", "60.-", "200- 250.-", "80 THB". */
 const PRICE_ONLY = new RegExp(String.raw`^${PRICE_PREFIX}\s*${PRICE}${PRICE_SUFFIX}\s*$`);
 /** A name with the price in the same box: "ผัดไทย ....... 60", "Pad Thai 80". */
@@ -31,6 +31,23 @@ const PRICE_THEN_NAME = new RegExp(String.raw`^(${PRICE_PREFIX}\s*${PRICE}${PRIC
 
 /** Two items in one box: "ปลาทอด (ตามขนาด) 200- 250.-น้ำเปล่า". */
 const NAME_PRICE_NAME = new RegExp(String.raw`^(.*${LETTER}.*?)[\s.…_:-]*${PRICE_PREFIX}\s*${PRICE}${PRICE_SUFFIX}\s*(.*${LETTER}.*)$`);
+
+/**
+ * Shop details printed on menus that aren't dishes: phone numbers ("โทร. 095-849…"),
+ * opening hours, Line / Facebook / web addresses, delivery apps, Wi-Fi. A phone
+ * number would otherwise be read as a dish with its digits as the price.
+ */
+const SHOP_INFO = new RegExp(
+  [
+    String.raw`โทร|เบอร์|tel\b|phone|call\b`,
+    String.raw`\b0\d{1,2}[\s-]?\d{3}[\s-]?\d{3,4}\b`, // Thai phone number
+    // Opening hours: words, or a time written with "น." — a bare "10.00 - 20.00" could be a price range.
+    String.raw`เปิด|ปิด(?:ทุก|วัน)|open\b|close[sd]?\b|\d{1,2}[.:]\d{2}\s*น\.`,
+    String.raw`line\s*(?:id|@)|ไลน์|@\w{3,}|facebook|fb\b|เฟซบุ๊ก|เพจ|instagram|ig\b|www\.|https?:|\.com\b`,
+    String.raw`grab|lineman|line man|foodpanda|robinhood|shopee\s*food|wi-?fi|password|รหัส`,
+  ].join("|"),
+  "i",
+);
 
 /** "บาท" / "THB" printed in its own box next to a price. */
 const CURRENCY_ONLY = /^(?:บาท\S?|บ\.?|฿|THB|[Bb]aht|B)$/;
@@ -103,6 +120,7 @@ export function parseMenuLines(lines: OcrLine[]): MenuItem[] {
   for (const raw of lines) {
     let line = raw;
     let text = toArabic(raw.text).trim();
+    if (SHOP_INFO.test(text)) continue; // phone, hours, social media — not a dish, and its digits aren't a price
     // Split a leading price off: it belongs to the item on the left, the rest is a new name.
     const lead = text.match(PRICE_THEN_NAME);
     if (lead) {

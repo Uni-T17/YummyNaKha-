@@ -46,6 +46,17 @@ export interface InferredIngredient {
   groups?: string[];
 }
 
+/**
+ * One option from a menu's "pick your meat" list (เนื้อสัตว์: หมูชิ้น 50, กุ้ง 60 …),
+ * offered for every dish on that menu that needs a meat.
+ */
+export interface DishChoice {
+  name: string;
+  nameThai: string;
+  price: number | null;
+  ingredients: InferredIngredient[];
+}
+
 /** A dish as extracted + translated from the uploaded menu (before matching). */
 export interface ExtractedDish {
   id: string;
@@ -55,6 +66,10 @@ export interface ExtractedDish {
   nameOnMenu?: string;
   /** null when no price is printed for the dish (never guessed). */
   price: number | null;
+  /** The price is the cheapest meat choice ("from ฿50"), not a fixed price. */
+  priceFrom?: boolean;
+  /** The menu's meat list, when the diner picks one for this dish. Not in `ingredients`. */
+  choices?: DishChoice[];
   /** Lower-case keywords used to match the user's Favs (flavours, bases, proteins). */
   tags: string[];
   ingredients: InferredIngredient[];
@@ -68,6 +83,12 @@ export interface ExtractedDish {
   spice?: 0 | 1 | 2 | 3;
   /** false when the dish isn't in our Thai dish guide, so its ingredients are unknown. */
   inGuide?: boolean;
+  /**
+   * For a dish not in our guide, Gemini's guess (optional Menu helper, filled in
+   * after the scan). Its ingredients are added to `ingredients` as "often added"
+   * only, so a guess can add a warning but never makes a dish look safer.
+   */
+  aiGuess?: { nameEn: string; description: string; model: string };
   /** Reasons the result is uncertain; any of these keeps a dish out of Top Picks (F10). */
   uncertainties?: string[];
 }
@@ -79,10 +100,18 @@ export interface DishConflict {
 }
 
 /** A dish after it has been checked against the user's profile. */
+/** A meat choice checked against the diner's Avoid list. */
+export interface ChoiceResult extends DishChoice {
+  /** Avoid-list items this choice contains; empty = no conflict detected. */
+  avoid: string[];
+}
+
 export interface Dish extends ExtractedDish {
   status: DishStatus;
   favMatches: string[];
   conflicts: DishConflict[];
+  /** Each meat choice checked against the Avoid list (same order as `choices`). */
+  choiceResults?: ChoiceResult[];
 }
 
 export interface MenuUpload {

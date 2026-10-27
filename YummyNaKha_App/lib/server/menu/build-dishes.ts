@@ -1,6 +1,6 @@
 import "server-only";
 import { normalizeTerm } from "@/lib/matching";
-import type { DishIconKey, ExtractedDish, InferredIngredient } from "@/lib/types";
+import type { DishChoice, DishIconKey, ExtractedDish, InferredIngredient } from "@/lib/types";
 import type { GuideDish } from "../thai-food/dishes";
 import { INGREDIENTS, type IngredientKey } from "../thai-food/ingredients";
 import { thaiNameFor } from "../thai-food/english";
@@ -31,7 +31,7 @@ function pickIcon(tags: string[]): DishIconKey {
   return "pot";
 }
 
-function ingredient(key: IngredientKey, certainty: "listed" | "common", note?: string): InferredIngredient {
+export function ingredient(key: IngredientKey, certainty: "listed" | "common", note?: string): InferredIngredient {
   const info = INGREDIENTS[key];
   return {
     key: normalizeTerm(key),
@@ -110,16 +110,106 @@ function englishName(dish: GuideDish | null, words: MenuWord[], choices: Set<Men
   return capitalize(name);
 }
 
-export function buildDishes(items: MenuItem[], analysisId: string): ExtractedDish[] {
+/** Lines that only name a meat with a price ("หมูชิ้น 50.-", "ไก่กรอบ 60.-", "ทะเล 70.-"). */
+function isMeatChoice(item: MenuItem, match: ReturnType<typeof matchMenuLine>) {
+  const { words, quality } = match;
+  return (
+    item.price !== null &&
+    quality === "decoded" &&
+    words.some((w) => w.kind === "protein") &&
+    words.every((w) => w.kind === "protein" || w.kind === "style" || w.kind === "method")
+  );
+}
+
+/** At least this many meat lines make a "pick your meat" list rather than a few odd items. */
+const MIN_MEAT_CHOICES = 3;
+
+/** "pork (sliced)", "chicken (crispy fried)". */
+function choiceName(words: MenuWord[]) {
+  const protein = words.filter((w) => w.kind === "protein").map((w) => w.en).join(" & ");
+  const how = words.filter((w) => w.kind !== "protein").map((w) => w.en.toLowerCase());
+  return how.length > 0 ? `${protein} (${how.join(", ")})` : protein;
+}
+
+const cleanName = (name: string) => name.replace(/\([^)]*\)?/g, " ");
+
+/**
+ * A made-to-order menu: dishes listed without their meat ("ข้าวผัด") and,
+ * beside them, the meats to choose from with prices (เนื้อสัตว์: หมูชิ้น 50.-,
+ * กุ้ง 60.-). null when the menu isn't laid out that way.
+ */
+export function findMeatMenu(items: MenuItem[]) {
+  const matches = new Map(items.map((item) => [item, matchMenuLine(cleanName(item.name))]));
+  const meats = items.filter((item) => isMeatChoice(item, matches.get(item)!));
+  // Dishes that could take a meat: a dish or cooking word, and no meat of their own.
+  const dishes = items.filter((item) => {
+    if (meats.includes(item)) return false;
+    const { dish, words, quality } = matches.get(item)!;
+    if (quality === "none" || words.some((w) => w.kind === "protein")) return false;
+    return !!dish || words.some((w) => w.kind === "method" || w.kind === "dish" || w.kind === "base");
+  });
+  const needsMeat = dishes.some((item) => !!matches.get(item)!.dish?.needsProtein);
+  return needsMeat && meats.length >= MIN_MEAT_CHOICES ? { matches, meats, dishes } : null;
+}
+
+/** A dish paired with one meat from the menu's meat list (see findMeatMenu). */
+export interface MeatPair {
+  dish: MenuItem;
+  meat: MenuItem;
+}
+
+/**
+ * Menu items → dishes. On a made-to-order menu, `pairs` (when given) turns
+ * each dish + meat into its own dish with that meat's price ("ข้าวผัด" +
+ * "ไก่ชิ้น 50.-" → ข้าวผัดไก่ชิ้น ฿50); dishes without pairs get the meat list
+ * as choices instead.
+ */
+export function buildDishes(items: MenuItem[], analysisId: string, pairs: MeatPair[] = []): ExtractedDish[] {
   const dishes: ExtractedDish[] = [];
   const seen = new Set<string>();
+
+  const meatMenu = findMeatMenu(items);
+  const paired = new Set(pairs.map((p) => p.dish));
+  if (meatMenu && pairs.length > 0) {
+    // Each paired dish is replaced, in place, by one line per meat; each combo then goes
+    // through the normal steps below (guide match, ingredients, Thai name, allergy notes).
+    items = items.flatMap((item) => {
+      if (!paired.has(item)) return [item];
+      return pairs
+        .filter((p) => p.dish === item)
+        .map((p) => ({
+          name: isEnglishLine(p.dish.name) ? `${p.dish.name.trim()} ${p.meat.name.trim()}` : `${p.dish.name.trim()}${p.meat.name.trim()}`,
+          price: p.dish.price ?? p.meat.price,
+        }));
+    });
+  }
+  const matches = new Map(items.map((item) => [item, matchMenuLine(cleanName(item.name))]));
+  const meatLines = meatMenu?.meats ?? [];
+  const needsMeat = items.some((item) => {
+    const { dish, words } = matches.get(item)!;
+    return !!dish?.needsProtein && !words.some((w) => w.kind === "protein");
+  });
+  const meatChoices: DishChoice[] =
+    meatMenu && needsMeat
+      ? meatLines.map((item) => {
+          const { words } = meatMenu.matches.get(item)!;
+          return {
+            name: choiceName(words),
+            nameThai: item.name.replace(/(?<=[฀-๿])\s+(?=[฀-๿])/g, "").trim(),
+            price: item.price,
+            ingredients: collectIngredients(null, words, new Set()),
+          };
+        })
+      : [];
+  const cheapestMeat = Math.min(...meatChoices.map((c) => c.price ?? Infinity));
 
   for (const item of items) {
     const english = isEnglishLine(item.name);
     // English menus print a price next to every dish; a line without one is a heading or a description.
     if (english && item.price === null) continue;
+    if (meatMenu && meatLines.includes(item)) continue; // a meat choice: shown with, or combined into, each dish
     // "(ราคาตามขนาดตัว)" — price by size — and other bracketed notes aren't part of the name.
-    const { dish, words, quality, coverage, partlyRead } = matchMenuLine(item.name.replace(/\([^)]*\)?/g, " "));
+    const { dish, words, quality, coverage, partlyRead } = matches.get(item)!;
     // A heading or the restaurant name: nothing recognised, or only a loose match, and no price.
     if ((quality === "none" || quality === "fuzzy") && item.price === null) continue;
     // Just a meat ("หมูชิ้น", "ไก่สับ", "ทะเล +10") is a choice for the made-to-order dishes, not a dish —
@@ -154,7 +244,7 @@ export function buildDishes(items: MenuItem[], analysisId: string): ExtractedDis
           `Part of this dish's name isn't in our guide, so it may be a special version of “${dish.en}” with other ingredients. Ask restaurant staff.`,
         );
       }
-      if (dish.needsProtein && !words.some((w) => w.kind === "protein")) {
+      if (dish.needsProtein && !words.some((w) => w.kind === "protein") && meatChoices.length === 0) {
         uncertainties.push("The menu doesn't say which meat or seafood is used. Ask restaurant staff.");
       }
     }
@@ -180,10 +270,15 @@ export function buildDishes(items: MenuItem[], analysisId: string): ExtractedDis
       english && !dish
         ? item.name.trim()
         : quality !== "none"
-          ? englishName(dish, words, choices)
+          ? // "ข้าวผัดรถไฟ" isn't plain fried rice: say so, so it doesn't look like a duplicate.
+            `${englishName(dish, words, choices)}${partlyRead ? " (special version)" : ""}`
           : words.length > 0
             ? `Unlisted dish (mentions ${words.map((w) => w.en).join(", ")})`
             : "Unlisted dish";
+
+    // The diner picks a meat from the menu's list; the price is the cheapest one unless the dish has its own.
+    const pickMeat = !!dish?.needsProtein && !words.some((w) => w.kind === "protein") && meatChoices.length > 0;
+    const price = item.price ?? (pickMeat && Number.isFinite(cheapestMeat) ? cheapestMeat : null);
 
     dishes.push({
       id: `${analysisId}-${dishes.length + 1}`,
@@ -193,7 +288,8 @@ export function buildDishes(items: MenuItem[], analysisId: string): ExtractedDis
       nameThai: english ? (dish ? thaiNameFor(dish, words) : item.name.trim()) : item.name.replace(/(?<=[฀-๿])\s+(?=[฀-๿])/g, ""),
       nameEn,
       ...(english && nameEn.toLowerCase() !== item.name.trim().toLowerCase() ? { nameOnMenu: item.name.trim() } : {}),
-      price: item.price,
+      price,
+      ...(pickMeat ? { choices: meatChoices, ...(item.price === null && price !== null ? { priceFrom: true } : {}) } : {}),
       tags,
       ingredients,
       icon,

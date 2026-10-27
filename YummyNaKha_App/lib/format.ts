@@ -1,7 +1,8 @@
 import type { AvoidItem, AvoidReason } from "./types";
 
-export function formatPrice(price: number | null) {
-  return price === null ? "Price not listed" : `฿${price.toLocaleString("en-US")}`;
+export function formatPrice(price: number | null, from = false) {
+  if (price === null) return "Price not listed";
+  return `${from ? "from " : ""}฿${price.toLocaleString("en-US")}`;
 }
 
 export function pluralizeDishes(count: number) {
