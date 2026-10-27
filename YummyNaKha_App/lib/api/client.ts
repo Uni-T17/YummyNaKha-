@@ -1,5 +1,5 @@
 // Browser-side client for the app's own Next.js API (/api/*). The browser
-// never talks to Hugging Face or Gemini directly — only to these routes.
+// never talks to the OCR service directly — only to these routes.
 
 export class ApiError extends Error {
   constructor(

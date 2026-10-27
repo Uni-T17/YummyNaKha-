@@ -1,13 +1,51 @@
 "use client";
 
-import { AlertTriangle, Check, Heart, Info, ShoppingCart } from "lucide-react";
+import { AlertTriangle, Check, CircleHelp, Flame, Heart, Info, ShoppingCart } from "lucide-react";
 import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { Button } from "@/components/ui/button";
 import { IconTile } from "@/components/ui/icon-tile";
 import { cn } from "@/lib/cn";
 import { formatPrice, reasonLabel } from "@/lib/format";
-import type { Dish } from "@/lib/types";
+import type { Dish, InferredIngredient } from "@/lib/types";
 import { DISH_ICONS, ReasonIcon, StatusBadge } from "./status";
+
+const SPICE_LABELS = ["Not spicy", "Mild", "Medium spicy", "Very spicy"] as const;
+
+function SpiceLevel({ level }: { level: 0 | 1 | 2 | 3 }) {
+  return (
+    <span className="inline-flex items-center gap-1 text-xs font-bold text-muted">
+      <span className="flex" aria-hidden>
+        {[1, 2, 3].map((i) => (
+          <Flame key={i} size={12} className={i <= level ? "text-brand" : "text-line"} />
+        ))}
+      </span>
+      {SPICE_LABELS[level]}
+    </span>
+  );
+}
+
+function IngredientList({ title, items }: { title: string; items: InferredIngredient[] }) {
+  if (items.length === 0) return null;
+  return (
+    <div className="mb-3 last:mb-0">
+      <h4 className="mb-1.5 text-xs font-black tracking-wider text-subtle uppercase">{title}</h4>
+      <ul className="flex flex-col gap-1.5">
+        {items.map((ing) => (
+          <li key={ing.key} className="text-sm">
+            <span className="font-bold text-ink capitalize">{ing.label}</span>
+            {ing.labelThai && (
+              <span lang="th" className="font-thai text-subtle">
+                {" "}
+                · {ing.labelThai}
+              </span>
+            )}
+            {ing.note && <p className="text-xs leading-relaxed text-muted">{ing.note}</p>}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 interface DishDetailSheetProps {
   dish: Dish | null;
@@ -36,6 +74,30 @@ export function DishDetailSheet({ dish, selected, onToggle, onClose }: DishDetai
               <p className="text-lg font-black text-brand">{formatPrice(dish.price)}</p>
             </div>
           </div>
+
+          {dish.description && (
+            <section className="mb-4">
+              {dish.romanized && <p className="mb-0.5 text-xs font-bold text-subtle">{dish.romanized}</p>}
+              <p className="mb-1.5 text-sm leading-relaxed text-body">{dish.description}</p>
+              {dish.spice !== undefined && <SpiceLevel level={dish.spice} />}
+            </section>
+          )}
+
+          {(dish.uncertainties?.length ?? 0) > 0 && (
+            <section className="mb-4 rounded-2xl bg-check-badge p-4">
+              <h3 className="mb-2 flex items-center gap-1.5 text-sm font-black text-check-ink">
+                <CircleHelp size={13} aria-hidden />
+                Why to check first
+              </h3>
+              <ul className="flex flex-col gap-1.5">
+                {dish.uncertainties!.map((u) => (
+                  <li key={u} className="text-xs leading-relaxed text-muted">
+                    {u}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
 
           {dish.favMatches.length > 0 && (
             <section className="mb-4 rounded-2xl bg-top-50 p-4">
@@ -88,6 +150,17 @@ export function DishDetailSheet({ dish, selected, onToggle, onClose }: DishDetai
                   Ingredients and preparation can vary — confirm with restaurant staff.
                 </p>
               )}
+            </section>
+          )}
+
+          {dish.ingredients.length > 0 && (
+            <section className="mb-4 rounded-2xl border border-line p-4">
+              <h3 className="mb-3 text-sm font-black text-ink">What&apos;s usually in it</h3>
+              <IngredientList title="Main ingredients" items={dish.ingredients.filter((i) => i.certainty === "listed")} />
+              <IngredientList title="Often added" items={dish.ingredients.filter((i) => i.certainty === "common")} />
+              <p className="mt-3 border-t border-line pt-3 text-xs leading-relaxed text-subtle">
+                From our Thai dish guide, based on the usual recipe. Each restaurant cooks its own way.
+              </p>
             </section>
           )}
 

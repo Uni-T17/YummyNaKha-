@@ -2,12 +2,12 @@ import type { ExtractedDish, MenuUpload } from "../types";
 import { ApiError, apiFetch } from "./client";
 
 // Menu photos and analysis. Uploading stores the photo on our server; the
-// analysis (Hugging Face OCR + translation → Gemini) runs entirely server-side.
+// analysis (our OCR service → Thai dish guide) runs entirely on our server.
 
 export const ANALYSIS_STEPS = [
   "Reading your Thai menu",
   "Finding dishes & prices",
-  "Translating to English",
+  "Looking up ingredients",
   "Checking your Favs",
   "Checking your Avoid list",
   "Finding your best picks",

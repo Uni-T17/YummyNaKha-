@@ -93,7 +93,7 @@ export async function removePreference(userId: string, name: string, type: Prefe
   return getTasteProfile(userId);
 }
 
-/** Only the flags Gemini needs (LR3): labels and reasons, no identifiers. */
+/** The profile flags a menu analysis is based on: labels and reasons, no identifiers (LR3, LR10). */
 export async function getPreferenceFlags(userId: string) {
   const profile = await getTasteProfile(userId);
   return {

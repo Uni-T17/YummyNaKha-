@@ -3,6 +3,8 @@
 - Date: 2026-09-07 (W4, DISCOVER)
 - Source spec: [20260907-01-menu-scan-personalization.md](../01-requirements/01-spec/20260907-01-menu-scan-personalization.md)
 - Feature list: [01-feature-list.md](01-feature-list.md)
+- Revised: 2026-10-27 — J5 transfer consent removed; J6 is now our own OCR →
+  Thai dish guide match (spec *Team decisions 2026-10-27*)
 - Workflow: **profile in → menu photo → extract + translate → match against
   profile → three categories → order in Thai**
 
@@ -31,13 +33,13 @@ The survey captured none of these (spec §1.4).
 
 | # | Screen | D does | System does | Traces | Pain relieved |
 |---|--------|--------|-------------|--------|---------------|
-| J1 | Sign-up & Terms | Creates an account with **OAuth or email/password**; accepts the Terms, privacy notice, and AI & Accuracy Disclaimer | Stores each acceptance with user ID, document version, timestamp, and action, retrievable later. Stores a salted password hash for email/password, or a token only for OAuth — never a plaintext password | F1, F15, LR6, LR9 | — (trust foundation) |
+| J1 | Sign-up & Terms | Creates an account with **OAuth or email/password**; accepts the Terms, privacy notice, and AI & Accuracy Disclaimer. The privacy notice says menu photos are read on our own server and nothing is sent to an outside AI provider | Stores each acceptance with user ID, document version, timestamp, and action, retrievable later. Stores a salted password hash for email/password, or a token only for OAuth — never a plaintext password | F1, F15, LR6, LR9 | — (trust foundation) |
 | J2 | Food profile | Saves favorite foods and ordinary preferences | Stores them as **normal** personal data — not behind the sensitive opt-in | F2, LR1 | **P3** |
 | J3 | Allergy & restriction opt-in | Chooses whether to add allergies or doctor-advised restrictions, in a separate section | Nothing is set until D opts in explicitly; the section is editable and deletable afterwards | F3, F4, LR1 | **P3** |
 | J4 | Menu upload | Photographs or uploads a Thai-language menu | Accepts the image; upload only, no live camera | F5 | **P5, P2** |
-| J5 | Transfer consent *(first scan only)* | Reads what is sent and consents — separately from the Terms already accepted at J1 | Discloses that an external provider — the **Google Gemini API** — receives the data; sends menu text and the needed profile flags only, never account email or real name; the call is made from the backend, never the browser; stores the consent record | F15, LR2, LR3, LR6, LR9 | **P4** |
-| J6 | Processing | Waits, with the uploaded photo still on screen | Keeps the image for the length of the scan session so it can be reviewed, cropped, or retried. Extracts each dish name and price → translates Thai → English → infers likely ingredients → checks every dish against the profile. Shows progress; completes within the latency target | F6, F7, F8, F9, F26, LR5, NFR2, NFR3, NFR5 | **P1** |
-| J7 | Categorized result | Reads the menu in English, split three ways | Labels every dish 🟢 recommended / 🟡 check before ordering / 🔴 conflict. Anything uncertain or incomplete is 🟡, never 🟢. Every 🟡 and 🔴 carries the instruction to confirm with restaurant staff. Each result shows the extracted text, its translation, and the profile item behind a 🟡 or 🔴 | F9, F10, F11, F12, NFR4, LR12 | **P1, P3, P4** |
+| J5 | ~~Transfer consent~~ — **removed 2026-10-27** | — | No step: no menu or profile data leaves our server, so the separate transfer consent is retired. Consents given earlier stay in D's history | LR2, LR9 | — |
+| J6 | Processing | Waits, with the uploaded photo still on screen | Keeps the image for the length of the scan session so it can be reviewed, cropped, or retried. Our own OCR service (`ocr-service/`) reads the photo on our server — only the image bytes are sent to it, from the backend → each dish name is paired with its price → each line is matched to the Thai dish guide for its English name and ingredients → every dish is checked against the profile. Shows progress; completes within the latency target | F6, F7, F8, F9, F26, F27, LR3, LR5, NFR2, NFR3, NFR5 | **P1** |
+| J7 | Categorized result | Reads the menu in English, split three ways | Labels every dish 🟢 recommended / 🟡 check before ordering / 🔴 conflict. Anything uncertain or incomplete — including a dish not in the guide, a possibly misread name, or an unstated protein — is 🟡, never 🟢. Every 🟡 and 🔴 carries the instruction to confirm with restaurant staff. Each result shows the extracted text, its translation, the profile item behind a 🟡 or 🔴, and why a dish is 🟡. Opening a dish shows its main and often-added ingredients with Thai names, its description and spice level | F9, F10, F11, F12, F28, NFR4, LR12 | **P1, P3, P4** |
 | J8 | Dish selection | Picks the dishes to order | Collects the selection | F13 | **P1, P5** |
 | J9 | Order-in-Thai page | Opens the selected-menu page and shows the screen to restaurant staff | Lists the chosen dishes back **in Thai**, legibly, without re-processing the menu | F14 | **P2** |
 | J10 | Ongoing control | Later: edits the profile, withdraws a consent, or deletes the account | Applies the edit; stores a withdrawal the same retrievable way as the consent; on deletion removes profile, any temporary image, and results — traffic logs excepted where CCA §26 applies. No scan history exists to delete, because none is kept | F4, F16, F17, F20, LR5, LR7, LR9 | — (data rights) |
@@ -52,22 +54,25 @@ shared language at J9.
 |---|---|---|---|
 | A1 | The photo is unreadable — blur, glare, angle, handwriting | Plain-language message saying what to do next, never a raw error. **The image stays on screen** so the diner can crop it or retry without photographing the menu again | F18, F26, LR5, FE8 AC1, AC5 |
 | A2 | The image is not a Thai-language menu | Reported as such rather than processed into meaningless output | F18, F24, FE8 AC4 |
-| A3 | The OCR/AI provider is down or rate-limited | Plain-language notice, never a raw error | F18, NFR7 |
+| A3 | Our OCR service is down or takes too long (timeout) | Plain-language notice ("The menu reader isn't available right now" / "Reading the menu took too long"), never a raw error; the photo stays for a retry | F18, F26, NFR7 |
 | A4 | **No dish qualifies for 🟢** | Show the 🟡 and 🔴 lists as they are. The system must not promote a dish to 🟢 to fill an empty category | F10, LR12 |
-| A5 | D declines the transfer consent at J5 | No menu or profile data is sent; no result is produced; the reason is explained | F15, LR2 |
+| A5 | ~~D declines the transfer consent at J5~~ — **retired 2026-10-27** with J5. If D has not accepted the Terms, privacy notice, and disclaimer, no menu is processed and the reason is explained | F15, LR2 |
 | A6 | D withdraws consent after using the app | Processing stops; the withdrawal is stored the same retrievable way as the consent | F16, LR9 |
 | A7 | D never opts in to the allergy section | Matching runs on ordinary preferences only. No allergy or restriction claim is made in either direction | F3, LR1, LR12 |
 | A8 | The menu runs across several pages | D uploads more than one image in the session *(Should — F19)* | F19 |
 | A9 | A dish is extracted but no price is visible on the menu | The price is left empty, never guessed | F6, NFR2 |
 | A10 | D deletes the account | Profile, any temporary image, and results are removed; traffic logs are retained where CCA §26 applies, separately from content | F17, LR5, LR7, LR8 |
 | A11 | D abandons the scan or closes the app mid-session | The temporary image is deleted when the session ends — duration `TBD` — and nothing is kept as history | F26, F20, LR5 |
+| A12 | A dish on the menu is not in the Thai dish guide | Shown with its Thai name and price, no English name and no ingredients, labelled 🟡 with "ask restaurant staff what's in it" | F7, F10, F27 |
+| A13 | The menu is not from a Thai-cuisine restaurant | Most lines match no guide dish, so they appear as 🟡 Thai-only rows; such menus are out of scope this phase | F27, spec §5 |
 
 ## Drop-off risks
 
 | Risk | Where | Mitigation | Traces |
 |---|---|---|---|
 | **Trust is the deciding factor** — 3 of 6 respondents named accuracy or trustworthiness as their main concern, so an unexplained result is not merely unhelpful, it stops adoption | J7 | Every result shows the extracted text, its translation, and the profile item behind a 🟡 or 🔴, so D can judge it | F12, P4 |
-| The consent step reads as a wall and D abandons the first scan | J5 | State plainly what **is** and **is not** sent, as a short list rather than a legal blob | LR2, LR3 |
+| The Terms step reads as a wall and D abandons before the first scan | J1 | State plainly in a short list that photos are read on our server and nothing is sent to an outside AI provider (J5 transfer consent removed 2026-10-27) | F15, LR2, LR3 |
+| **Guide coverage is low** — every dish not in the Thai dish guide is 🟡 with no English name, so a menu with many unlisted dishes reads like an untranslated menu | J6, J7 | Measure guide coverage on real menus (NFR10, `TBD`) and grow the guide; no target set yet | F27, NFR10 |
 | **Too many 🟡.** Uncertain information must resolve to 🟡 (F10), and a menu photo rarely shows sauces, oil, or garnish — so a large 🟡 bucket is the expected case, not the exception. If almost everything is 🟡, the three-category split stops helping D decide | J7 | The 🟢 / 🟡 / 🔴 distribution on real photographed menus must be measured before the gate. **No target set — this is an open design risk, not a solved one** | F10, NFR4, LR12 |
 | D was told "difficult to use" is a reason to hesitate | J1–J4 | Usability target is `TBD` until the first usability test — recorded, not guessed | NFR8, P4 (U4) |
 | A silent wait at J6 reads as a hang and D closes the app | J6 | Progress shown during processing; ≤ 10 s for 90% of scans `[engineering target]` | NFR5 |
@@ -78,7 +83,7 @@ shared language at J9.
 - **P1** (understanding unfamiliar menu information) → J6, J7, J8
 - **P2** (dependence on staff, friends, translation tools) → J4, J7, J9
 - **P3** (matching dishes to preferences and restrictions) → J2, J3, J7
-- **P4** (accuracy and trust decide willingness to rely on it) → J5, J7
+- **P4** (accuracy and trust decide willingness to rely on it) → J1, J6, J7
 - **P5** (wanting a direct photo-based route) → J4, J6, J8
 
 Every pain is relieved at a named step. **P4 is relieved by how the result is

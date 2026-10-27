@@ -4,12 +4,14 @@ import type {
   DishConflict,
   DishStatus,
   ExtractedDish,
+  InferredIngredient,
   TasteProfile,
 } from "./types";
 
-// Client-side stand-in for the recommendation step. Mirrors the rules in
-// rule.md: three categories only, no scores, and an allergy / doctor-advised
-// item that is part of the dish always lands in "avoid".
+// The recommendation step. Mirrors the rules in rule.md: three categories
+// only, no scores, an allergy / doctor-advised item that is part of the dish
+// always lands in "avoid", uncertain information never reaches "top" (F10),
+// and every check / avoid note points the diner to restaurant staff.
 
 export const STATUS_ORDER: Record<DishStatus, number> = { top: 0, check: 1, avoid: 2 };
 
@@ -24,14 +26,24 @@ function termsMatch(a: string, b: string) {
   return normalizeTerm(a) === normalizeTerm(b);
 }
 
+const STAFF = "Please confirm with restaurant staff before ordering.";
+
+/** An ingredient matches an Avoid item by its own name or a group it belongs to ("shellfish"). */
+function ingredientMatches(ing: InferredIngredient, avoidName: string) {
+  return termsMatch(ing.key, avoidName) || (ing.groups ?? []).some((g) => termsMatch(g, avoidName));
+}
+
 function conflictFor(dish: ExtractedDish, item: AvoidItem): { conflict: DishConflict; severe: boolean } | null {
-  const hit = dish.ingredients.find((ing) => termsMatch(ing.key, item.name));
-  if (!hit) return null;
+  const hits = dish.ingredients.filter((ing) => ingredientMatches(ing, item.name));
+  if (hits.length === 0) return null;
+  // A listed ingredient outweighs one that is only sometimes added.
+  const hit = hits.find((h) => h.certainty === "listed") ?? hits[0];
+  const via = termsMatch(hit.key, item.name) ? "" : ` (${item.name.toLowerCase()})`;
 
   const note =
     hit.certainty === "common"
-      ? `${hit.note ?? `${capitalize(hit.label)} may be added to this dish.`} Please confirm with restaurant staff before ordering.`
-      : `This dish contains ${hit.label}, which is in your Avoid list.`;
+      ? `${hit.note ?? `${capitalize(hit.label)}${via} may be added to this dish.`} ${STAFF}`
+      : `This dish usually contains ${hit.label}${via}, which is in your Avoid list. ${STAFF}`;
 
   const sensitive = item.reason === "allergy" || item.reason === "doctor";
   return {
@@ -45,9 +57,10 @@ export function categorizeDish(dish: ExtractedDish, profile: TasteProfile): Dish
     .map((item) => conflictFor(dish, item))
     .filter((c): c is NonNullable<typeof c> => c !== null);
 
+  const uncertain = (dish.uncertainties?.length ?? 0) > 0 || dish.inGuide === false;
   const status: DishStatus = found.some((c) => c.severe)
     ? "avoid"
-    : found.length > 0
+    : found.length > 0 || uncertain
       ? "check"
       : "top";
 

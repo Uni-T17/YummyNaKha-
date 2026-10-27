@@ -378,6 +378,13 @@ Editable source: [`ActivityDiagram.mmd`](ActivityDiagram.mmd)
 
 ### Architecture diagram — logical architecture
 
+> **Superseded 2026-10-27.** The diagrams and trade-off in this section record
+> the W4 design, which sent data to a third-party OCR/AI provider. The current
+> architecture — our own OCR service plus the Thai dish guide, no third-party
+> transfer — is in [04-diagrams/03-architecture.md](04-diagrams/03-architecture.md).
+> Gap G1's "separate consent for sending data to the third-party provider" is
+> no longer required (LR2 revised); the rest of G1 still applies.
+
 ![Logical architecture diagram with a presentation layer, an application/API layer of five services, a backend-only menu intelligence pipeline, a persistence layer, and a boxed trade-off note](Architecture.jpg)
 
 Editable source: [`Architecture.mmd`](Architecture.mmd)
@@ -416,6 +423,7 @@ gate.
 | **G6** | **Menu upload is mocked.** Two fixed file rows stand in for real images, and the analysis always returns the same seven dishes, so extraction and translation accuracy (NFR2, NFR3) cannot be exercised in the prototype | F5, F6, F7, NFR2, NFR3 | S6, S7 |
 | **G7** | **No visible latency behaviour.** The six analysis steps run on a fixed timer, so the ≤ 10 s target is neither demonstrated nor contradicted | NFR5 | S7 |
 | **G8** | **Reset password has no confirmation state**, so a diner cannot tell the link was sent | F1, NFR8 | S4 |
+| **G9** | *Added 2026-10-27.* **No detailed ingredient view and no "why to check first" reason.** The dish detail shows conflicts only; it has no main / often-added ingredient list with Thai names, description, or spice level, and no reason a dish is 🟡 (not in the Thai dish guide, possible misread, protein not stated). Built in the app (`components/menu/dish-detail-sheet.tsx`) but not in the Figma prototype | **F28, F12, F10, F27** | S9 |
 
 **Nothing in the prototype breaks the safety rule.** No screen states that a
 dish is safe, no score or percentage appears, and there is no "certified",

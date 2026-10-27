@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Plus } from "lucide-react";
+import { Check, CircleHelp, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MatchChip } from "@/components/ui/chip";
 import { IconTile } from "@/components/ui/icon-tile";
@@ -62,6 +62,13 @@ export function DishCard({ dish, selected, onToggle, onOpen }: DishCardProps) {
                 </p>
               ))}
             </div>
+          )}
+
+          {dish.conflicts.length === 0 && (dish.uncertainties?.length ?? 0) > 0 && (
+            <p className="mt-2 flex items-center gap-1 text-xs font-bold text-check-ink">
+              <CircleHelp size={11} aria-hidden />
+              {dish.inGuide === false ? "Not in our dish guide yet — ask staff" : "Some details unclear — ask staff"}
+            </p>
           )}
         </div>
       </div>

@@ -1,9 +1,7 @@
-// Documents a user must accept before a menu is processed (FE2 / F15, LR2, LR9).
+// Documents a user must accept before a menu is processed (FE2 / F15, LR9).
 // The summaries are prototype drafts derived from rule.md — replace them with
 // the final legal text, and bump `version` whenever a document changes so users
 // are asked to accept the new version.
-
-import { OCR_PROVIDER } from "./ai-provider";
 
 export type ConsentDocumentId = "terms" | "privacy" | "ai-disclaimer" | "ai-transfer";
 
@@ -13,6 +11,8 @@ export interface ConsentDocument {
   version: string;
   /** Whether the user can withdraw this on its own (the Terms end only with the account). */
   withdrawable: boolean;
+  /** No longer asked for; kept so earlier records in a user's history still display (LR9). */
+  retired?: boolean;
   summary: string[];
 }
 
@@ -30,10 +30,10 @@ export const CONSENT_DOCUMENTS: Record<ConsentDocumentId, ConsentDocument> = {
   terms: {
     id: "terms",
     title: "Terms of Use",
-    version: "0.1-draft",
+    version: "0.3-draft",
     withdrawable: false,
     summary: [
-      "YummyNaKha! reads Thai menu photos you upload, translates them into English and suggests dishes that fit your saved taste.",
+      "YummyNaKha! reads Thai restaurant menu photos you upload, looks up each dish in our Thai dish guide and suggests dishes that fit your saved taste.",
       "Suggestions help you decide — the final choice of what to order is yours.",
       "Upload only menu photos. Avoid photos that show other people or their personal details.",
     ],
@@ -41,10 +41,11 @@ export const CONSENT_DOCUMENTS: Record<ConsentDocumentId, ConsentDocument> = {
   privacy: {
     id: "privacy",
     title: "Privacy Notice",
-    version: "0.1-draft",
+    version: "0.3-draft",
     withdrawable: false,
     summary: [
       "We keep your account name and email, your food profile and, for the length of a scan, your menu photos.",
+      "Your menu photos are read on our own server. We don't send your photos, food profile or account details to any outside AI provider.",
       "This data is used only to understand menus and recommend dishes — never for advertising, resale or profiling.",
       "Allergies and doctor-advised restrictions are sensitive health data. You can edit or delete them at any time.",
       "Deleting your account removes your profile, menu photos and results.",
@@ -54,10 +55,11 @@ export const CONSENT_DOCUMENTS: Record<ConsentDocumentId, ConsentDocument> = {
   "ai-disclaimer": {
     id: "ai-disclaimer",
     title: "AI & Accuracy Disclaimer",
-    version: "0.1-draft",
+    version: "0.3-draft",
     withdrawable: false,
     summary: [
-      "Results come from AI reading the menu photo and can be wrong or incomplete.",
+      "Menu text is read from your photo by a machine-learning model and can be misread.",
+      "Ingredients come from our Thai dish guide, which describes the usual recipe. Each restaurant cooks its own way.",
       "A menu rarely shows hidden ingredients, sauces, cooking oil or kitchen cross-contact.",
       "A Top Pick means no conflicting ingredient was detected from the available menu information — not that a dish is safe.",
       "Always confirm allergies and medical restrictions with restaurant staff before ordering.",
@@ -65,23 +67,13 @@ export const CONSENT_DOCUMENTS: Record<ConsentDocumentId, ConsentDocument> = {
   },
   "ai-transfer": {
     id: "ai-transfer",
-    title: "Send data to AI providers",
-    // The text names the providers actually in use (OCR_PROVIDER), and each
-    // provider setup has its own version so switching asks users again.
-    version: OCR_PROVIDER === "gemini" ? "0.2-draft-gemini" : "0.2-draft",
-    withdrawable: true,
+    title: "Send data to AI providers (no longer used)",
+    version: "0.2-draft",
+    withdrawable: false,
+    retired: true,
     summary: [
-      ...(OCR_PROVIDER === "gemini"
-        ? [
-            "To read, translate and sort your menu, we send your menu photos and the Favs and Avoid items needed for matching to the Google Gemini API, an external AI provider.",
-          ]
-        : [
-            "To read your menu, we send your menu photos to Hugging Face, an external AI provider, which reads and translates the text.",
-            "To sort the dishes, we send the menu text and the Favs and Avoid items needed for matching to the Google Gemini API, another external AI provider.",
-          ]),
-      "We never send your name, email address or account details.",
-      "The requests are made from our server, not from your device.",
-      "You can withdraw this consent any time in My Profile → Privacy & consents. Menus can't be analyzed without it.",
+      "Earlier versions of YummyNaKha! sent menu photos and the Favs and Avoid items needed for matching to external AI providers (Hugging Face and the Google Gemini API).",
+      "Since version 0.3 menus are read on our own server and nothing is sent to an outside AI provider, so this consent is no longer needed.",
     ],
   },
 };
@@ -89,7 +81,7 @@ export const CONSENT_DOCUMENTS: Record<ConsentDocumentId, ConsentDocument> = {
 /** Accepted together as one action (F15) — kept as separate records (LR9). */
 export const TERMS_BUNDLE: ConsentDocumentId[] = ["terms", "privacy", "ai-disclaimer"];
 
-export const REQUIRED_DOCUMENTS: ConsentDocumentId[] = [...TERMS_BUNDLE, "ai-transfer"];
+export const REQUIRED_DOCUMENTS: ConsentDocumentId[] = TERMS_BUNDLE;
 
 export type ConsentStatus = "accepted" | "withdrawn" | "outdated" | "none";
 

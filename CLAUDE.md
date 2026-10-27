@@ -107,6 +107,8 @@ separate file only.
     02-user-journey.md                   # the one core workflow, step by step
     03-prototype.md                      # low-fi wireframes (no code)
     04-diagrams/                         # context, use case, architecture, activity
+  03-testing/
+    01-test-plan.md                      # test plan, UAT, usability, SUS/TAM, RTM
 CLAUDE.md
 rule.md                                  # legal / compliance rules
 YummyNaKha! - Charter.md                 # W1 project charter
