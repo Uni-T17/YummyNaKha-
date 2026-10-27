@@ -17,7 +17,7 @@ export type ErrorCode =
   | "VALIDATION_ERROR"
   | "TOO_MANY_REQUESTS"
   | "CONSENT_REQUIRED"
-  | "AI_UNREADABLE"
+  | "MENU_UNREADABLE"
   | "INTERNAL_ERROR"
   | "BAD_GATEWAY"
   | "SERVICE_UNAVAILABLE";
@@ -42,7 +42,7 @@ export const errors = {
   conflict: (message: string) => new HttpError(409, "CONFLICT", message),
   tooManyRequests: (message = "Too many attempts. Please wait a few minutes and try again.") =>
     new HttpError(429, "TOO_MANY_REQUESTS", message),
-  badGateway: (message = "The AI service couldn't process this right now. Please try again.") =>
+  badGateway: (message = "We couldn't process this right now. Please try again.") =>
     new HttpError(502, "BAD_GATEWAY", message),
   serviceUnavailable: (message = "This service is temporarily unavailable. Please try again later.") =>
     new HttpError(503, "SERVICE_UNAVAILABLE", message),

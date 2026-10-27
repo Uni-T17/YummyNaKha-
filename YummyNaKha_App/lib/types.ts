@@ -38,6 +38,10 @@ export interface InferredIngredient {
   certainty: "listed" | "common";
   /** Optional context shown for `common` ingredients. */
   note?: string;
+  /** Thai name, so the diner can point at it when asking staff. */
+  labelThai?: string;
+  /** Avoid-list words this ingredient belongs to ("shellfish" for oyster sauce). */
+  groups?: string[];
 }
 
 /** A dish as extracted + translated from the uploaded menu (before matching). */
@@ -53,6 +57,15 @@ export interface ExtractedDish {
   icon: DishIconKey;
   iconBg: string;
   iconColor: string;
+  /** From the Thai dish guide; absent for dishes the guide doesn't know. */
+  romanized?: string;
+  description?: string;
+  /** 0 = not spicy … 3 = very spicy (standard recipe). */
+  spice?: 0 | 1 | 2 | 3;
+  /** false when the dish isn't in our Thai dish guide, so its ingredients are unknown. */
+  inGuide?: boolean;
+  /** Reasons the result is uncertain; any of these keeps a dish out of Top Picks (F10). */
+  uncertainties?: string[];
 }
 
 export interface DishConflict {

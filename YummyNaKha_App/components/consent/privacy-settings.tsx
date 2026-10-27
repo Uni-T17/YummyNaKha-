@@ -2,12 +2,9 @@
 
 import { useState } from "react";
 import { Loader2, ShieldAlert } from "lucide-react";
-import { BottomSheet } from "@/components/ui/bottom-sheet";
-import { Button, ButtonLink } from "@/components/ui/button";
-import { EmptyState, FormError } from "@/components/ui/feedback";
+import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/feedback";
 import { BackHeader } from "@/components/ui/page-header";
-import { withdrawConsent } from "@/lib/api/consent";
-import { ApiError } from "@/lib/api/client";
 import { cn } from "@/lib/cn";
 import {
   CONSENT_DOCUMENTS,
@@ -28,26 +25,8 @@ const STATUS_LABEL: Record<ConsentStatus, { text: string; className: string }> =
 };
 
 export function PrivacySettings() {
-  const { userId, records, error: loadError, reload } = useConsentRecords();
+  const { records, error: loadError, reload } = useConsentRecords();
   const [reading, setReading] = useState<ConsentDocumentId | null>(null);
-  const [confirming, setConfirming] = useState(false);
-  const [pending, setPending] = useState(false);
-  const [error, setError] = useState("");
-
-  async function handleWithdraw() {
-    if (!userId) return;
-    setPending(true);
-    setError("");
-    try {
-      await withdrawConsent("ai-transfer");
-      setConfirming(false);
-      reload();
-    } catch (e) {
-      setError(e instanceof ApiError ? e.message : "Couldn't withdraw. Please try again.");
-    } finally {
-      setPending(false);
-    }
-  }
 
   return (
     <main className="flex flex-1 flex-col pb-12">
@@ -101,27 +80,13 @@ export function PrivacySettings() {
                       >
                         Read
                       </button>
-                      {doc.withdrawable && status === "accepted" && (
-                        <button
-                          type="button"
-                          onClick={() => setConfirming(true)}
-                          className="min-h-8 text-xs font-bold text-danger hover:underline"
-                        >
-                          Withdraw consent
-                        </button>
-                      )}
-                      {doc.withdrawable && status !== "accepted" && (
-                        <ButtonLink href="/consent" variant="outline" size="xs">
-                          Give consent
-                        </ButtonLink>
-                      )}
                     </div>
                   </li>
                 );
               })}
             </ul>
             <p className="mt-2 text-xs leading-relaxed text-subtle">
-              The Terms, Privacy Notice and AI Disclaimer stay in place while you have an account.
+              The Terms, Privacy Notice and AI &amp; Accuracy Disclaimer stay in place while you have an account. Your menus are read on our own server — nothing is sent to an outside AI provider, so there is no separate data-sharing consent.
             </p>
           </section>
 
@@ -159,30 +124,6 @@ export function PrivacySettings() {
           </section>
         </div>
       )}
-
-      <BottomSheet open={confirming} onClose={() => !pending && setConfirming(false)} label="Withdraw consent?">
-        <h2 className="mb-2 text-lg font-black text-ink">Withdraw consent?</h2>
-        <p className="mb-5 text-sm leading-relaxed text-muted">
-          We&apos;ll stop sending your menus and taste profile to our AI providers. You won&apos;t be able to analyze a new
-          menu until you give consent again. Menus you already analyzed stay on this device until you sign out.
-        </p>
-        <FormError className="mb-3">{error}</FormError>
-        <div className="flex flex-col gap-3">
-          <Button
-            fullWidth
-            size="md"
-            className="bg-danger shadow-none hover:brightness-95"
-            loading={pending}
-            loadingLabel="Withdrawing…"
-            onClick={handleWithdraw}
-          >
-            Withdraw consent
-          </Button>
-          <Button variant="outline" size="md" fullWidth onClick={() => setConfirming(false)} disabled={pending}>
-            Keep it
-          </Button>
-        </div>
-      </BottomSheet>
 
       <DocumentSheet id={reading} onClose={() => setReading(null)} />
     </main>

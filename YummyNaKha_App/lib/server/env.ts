@@ -2,7 +2,7 @@ import "server-only";
 import { z } from "zod";
 import { HttpError } from "./http";
 
-// Server-side configuration. Read lazily so a missing AI key only breaks the
+// Server-side configuration. Read lazily so a missing value only breaks the
 // feature that needs it, not the whole app. None of these values are ever
 // sent to the browser (no NEXT_PUBLIC_ prefix).
 
@@ -19,26 +19,9 @@ export function getAuthSecret(): string {
   return read(z.string().min(32), process.env.AUTH_SECRET, "AUTH_SECRET");
 }
 
-export const DEFAULT_HF_MODEL = "Qwen/Qwen3.8-27B";
-export const DEFAULT_GEMINI_MODEL = "gemini-3.6-flash";
-/** Models tried in order when the primary one is overloaded, rate-limited or unavailable. */
-export const DEFAULT_GEMINI_FALLBACK_MODELS = "gemini-3.5-flash-lite,gemini-3.1-flash-lite";
+export const DEFAULT_OCR_SERVICE_URL = "http://127.0.0.1:8765";
 
-export function getHuggingFaceConfig() {
-  return {
-    apiKey: read(z.string().min(1), process.env.HUGGINGFACE_API_KEY, "HUGGINGFACE_API_KEY"),
-    ocrModel: process.env.HUGGINGFACE_MODEL?.trim() || DEFAULT_HF_MODEL,
-    translationModel: process.env.HUGGINGFACE_TRANSLATION_MODEL?.trim() || DEFAULT_HF_MODEL,
-  };
-}
-
-export function getGeminiConfig() {
-  return {
-    apiKey: read(z.string().min(1), process.env.GEMINI_API_KEY, "GEMINI_API_KEY"),
-    model: process.env.GEMINI_MODEL?.trim() || DEFAULT_GEMINI_MODEL,
-    fallbackModels: (process.env.GEMINI_FALLBACK_MODELS?.trim() || DEFAULT_GEMINI_FALLBACK_MODELS)
-      .split(",")
-      .map((m) => m.trim())
-      .filter(Boolean),
-  };
+/** Our own OCR service (ocr-service/). Runs next to the app; no API key, no third party. */
+export function getOcrServiceUrl(): string {
+  return (process.env.OCR_SERVICE_URL?.trim() || DEFAULT_OCR_SERVICE_URL).replace(/\/+$/, "");
 }

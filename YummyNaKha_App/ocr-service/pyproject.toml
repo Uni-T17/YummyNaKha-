@@ -1,0 +1,16 @@
+[project]
+name = "yummynakha-ocr"
+version = "0.1.0"
+description = "Local Thai menu OCR for YummyNaKha! (PaddleOCR, runs on our own server — no third-party AI)"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "paddlepaddle==3.3.1",
+    "paddleocr==3.7.0",
+    "fastapi>=0.115,<1",
+    "uvicorn>=0.30,<1",
+    "pillow>=10",
+    "numpy>=1.26",
+]
+
+[tool.uv]
+package = false
