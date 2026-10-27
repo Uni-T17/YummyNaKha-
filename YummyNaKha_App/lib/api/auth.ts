@@ -22,11 +22,6 @@ export function signUp(name: string, email: string, password: string): Promise<A
   return apiFetch<AuthResult>("/api/auth/register", { body: { name, email, password } });
 }
 
-// TODO(api): Google sign-in needs OAuth client credentials (not configured).
-export async function signInWithGoogle(): Promise<AuthResult> {
-  throw new ApiError("Google sign-in isn't available yet. Please use your email and password.");
-}
-
 /** Current session, or null when signed out. */
 export async function fetchSession(): Promise<AuthResult | null> {
   try {
@@ -67,8 +62,8 @@ export async function updateUsername(name: string): Promise<string> {
   return user.name;
 }
 
-/** Deletes the account and all its data on the server (asks for the password again). */
-export async function deleteAccount(password: string): Promise<void> {
-  if (!password) throw new ApiError("Please enter your password.");
-  await apiFetch<void>("/api/auth/me", { method: "DELETE", body: { password } });
+/** Deletes the account and all its data on the server. `confirm` is the password, or the email for a Google-only account. */
+export async function deleteAccount(confirm: string): Promise<void> {
+  if (!confirm.trim()) throw new ApiError("Please confirm to delete your account.");
+  await apiFetch<void>("/api/auth/me", { method: "DELETE", body: { confirm } });
 }

@@ -48,7 +48,10 @@ export const changePasswordSchema = z
     path: ["confirmPassword"],
   });
 
-/** Deleting the account asks for the password again, so an unattended signed-in phone can't do it. */
+/**
+ * Deleting the account asks again — the password, or the email for an account
+ * that only signs in with Google — so an unattended signed-in phone can't do it.
+ */
 export const deleteAccountSchema = z.object({
-  password: z.string({ error: "Please enter your password." }).min(1, "Please enter your password.").max(128),
+  confirm: z.string({ error: "Please confirm to delete your account." }).min(1, "Please confirm to delete your account.").max(254),
 });

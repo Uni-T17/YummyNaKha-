@@ -45,6 +45,7 @@ export const CONSENT_DOCUMENTS: Record<ConsentDocumentId, ConsentDocument> = {
     withdrawable: false,
     summary: [
       "We keep your account name and email, your food profile and, for the length of a scan, your menu photos.",
+      "If you sign in with Google, we receive only your name, email address and Google account ID. We don't keep any Google password or access token.",
       "Your menu photos are read on our own server. We don't send your photos, food profile or account details to any outside AI provider.",
       "This data is used only to understand menus and recommend dishes — never for advertising, resale or profiling.",
       "Allergies and doctor-advised restrictions are sensitive health data. We store them only with your separate Health information consent, which you can withdraw at any time in Privacy & consents.",

@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Check, ChevronRight, KeyRound, Loader2, LogOut, ShieldCheck, Trash2 } from "lucide-react";
+import { Check, ChevronRight, KeyRound, Loader2, LogOut, Mail, ShieldCheck, Trash2 } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { Button } from "@/components/ui/button";
 import { FieldError } from "@/components/ui/feedback";
 import { IconTile } from "@/components/ui/icon-tile";
 import { BackHeader } from "@/components/ui/page-header";
-import { inputClasses, PasswordField } from "@/components/ui/text-field";
+import { inputClasses, PasswordField, TextField } from "@/components/ui/text-field";
 import { deleteAccount, updateUsername } from "@/lib/api/auth";
 import { ApiError } from "@/lib/api/client";
 import { cn } from "@/lib/cn";
@@ -103,7 +103,7 @@ function UsernameRow({ name }: { name: string }) {
 }
 
 /** Deletes the account and all its data after the password is entered again (PDPA). */
-function DeleteAccountSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
+function DeleteAccountSheet({ open, hasPassword, onClose }: { open: boolean; hasPassword: boolean; onClose: () => void }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [deleting, setDeleting] = useState(false);
@@ -147,15 +147,29 @@ function DeleteAccountSheet({ open, onClose }: { open: boolean; onClose: () => v
           confirm();
         }}
       >
-        <PasswordField
-          label="Enter your password to confirm"
-          value={password}
-          autoComplete="current-password"
-          onChange={(e) => {
-            setPassword(e.target.value);
-            setError("");
-          }}
-        />
+        {hasPassword ? (
+          <PasswordField
+            label="Enter your password to confirm"
+            value={password}
+            autoComplete="current-password"
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setError("");
+            }}
+          />
+        ) : (
+          <TextField
+            label="Type your email to confirm"
+            type="email"
+            icon={Mail}
+            value={password}
+            autoComplete="off"
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setError("");
+            }}
+          />
+        )}
         <FieldError>{error}</FieldError>
         <Button type="submit" variant="danger" size="md" fullWidth disabled={deleting || !password}>
           {deleting && <Loader2 size={16} className="animate-spin" aria-hidden />}
@@ -200,16 +214,23 @@ export function ProfileView() {
         </section>
 
         <section aria-label="Account actions" className="mx-5 overflow-hidden rounded-2xl border border-line bg-white shadow-sm">
-          <Link
-            href="/profile/password"
-            className="flex min-h-14 w-full items-center justify-between border-b border-line px-4 py-4 transition-colors hover:bg-cream"
-          >
-            <span className="flex items-center gap-3">
-              <IconTile icon={KeyRound} className="bg-brand-tint text-brand" />
-              <span className="text-sm font-bold text-ink">Change Password</span>
-            </span>
-            <ChevronRight size={16} className="text-subtle" aria-hidden />
-          </Link>
+          {user.hasPassword === false ? (
+            <div className="flex min-h-14 items-center gap-3 border-b border-line px-4 py-4">
+              <IconTile icon={KeyRound} className="bg-stone-soft text-subtle" />
+              <span className="text-sm text-muted">Signed in with Google — no password to change.</span>
+            </div>
+          ) : (
+            <Link
+              href="/profile/password"
+              className="flex min-h-14 w-full items-center justify-between border-b border-line px-4 py-4 transition-colors hover:bg-cream"
+            >
+              <span className="flex items-center gap-3">
+                <IconTile icon={KeyRound} className="bg-brand-tint text-brand" />
+                <span className="text-sm font-bold text-ink">Change Password</span>
+              </span>
+              <ChevronRight size={16} className="text-subtle" aria-hidden />
+            </Link>
+          )}
           <Link
             href="/profile/privacy"
             className="flex min-h-14 w-full items-center justify-between border-b border-line px-4 py-4 transition-colors hover:bg-cream"
@@ -243,7 +264,7 @@ export function ProfileView() {
         </button>
       </div>
 
-      <DeleteAccountSheet open={deleting} onClose={() => setDeleting(false)} />
+      <DeleteAccountSheet open={deleting} hasPassword={user.hasPassword !== false} onClose={() => setDeleting(false)} />
     </main>
   );
 }

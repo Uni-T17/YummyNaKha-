@@ -4,6 +4,8 @@ export interface AppUser {
   id: string;
   name: string;
   email: string;
+  /** false for an account that only signs in with Google. */
+  hasPassword?: boolean;
 }
 
 /** Why a food is on the Avoid list. `undefined` = the user skipped the question. */

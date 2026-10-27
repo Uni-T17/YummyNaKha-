@@ -18,7 +18,10 @@ model User {
   name         String
   email        String    @unique
   /// scrypt hash in the form `scrypt$N$r$p$salt$hash` — never a plaintext password.
-  passwordHash String
+  /// null for an account that only signs in with Google.
+  passwordHash String?
+  /// Google's stable account ID (the ID token's `sub`). No Google tokens are stored (rule.md).
+  googleSub    String?   @unique
   /// Set when the user first saves My Taste; drives the onboarding redirect.
   onboardedAt  DateTime?
   createdAt    DateTime  @default(now())
