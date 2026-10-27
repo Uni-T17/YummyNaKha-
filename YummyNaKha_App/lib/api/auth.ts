@@ -66,3 +66,9 @@ export async function updateUsername(name: string): Promise<string> {
   const { user } = await apiFetch<AuthResult>("/api/auth/me", { method: "PATCH", body: { name: clean } });
   return user.name;
 }
+
+/** Deletes the account and all its data on the server (asks for the password again). */
+export async function deleteAccount(password: string): Promise<void> {
+  if (!password) throw new ApiError("Please enter your password.");
+  await apiFetch<void>("/api/auth/me", { method: "DELETE", body: { password } });
+}

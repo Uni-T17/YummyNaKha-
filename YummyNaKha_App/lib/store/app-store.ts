@@ -165,6 +165,19 @@ export const appActions = {
     resetLocal();
   },
 
+  /** After the server deleted the account: forget everything kept in this browser. */
+  accountDeleted() {
+    sessionSync = null;
+    resetLocal();
+  },
+
+  /** Re-reads the saved profile (after withdrawing the health-data consent clears reasons). */
+  reloadProfile() {
+    getTasteProfile()
+      .then((profile) => setState((s) => ({ ...s, profile })))
+      .catch((error) => console.warn("[taste] could not reload:", error));
+  },
+
   updateUserName(name: string) {
     setState((s) => (s.user ? { ...s, user: { ...s.user, name } } : s));
   },

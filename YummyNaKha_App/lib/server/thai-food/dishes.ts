@@ -1,5 +1,6 @@
 import "server-only";
 import { C, CONDIMENTS_NOTE, JAEW_NOTE, L, PASTE_NOTE, type GuideDish } from "./dish-types";
+import { DATASET_DISHES } from "./dishes-datasets";
 import { MORE_DISHES } from "./dishes-more";
 
 // The YummyNaKha! Thai dish guide: common dishes on Thai restaurant menus,
@@ -18,7 +19,7 @@ import { MORE_DISHES } from "./dishes-more";
 // DRAFT DATA — every entry must be reviewed by a Thai-literate team member
 // before user testing. Bump GUIDE_VERSION whenever an entry changes.
 
-export const GUIDE_VERSION = "2026-10-27b-draft";
+export const GUIDE_VERSION = "2026-10-27c-draft";
 
 export type { DishCategory, GuideDish, GuideIngredient } from "./dish-types";
 
@@ -892,7 +893,7 @@ const CORE_DISHES: GuideDish[] = [
   },
   {
     id: "spring-rolls",
-    th: ["ปอเปี๊ยะทอด", "ปอเปี๊ยะ"],
+    th: ["ปอเปี๊ยะทอด", "ปอเปี๊ยะ", "เปาะเปี๊ยะทอด", "เปาะเปี๊ยะ"],
     en: "Spring Rolls",
     romanized: "Por Pia",
     category: "fried",
@@ -985,7 +986,7 @@ const CORE_DISHES: GuideDish[] = [
   },
   {
     id: "bua-loy",
-    th: ["บัวลอย"],
+    th: ["บัวลอย", "ขนมบัวลอย"],
     en: "Rice Balls in Coconut Milk",
     romanized: "Bua Loy",
     category: "dessert",
@@ -1119,4 +1120,4 @@ const CORE_DISHES: GuideDish[] = [
   },
 ];
 
-export const DISHES: GuideDish[] = [...CORE_DISHES, ...MORE_DISHES];
+export const DISHES: GuideDish[] = [...CORE_DISHES, ...MORE_DISHES, ...DATASET_DISHES];

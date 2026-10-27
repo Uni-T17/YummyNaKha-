@@ -253,7 +253,7 @@ export const MORE_DISHES: GuideDish[] = [
   },
   {
     id: "gaeng-tai-pla",
-    th: ["แกงไตปลา"],
+    th: ["แกงไตปลา", "ไตปลา"],
     en: "Southern Fish Innards Curry",
     romanized: "Gaeng Tai Pla",
     category: "curry",
@@ -625,7 +625,7 @@ export const MORE_DISHES: GuideDish[] = [
   },
   {
     id: "soup-nor-mai",
-    th: ["ซุปหน่อไม้"],
+    th: ["ซุปหน่อไม้", "ซุบหน่อไม้"],
     en: "Isan Bamboo Shoot Salad",
     romanized: "Soup Nor Mai",
     category: "salad",
@@ -848,7 +848,7 @@ export const MORE_DISHES: GuideDish[] = [
   },
   {
     id: "fried-banana",
-    th: ["กล้วยทอด"],
+    th: ["กล้วยทอด", "กล้วยแขก"],
     en: "Fried Bananas",
     romanized: "Kluay Tod",
     category: "dessert",

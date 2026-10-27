@@ -2,8 +2,10 @@ import "server-only";
 import { AvoidReason, PreferenceType } from "@/lib/generated/prisma/client";
 import { normalizeTerm } from "@/lib/matching";
 import type { AvoidReason as ClientAvoidReason, TasteProfile } from "@/lib/types";
+import { HEALTH_REASONS } from "@/lib/consent";
+import { hasHealthConsent } from "../consent/service";
 import { prisma } from "../db";
-import { errors } from "../http";
+import { errors, HttpError } from "../http";
 
 // A user's Favs (FAVORITE) and Avoid list (DISLIKE). One row per (user, food
 // item) enforced by a unique index, so an item is never both at once: marking
@@ -57,6 +59,14 @@ export async function setPreference(
 ): Promise<TasteProfile> {
   const key = keyFor(name);
   const dbReason = type === PreferenceType.DISLIKE && reason ? toDbReason[reason] : null;
+  // Allergies and doctor advice are sensitive health data: stored only with the separate opt-in (PDPA).
+  if (dbReason && (HEALTH_REASONS as readonly string[]).includes(reason!) && !(await hasHealthConsent(userId))) {
+    throw new HttpError(
+      403,
+      "CONSENT_REQUIRED",
+      "Please allow us to store health information before saving an allergy or doctor's advice.",
+    );
+  }
 
   await prisma.$transaction(async (tx) => {
     const foodItem = await tx.foodItem.upsert({

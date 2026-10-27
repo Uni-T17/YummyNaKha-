@@ -10,7 +10,11 @@ import { Button } from "@/components/ui/button";
 import { FavChip, SuggestionChip } from "@/components/ui/chip";
 import { PageHeader } from "@/components/ui/page-header";
 import { SegmentedTabs } from "@/components/ui/segmented-tabs";
+import { useConsentRecords } from "@/components/consent/use-consent-records";
+import { acceptDocuments } from "@/lib/api/consent";
+import { ApiError } from "@/lib/api/client";
 import { cn } from "@/lib/cn";
+import { getConsentStatus, HEALTH_CONSENT } from "@/lib/consent";
 import { FAV_SUGGESTIONS } from "@/lib/mock-data";
 import { appActions, useAppState } from "@/lib/store/app-store";
 import type { AvoidReason } from "@/lib/types";
@@ -25,6 +29,17 @@ export function TasteEditor() {
   const navVisible = useNavVisible();
   const [tab, setTab] = useState<Tab>("favs");
   const [pendingAvoid, setPendingAvoid] = useState<string | null>(null);
+  const { records, reload: reloadConsents } = useConsentRecords();
+  const healthConsent = records ? getConsentStatus(records, HEALTH_CONSENT).status === "accepted" : false;
+
+  async function giveHealthConsent() {
+    try {
+      await acceptDocuments([HEALTH_CONSENT]);
+    } catch (e) {
+      throw new Error(e instanceof ApiError ? e.message : "Couldn't save your choice. Please try again.");
+    }
+    reloadConsents();
+  }
 
   const suggestions = FAV_SUGGESTIONS.filter((s) => !profile.favs.some((f) => f.toLowerCase() === s.toLowerCase()));
 
@@ -34,8 +49,7 @@ export function TasteEditor() {
   }
 
   function handleSave() {
-    // TODO(api): PUT /profile. Allergy / doctor-advised items are sensitive
-    // health data under PDPA and need an explicit opt-in record server-side.
+    // Each change is already saved as it's made; this only finishes onboarding.
     appActions.completeOnboarding();
     router.push("/home");
   }
@@ -150,7 +164,13 @@ export function TasteEditor() {
         </Button>
       </FixedBottom>
 
-      <AvoidReasonSheet item={pendingAvoid} onChoose={saveAvoid} onClose={() => setPendingAvoid(null)} />
+      <AvoidReasonSheet
+        item={pendingAvoid}
+        healthConsent={healthConsent}
+        onGiveHealthConsent={giveHealthConsent}
+        onChoose={saveAvoid}
+        onClose={() => setPendingAvoid(null)}
+      />
     </main>
   );
 }

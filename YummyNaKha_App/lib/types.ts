@@ -49,6 +49,8 @@ export interface ExtractedDish {
   id: string;
   nameThai: string;
   nameEn: string;
+  /** The name as printed on an English menu, when it differs from nameEn ("Pad Kra Pao Gai"). */
+  nameOnMenu?: string;
   /** null when no price is printed for the dish (never guessed). */
   price: number | null;
   /** Lower-case keywords used to match the user's Favs (flavours, bases, proteins). */

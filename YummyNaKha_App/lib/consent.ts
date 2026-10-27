@@ -3,7 +3,7 @@
 // the final legal text, and bump `version` whenever a document changes so users
 // are asked to accept the new version.
 
-export type ConsentDocumentId = "terms" | "privacy" | "ai-disclaimer" | "ai-transfer";
+export type ConsentDocumentId = "terms" | "privacy" | "ai-disclaimer" | "health-data" | "ai-transfer";
 
 export interface ConsentDocument {
   id: ConsentDocumentId;
@@ -41,14 +41,14 @@ export const CONSENT_DOCUMENTS: Record<ConsentDocumentId, ConsentDocument> = {
   privacy: {
     id: "privacy",
     title: "Privacy Notice",
-    version: "0.3-draft",
+    version: "0.4-draft",
     withdrawable: false,
     summary: [
       "We keep your account name and email, your food profile and, for the length of a scan, your menu photos.",
       "Your menu photos are read on our own server. We don't send your photos, food profile or account details to any outside AI provider.",
       "This data is used only to understand menus and recommend dishes — never for advertising, resale or profiling.",
-      "Allergies and doctor-advised restrictions are sensitive health data. You can edit or delete them at any time.",
-      "Deleting your account removes your profile, menu photos and results.",
+      "Allergies and doctor-advised restrictions are sensitive health data. We store them only with your separate Health information consent, which you can withdraw at any time in Privacy & consents.",
+      "You can delete your account at any time in My Profile. This permanently removes your account, food profile, menu photos, results and agreement history.",
       "Where Thai law requires it, access logs (account ID, IP address, time) are kept separately for at least 90 days.",
     ],
   },
@@ -63,6 +63,19 @@ export const CONSENT_DOCUMENTS: Record<ConsentDocumentId, ConsentDocument> = {
       "A menu rarely shows hidden ingredients, sauces, cooking oil or kitchen cross-contact.",
       "A Top Pick means no conflicting ingredient was detected from the available menu information — not that a dish is safe.",
       "Always confirm allergies and medical restrictions with restaurant staff before ordering.",
+    ],
+  },
+  "health-data": {
+    id: "health-data",
+    title: "Health information (allergies & doctor advice)",
+    version: "0.1-draft",
+    withdrawable: true,
+    summary: [
+      "Saying that you avoid a food because of an allergy or a doctor's advice is sensitive health data under Thai law (PDPA). We store it only with this separate consent.",
+      "We use it only to warn you about dishes on the menus you scan. It is never used for advertising, never sold and never sent to an outside AI provider.",
+      "You can edit or remove any item at any time in My Taste.",
+      "If you withdraw this consent, we delete every allergy and doctor-advice reason you saved. The foods stay on your Avoid list without a reason.",
+      "You can still use the app without it — just mark foods as \"Just don't like it\" or skip the reason.",
     ],
   },
   "ai-transfer": {
@@ -82,6 +95,12 @@ export const CONSENT_DOCUMENTS: Record<ConsentDocumentId, ConsentDocument> = {
 export const TERMS_BUNDLE: ConsentDocumentId[] = ["terms", "privacy", "ai-disclaimer"];
 
 export const REQUIRED_DOCUMENTS: ConsentDocumentId[] = TERMS_BUNDLE;
+
+/** Separate, optional opt-in: needed only to save an allergy or doctor-advised reason (PDPA sensitive data). */
+export const HEALTH_CONSENT: ConsentDocumentId = "health-data";
+
+/** Avoid reasons that are health data and need HEALTH_CONSENT. */
+export const HEALTH_REASONS = ["allergy", "doctor"] as const;
 
 export type ConsentStatus = "accepted" | "withdrawn" | "outdated" | "none";
 

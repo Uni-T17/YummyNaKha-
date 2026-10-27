@@ -1,6 +1,7 @@
 import "server-only";
 import { z } from "zod";
 import { Prisma } from "@/lib/generated/prisma/client";
+import { recordAccess, withAccessContext } from "./access-log";
 
 // Shared request/response helpers for route handlers. Every error leaves the
 // server as `{ error: { code, message, fields? } }` — never a stack trace,
@@ -126,14 +127,18 @@ function mapUnknownError(error: unknown): HttpError {
 
 type Handler<C> = (request: Request, context: C) => Promise<Response>;
 
-/** Wraps a route handler with origin checking and uniform error responses. */
+/** Wraps a route handler with origin checking, uniform error responses and the access log (LR). */
 export function route<C = unknown>(handler: Handler<C>): Handler<C> {
-  return async (request, context) => {
-    try {
-      assertSameOrigin(request);
-      return await handler(request, context);
-    } catch (error) {
-      return errorResponse(mapUnknownError(error));
-    }
-  };
+  return (request, context) =>
+    withAccessContext(async () => {
+      let response: Response;
+      try {
+        assertSameOrigin(request);
+        response = await handler(request, context);
+      } catch (error) {
+        response = errorResponse(mapUnknownError(error));
+      }
+      await recordAccess(request, response.status);
+      return response;
+    });
 }

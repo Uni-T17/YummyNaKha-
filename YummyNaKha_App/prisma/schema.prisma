@@ -130,13 +130,13 @@ model MenuImage {
   @@index([status])
 }
 
-/// One Gemini analysis run over one or more menu images.
+/// One analysis run (OCR + Thai dish guide) over one or more menu images.
 model MenuAnalysis {
   id                  String           @id @default(cuid())
   userId              String
   status              ProcessingStatus @default(PROCESSING)
   model               String?
-  /// The minimal profile flags sent to Gemini (no name / email — LR3).
+  /// The profile flags the result was based on (no name / email — LR3, LR10).
   preferencesSnapshot Json?
   /// Validated structured result (dishes + notes).
   result              Json?
@@ -172,7 +172,7 @@ enum ConsentAction {
 model ConsentRecord {
   id        String        @id @default(cuid())
   userId    String
-  /// Document id from lib/consent.ts ("terms", "privacy", "ai-disclaimer", "ai-transfer").
+  /// Document id from lib/consent.ts ("terms", "privacy", "ai-disclaimer", "health-data", "ai-transfer").
   document  String
   version   String
   action    ConsentAction
@@ -181,4 +181,24 @@ model ConsentRecord {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, document, createdAt])
+}
+
+// ─── Access logs (Computer Crime Act §26 — LR) ──────────────────────────────
+
+/// Who reached the service, from where and when — kept at least 90 days.
+/// Deliberately separate from user content: no foreign key (the log outlives a
+/// deleted account), no request bodies, no food profile or menu data.
+model AccessLog {
+  id        String   @id @default(cuid())
+  /// Account ID when the request was signed in; null for signed-out requests.
+  userId    String?
+  ip        String
+  method    String
+  /// API path only — never the query string or body.
+  path      String
+  status    Int
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([userId, createdAt])
 }

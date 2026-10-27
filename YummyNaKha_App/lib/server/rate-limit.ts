@@ -21,6 +21,4 @@ export function rateLimit(key: string, limit: number, windowMs: number) {
   if (bucket.count > limit) throw errors.tooManyRequests();
 }
 
-export function clientIp(request: Request) {
-  return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || request.headers.get("x-real-ip") || "local";
-}
+export { clientIp } from "./access-log";

@@ -47,3 +47,8 @@ export const changePasswordSchema = z
     message: "New passwords don't match.",
     path: ["confirmPassword"],
   });
+
+/** Deleting the account asks for the password again, so an unattended signed-in phone can't do it. */
+export const deleteAccountSchema = z.object({
+  password: z.string({ error: "Please enter your password." }).min(1, "Please enter your password.").max(128),
+});

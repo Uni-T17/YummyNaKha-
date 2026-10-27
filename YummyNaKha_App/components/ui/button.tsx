@@ -3,7 +3,7 @@ import type { ComponentProps, ReactNode } from "react";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/cn";
 
-type Variant = "primary" | "dark" | "success" | "outline" | "google" | "ghost";
+type Variant = "primary" | "dark" | "success" | "danger" | "outline" | "google" | "ghost";
 type Size = "lg" | "md" | "sm" | "xs";
 
 interface StyleProps {
@@ -19,6 +19,7 @@ const variants: Record<Variant, string> = {
   primary: "bg-brand text-white font-black shadow-md hover:brightness-105",
   dark: "bg-ink text-white font-black shadow-xl hover:bg-[#292524]",
   success: "bg-success text-white font-black shadow-md",
+  danger: "bg-danger text-white font-black shadow-md hover:brightness-105",
   outline: "border border-line bg-white text-muted font-bold hover:border-brand hover:text-brand",
   google: "border border-line bg-white text-ink font-bold hover:border-faint",
   ghost: "text-subtle font-bold hover:text-muted",

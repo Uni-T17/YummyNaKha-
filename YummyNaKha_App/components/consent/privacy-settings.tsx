@@ -6,9 +6,13 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/feedback";
 import { BackHeader } from "@/components/ui/page-header";
 import { cn } from "@/lib/cn";
+import { withdrawConsent } from "@/lib/api/consent";
+import { ApiError } from "@/lib/api/client";
+import { appActions } from "@/lib/store/app-store";
 import {
   CONSENT_DOCUMENTS,
   getConsentStatus,
+  HEALTH_CONSENT,
   REQUIRED_DOCUMENTS,
   type ConsentDocumentId,
   type ConsentStatus,
@@ -24,9 +28,84 @@ const STATUS_LABEL: Record<ConsentStatus, { text: string; className: string }> =
   none: { text: "Not given", className: "bg-stone-soft text-muted" },
 };
 
+/** The optional health-data opt-in: given from My Taste, withdrawn here (PDPA). */
+function HealthConsentRow({ status, since, onRead, onWithdrawn }: {
+  status: ConsentStatus;
+  since?: string;
+  onRead: () => void;
+  onWithdrawn: () => void;
+}) {
+  const [confirming, setConfirming] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const doc = CONSENT_DOCUMENTS[HEALTH_CONSENT];
+  const label = STATUS_LABEL[status];
+
+  async function withdraw() {
+    setBusy(true);
+    try {
+      await withdrawConsent(HEALTH_CONSENT);
+      setConfirming(false);
+      setError("");
+      onWithdrawn();
+    } catch (e) {
+      setError(e instanceof ApiError ? e.message : "Couldn't withdraw. Please try again.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="rounded-2xl border border-line bg-white px-4 py-3.5 shadow-sm">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-sm font-bold text-ink">{doc.title}</p>
+          <p className="mt-0.5 text-xs text-muted">
+            Optional · version {doc.version}
+            {since && ` · ${status === "withdrawn" ? "withdrawn" : "given"} ${formatDate(since)}`}
+          </p>
+        </div>
+        <span className={cn("shrink-0 rounded-full px-2.5 py-0.5 text-xs font-bold", label.className)}>{label.text}</span>
+      </div>
+      {confirming ? (
+        <div className="mt-3 rounded-xl bg-danger-soft px-3 py-3">
+          <p className="mb-2.5 text-xs leading-relaxed text-ink">
+            This deletes every allergy and doctor-advice reason you saved. The foods stay on your Avoid list without a reason.
+          </p>
+          {error && <p className="mb-2 text-xs font-bold text-danger">{error}</p>}
+          <div className="flex gap-2">
+            <Button size="xs" variant="danger" className="flex-1 shadow-none" onClick={withdraw} disabled={busy}>
+              {busy && <Loader2 size={13} className="animate-spin" aria-hidden />}
+              Withdraw and delete
+            </Button>
+            <Button size="xs" variant="outline" className="flex-1" onClick={() => setConfirming(false)} disabled={busy}>
+              Cancel
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
+          <button type="button" onClick={onRead} className="min-h-8 text-xs font-bold text-brand hover:underline">
+            Read
+          </button>
+          {status === "accepted" && (
+            <button type="button" onClick={() => setConfirming(true)} className="min-h-8 text-xs font-bold text-danger hover:underline">
+              Withdraw
+            </button>
+          )}
+        </div>
+      )}
+      {status !== "accepted" && (
+        <p className="mt-1 text-xs text-subtle">Given when you first mark a food as an allergy or doctor-advised in My Taste.</p>
+      )}
+    </div>
+  );
+}
+
 export function PrivacySettings() {
   const { records, error: loadError, reload } = useConsentRecords();
   const [reading, setReading] = useState<ConsentDocumentId | null>(null);
+  const health = records ? getConsentStatus(records, HEALTH_CONSENT) : null;
 
   return (
     <main className="flex flex-1 flex-col pb-12">
@@ -88,6 +167,23 @@ export function PrivacySettings() {
             <p className="mt-2 text-xs leading-relaxed text-subtle">
               The Terms, Privacy Notice and AI &amp; Accuracy Disclaimer stay in place while you have an account. Your menus are read on our own server — nothing is sent to an outside AI provider, so there is no separate data-sharing consent.
             </p>
+          </section>
+
+          <section aria-labelledby="health-heading">
+            <h2 id="health-heading" className="mb-2 text-xs font-black tracking-wider text-subtle uppercase">
+              Health information
+            </h2>
+            {health && (
+              <HealthConsentRow
+                status={health.status}
+                since={health.record?.timestamp}
+                onRead={() => setReading(HEALTH_CONSENT)}
+                onWithdrawn={() => {
+                  reload();
+                  appActions.reloadProfile();
+                }}
+              />
+            )}
           </section>
 
           <section aria-labelledby="history-heading">

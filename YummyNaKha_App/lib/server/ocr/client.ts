@@ -68,6 +68,7 @@ export async function readMenuImage(image: { data: Uint8Array; mimeType: string 
     console.error("[ocr] unexpected response shape");
     throw errors.badGateway("We couldn't read this photo. Please try again.");
   }
-  if (!parsed.data.lines.some((l) => /[ก-ฮ]/.test(l.text))) throw new UnreadableImageError();
+  // Some Thai or English words, not just stray marks or numbers.
+  if (!parsed.data.lines.some((l) => /[ก-ฮ]/.test(l.text) || /[A-Za-z]{3}/.test(l.text))) throw new UnreadableImageError();
   return parsed.data;
 }

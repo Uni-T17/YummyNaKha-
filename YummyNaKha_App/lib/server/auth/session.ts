@@ -1,6 +1,7 @@
 import "server-only";
 import { createHmac, randomBytes } from "node:crypto";
 import { cookies } from "next/headers";
+import { noteAccountForRequest } from "../access-log";
 import { prisma } from "../db";
 import { getAuthSecret } from "../env";
 
@@ -40,6 +41,7 @@ export async function createSession(userId: string) {
   const expiresAt = expiryFromNow();
   await prisma.session.create({ data: { userId, tokenHash: hashToken(token), expiresAt } });
   await setCookie(token, expiresAt);
+  noteAccountForRequest(userId);
 }
 
 /** Returns the valid session for the request cookie, or null. */
@@ -57,6 +59,8 @@ export async function getSession() {
     await prisma.session.delete({ where: { id: session.id } }).catch(() => {});
     return null;
   }
+
+  noteAccountForRequest(session.userId);
 
   if (session.expiresAt.getTime() - Date.now() < RENEW_WITHIN_MS) {
     const expiresAt = expiryFromNow();

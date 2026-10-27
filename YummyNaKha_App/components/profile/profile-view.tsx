@@ -2,14 +2,15 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Check, ChevronRight, KeyRound, Loader2, LogOut, ShieldCheck } from "lucide-react";
+import { Check, ChevronRight, KeyRound, Loader2, LogOut, ShieldCheck, Trash2 } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
+import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { Button } from "@/components/ui/button";
 import { FieldError } from "@/components/ui/feedback";
 import { IconTile } from "@/components/ui/icon-tile";
 import { BackHeader } from "@/components/ui/page-header";
-import { inputClasses } from "@/components/ui/text-field";
-import { updateUsername } from "@/lib/api/auth";
+import { inputClasses, PasswordField } from "@/components/ui/text-field";
+import { deleteAccount, updateUsername } from "@/lib/api/auth";
 import { ApiError } from "@/lib/api/client";
 import { cn } from "@/lib/cn";
 import { appActions, useAppState } from "@/lib/store/app-store";
@@ -101,8 +102,76 @@ function UsernameRow({ name }: { name: string }) {
   );
 }
 
+/** Deletes the account and all its data after the password is entered again (PDPA). */
+function DeleteAccountSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [deleting, setDeleting] = useState(false);
+
+  function close() {
+    setPassword("");
+    setError("");
+    onClose();
+  }
+
+  async function confirm() {
+    setDeleting(true);
+    try {
+      await deleteAccount(password);
+      // RequireAuth sends the signed-out user back to Welcome.
+      appActions.accountDeleted();
+    } catch (e) {
+      setError(e instanceof ApiError ? e.message : "Couldn't delete your account. Please try again.");
+      setDeleting(false);
+    }
+  }
+
+  return (
+    <BottomSheet open={open} onClose={close} label="Delete account">
+      <IconTile icon={Trash2} className="mb-3 bg-danger-soft text-danger" />
+      <h2 className="mb-1 text-lg font-black text-ink">Delete your account?</h2>
+      <p className="mb-3 text-sm text-muted">This can&apos;t be undone. We permanently delete:</p>
+      <ul className="mb-4 flex list-disc flex-col gap-1 pl-5 text-sm text-body">
+        <li>your account, name and email</li>
+        <li>your Favs and Avoid list, including allergies and doctor advice</li>
+        <li>your menu photos, scan results and agreement history</li>
+      </ul>
+      <p className="mb-4 rounded-xl bg-stone-soft px-3 py-2.5 text-xs leading-relaxed text-muted">
+        Thai law (Computer Crime Act §26) requires us to keep access logs — account ID, IP address and time, no food or menu
+        data — for at least 90 days. They are deleted after that.
+      </p>
+      <form
+        className="flex flex-col gap-3"
+        onSubmit={(e) => {
+          e.preventDefault();
+          confirm();
+        }}
+      >
+        <PasswordField
+          label="Enter your password to confirm"
+          value={password}
+          autoComplete="current-password"
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setError("");
+          }}
+        />
+        <FieldError>{error}</FieldError>
+        <Button type="submit" variant="danger" size="md" fullWidth disabled={deleting || !password}>
+          {deleting && <Loader2 size={16} className="animate-spin" aria-hidden />}
+          Delete my account
+        </Button>
+        <Button type="button" variant="outline" size="md" fullWidth onClick={close} disabled={deleting}>
+          Cancel
+        </Button>
+      </form>
+    </BottomSheet>
+  );
+}
+
 export function ProfileView() {
   const { user } = useAppState();
+  const [deleting, setDeleting] = useState(false);
   if (!user) return null;
 
   function signOut() {
@@ -163,7 +232,18 @@ export function ProfileView() {
             <ChevronRight size={16} className="text-subtle" aria-hidden />
           </button>
         </section>
+
+        <button
+          type="button"
+          onClick={() => setDeleting(true)}
+          className="mx-auto mt-6 flex min-h-11 items-center gap-1.5 px-4 text-sm font-bold text-subtle hover:text-danger"
+        >
+          <Trash2 size={14} aria-hidden />
+          Delete account
+        </button>
       </div>
+
+      <DeleteAccountSheet open={deleting} onClose={() => setDeleting(false)} />
     </main>
   );
 }

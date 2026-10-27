@@ -71,6 +71,7 @@ export function DishDetailSheet({ dish, selected, onToggle, onClose }: DishDetai
               <p lang="th" className="font-thai text-base font-medium text-subtle">
                 {dish.nameThai}
               </p>
+              {dish.nameOnMenu && <p className="text-sm text-subtle">On the menu: {dish.nameOnMenu}</p>}
               <p className="text-lg font-black text-brand">{formatPrice(dish.price)}</p>
             </div>
           </div>

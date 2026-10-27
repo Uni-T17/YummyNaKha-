@@ -40,6 +40,7 @@ export function DishCard({ dish, selected, onToggle, onOpen }: DishCardProps) {
           <p lang="th" className="font-thai text-sm font-medium text-subtle">
             {dish.nameThai}
           </p>
+          {dish.nameOnMenu && <p className="text-xs text-subtle">On the menu: {dish.nameOnMenu}</p>}
           <p className="mt-0.5 text-sm font-black text-brand">{formatPrice(dish.price)}</p>
 
           {dish.favMatches.length > 0 && (

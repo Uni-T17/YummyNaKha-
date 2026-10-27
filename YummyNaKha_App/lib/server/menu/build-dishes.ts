@@ -3,7 +3,8 @@ import { normalizeTerm } from "@/lib/matching";
 import type { DishIconKey, ExtractedDish, InferredIngredient } from "@/lib/types";
 import type { GuideDish } from "../thai-food/dishes";
 import { INGREDIENTS, type IngredientKey } from "../thai-food/ingredients";
-import { matchMenuLine, readWords } from "../thai-food/match";
+import { thaiNameFor } from "../thai-food/english";
+import { isEnglishLine, matchMenuLine, readWords } from "../thai-food/match";
 import type { MenuWord } from "../thai-food/words";
 import type { MenuItem } from "./parse-ocr";
 
@@ -46,8 +47,8 @@ function ingredient(key: IngredientKey, certainty: "listed" | "common", note?: s
  * Proteins / styles offered as a choice: "ผัดพริกแกงหมู/ไก่", "น้ำข้น/น้ำใส".
  * The diner picks one, so none of them is certain to be in the dish.
  */
-function choicesIn(thai: string): Set<MenuWord> {
-  const segments = thai.split("/").map((part) => readWords(part).filter((w) => w.kind === "protein" || w.kind === "style"));
+function choicesIn(name: string): Set<MenuWord> {
+  const segments = name.split("/").map((part) => readWords(part).filter((w) => w.kind === "protein" || w.kind === "style"));
   if (segments.filter((words) => words.length > 0).length < 2) return new Set();
   return new Set(segments.flat());
 }
@@ -114,23 +115,27 @@ export function buildDishes(items: MenuItem[], analysisId: string): ExtractedDis
   const seen = new Set<string>();
 
   for (const item of items) {
+    const english = isEnglishLine(item.name);
+    // English menus print a price next to every dish; a line without one is a heading or a description.
+    if (english && item.price === null) continue;
     // "(ราคาตามขนาดตัว)" — price by size — and other bracketed notes aren't part of the name.
-    const { dish, words, quality, coverage } = matchMenuLine(item.thai.replace(/\([^)]*\)?/g, " "));
+    const { dish, words, quality, coverage, partlyRead } = matchMenuLine(item.name.replace(/\([^)]*\)?/g, " "));
     // A heading or the restaurant name: nothing recognised, or only a loose match, and no price.
     if ((quality === "none" || quality === "fuzzy") && item.price === null) continue;
-    // Just a meat ("หมูชิ้น", "ไก่สับ", "ทะเล +10") is a choice for the made-to-order dishes, not a dish.
-    if (quality === "decoded" && words.every((w) => w.kind === "protein" || w.kind === "style")) continue;
+    // Just a meat ("หมูชิ้น", "ไก่สับ", "ทะเล +10") is a choice for the made-to-order dishes, not a dish —
+    // unless an English line names more than the meat ("Tofu with Black Bean Sauce").
+    if (quality === "decoded" && words.every((w) => w.kind === "protein" || w.kind === "style") && !(english && coverage < 1)) continue;
     // Without a price, a decoded line must clearly name a dish, not a section ("เมนูทอด").
     const named = (kinds: MenuWord["kind"][]) => words.some((w) => kinds.includes(w.kind));
     if (quality === "decoded" && item.price === null && !(coverage >= 0.85 && named(["method", "dish"]) && named(["protein", "ingredient"]))) {
       continue;
     }
 
-    const dedupeKey = `${item.thai}|${item.price}`;
+    const dedupeKey = `${item.name}|${item.price}`;
     if (seen.has(dedupeKey)) continue;
     seen.add(dedupeKey);
 
-    const choices = choicesIn(item.thai);
+    const choices = choicesIn(item.name);
     // Words on an unrecognised line still count for allergies, but only as "may contain".
     const ingredients = collectIngredients(dish, words, choices, quality !== "none");
     const uncertainties: string[] = [];
@@ -143,6 +148,11 @@ export function buildDishes(items: MenuItem[], analysisId: string): ExtractedDis
     } else {
       if (quality === "fuzzy") {
         uncertainties.push(`We read this as “${dish.th[0]}” but may have misread the name. Check it with restaurant staff.`);
+      }
+      if (partlyRead) {
+        uncertainties.push(
+          `Part of this dish's name isn't in our guide, so it may be a special version of “${dish.en}” with other ingredients. Ask restaurant staff.`,
+        );
       }
       if (dish.needsProtein && !words.some((w) => w.kind === "protein")) {
         uncertainties.push("The menu doesn't say which meat or seafood is used. Ask restaurant staff.");
@@ -164,17 +174,25 @@ export function buildDishes(items: MenuItem[], analysisId: string): ExtractedDis
       ]),
     );
     const icon = pickIcon(tags);
-
-    dishes.push({
-      id: `${analysisId}-${dishes.length + 1}`,
-      // Thai doesn't put spaces inside a name; OCR sometimes does ("ผัดกะ เพรา").
-      nameThai: item.thai.replace(/(?<=[฀-๿])\s+(?=[฀-๿])/g, ""),
-      nameEn:
-        quality !== "none"
+    // A guide dish gets the guide's clear English name ("Pad Kra Pao Gai" → "Holy Basil Stir-fry
+    // with chicken"); an unlisted dish on an English menu keeps the restaurant's own wording.
+    const nameEn =
+      english && !dish
+        ? item.name.trim()
+        : quality !== "none"
           ? englishName(dish, words, choices)
           : words.length > 0
             ? `Unlisted dish (mentions ${words.map((w) => w.en).join(", ")})`
-            : "Unlisted dish",
+            : "Unlisted dish";
+
+    dishes.push({
+      id: `${analysisId}-${dishes.length + 1}`,
+      // On an English menu the Thai name for ordering comes from the guide; an
+      // unlisted English dish keeps its English name. Thai doesn't put spaces
+      // inside a name; OCR sometimes does ("ผัดกะ เพรา").
+      nameThai: english ? (dish ? thaiNameFor(dish, words) : item.name.trim()) : item.name.replace(/(?<=[฀-๿])\s+(?=[฀-๿])/g, ""),
+      nameEn,
+      ...(english && nameEn.toLowerCase() !== item.name.trim().toLowerCase() ? { nameOnMenu: item.name.trim() } : {}),
       price: item.price,
       tags,
       ingredients,
