@@ -308,8 +308,11 @@ export function buildDishes(items: MenuItem[], analysisId: string, pairs: MeatPa
           ? // "ข้าวผัดรถไฟ" isn't plain fried rice: say so, so it doesn't look like a duplicate.
             `${englishName(dish, words, choices)}${partlyRead ? " (special version)" : ""}`
           : words.length > 0
-            ? `Unlisted dish (mentions ${words.map((w) => w.en).join(", ")})`
-            : "Unlisted dish";
+            ? // A rough reading from the words we know ("Grilled pork belly with vegetables"), marked as rough in the UI.
+              englishName(null, words, choices)
+            : // Nothing recognised: show the Thai name itself rather than a vague label.
+              item.name.replace(/(?<=[฀-๿])\s+(?=[฀-๿])/g, "").trim();
+    const nameQuality = english || quality !== "none" ? undefined : words.length > 0 ? ("rough" as const) : ("untranslated" as const);
 
     // The diner picks a meat from the menu's list; the price is the cheapest one unless the dish has its own.
     const pickMeat = !!dish?.needsProtein && !words.some((w) => w.kind === "protein") && meatChoices.length > 0;
@@ -331,6 +334,7 @@ export function buildDishes(items: MenuItem[], analysisId: string, pairs: MeatPa
       iconBg: ICON_STYLES[icon].bg,
       iconColor: ICON_STYLES[icon].color,
       inGuide: dish !== null,
+      ...(nameQuality ? { nameQuality } : {}),
       ...(dish ? { romanized: dish.romanized, description: dish.description, spice: dish.spice } : {}),
       ...(item.spot ? { spot: item.spot } : {}),
       ...(uncertainties.length > 0 ? { uncertainties } : {}),

@@ -58,6 +58,8 @@ export const VARIANTS: Variant[] = [
   { th: ["ปลากระป๋อง", "ปลากระป้อง"], en: "canned fish", kind: "protein", ingredients: ["fish", "tomato sauce"] },
   { th: ["ปลาช่อน"], en: "snakehead fish", kind: "protein", ingredients: ["fish"] },
   { th: ["ปลาแซลมอน", "แซลมอน"], en: "salmon", kind: "protein", ingredients: ["fish"] },
+  { th: ["ปลาทูน่า", "ทูน่า"], en: "tuna", kind: "protein", ingredients: ["fish"] },
+  { th: ["เบคอน"], en: "bacon", kind: "protein", ingredients: ["pork"] },
   { th: ["ปลา"], en: "fish", kind: "protein", ingredients: ["fish"] },
   { th: ["หอยแมลงภู่"], en: "mussels", kind: "protein", ingredients: ["mussel"] },
   { th: ["หอยนางรม"], en: "oysters", kind: "protein", ingredients: ["oyster"] },

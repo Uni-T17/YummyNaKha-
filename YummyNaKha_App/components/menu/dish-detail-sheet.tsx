@@ -9,6 +9,7 @@ import { SpeakButton } from "@/components/ui/speak-button";
 import { cn } from "@/lib/cn";
 import { formatPrice, reasonLabel, SPICE_LABELS } from "@/lib/format";
 import type { Dish, InferredIngredient, SpiceLevel as Spice } from "@/lib/types";
+import { NameNote, titleIsThai } from "./name-note";
 import { ReportProblem } from "./report-problem";
 import { DISH_ICONS, ReasonIcon, StatusBadge } from "./status";
 
@@ -72,11 +73,19 @@ export function DishDetailSheet({ dish, selected, onToggle, onClose, onShowOnPho
             />
             <div>
               <StatusBadge status={dish.status} className="mb-1.5" />
-              <h2 className="text-xl leading-tight font-black text-ink">{dish.aiGuess?.nameEn ?? dish.nameEn}</h2>
+              <h2
+                lang={titleIsThai(dish) ? "th" : undefined}
+                className={cn("text-xl leading-tight font-black text-ink", titleIsThai(dish) && "font-thai")}
+              >
+                {dish.aiGuess?.nameEn ?? dish.nameEn}
+              </h2>
+              <NameNote dish={dish} className="mt-0.5" />
               <div className="flex items-center gap-2">
-                <p lang="th" className="font-thai text-base font-medium text-subtle">
-                  {dish.nameThai}
-                </p>
+                {!titleIsThai(dish) && (
+                  <p lang="th" className="font-thai text-base font-medium text-subtle">
+                    {dish.nameThai}
+                  </p>
+                )}
                 <SpeakButton text={dish.nameThai} label={`Listen to ${dish.nameEn} in Thai`} />
               </div>
               {dish.nameOnMenu && <p className="text-sm text-subtle">On the menu: {dish.nameOnMenu}</p>}

@@ -59,6 +59,12 @@ export const WORDS: MenuWord[] = [
   { th: ["ตำ"], en: "pounded salad", kind: "dish", ingredients: ["chili", "garlic", "lime"], mayContain: ["fish sauce", "palm sugar"], tags: ["salad", "spicy"] },
   { th: ["ยำ"], en: "spicy salad", kind: "dish", ingredients: ["chili", "lime"], mayContain: ["fish sauce", "sugar"], tags: ["salad", "spicy"] },
   { th: ["สเต็ก", "สเต๊ก"], en: "steak", kind: "dish", ingredients: [], mayContain: ["butter", "pepper"], tags: ["grilled"] },
+  // Western dishes common on Thai café menus.
+  { th: ["ชนิทเซล", "ชนิทเซิล"], en: "Schnitzel", kind: "method", ingredients: ["wheat flour", "egg", "cooking oil"], tags: ["fried"] },
+  { th: ["ซีซาร์"], en: "Caesar", kind: "flavor", ingredients: [], mayContain: ["cheese", "egg", "fish", "mayonnaise"] },
+  { th: ["คาโบนาร่า", "คาร์โบนาร่า"], en: "carbonara", kind: "flavor", ingredients: ["egg", "cheese"], mayContain: ["cream", "pork"] },
+  { th: ["ครีม"], en: "cream", kind: "ingredient", ingredients: ["cream"] },
+  { th: ["เซ็ต", "เซท", "ชุด"], en: "set", kind: "dish", ingredients: [] },
   // Its own word so นม (milk) isn't read inside ขนม; ขนมจีน / ขนมปัง still win as longer matches.
   { th: ["ขนม"], en: "Thai dessert", kind: "dish", ingredients: [], mayContain: ["coconut milk", "sugar"], tags: ["dessert", "sweet"] },
   { th: ["ปั่น"], en: "smoothie", kind: "dish", ingredients: [], mayContain: ["sugar"], tags: ["drink"] },

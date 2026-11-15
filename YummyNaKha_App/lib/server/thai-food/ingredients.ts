@@ -151,6 +151,7 @@ export const INGREDIENTS = {
   // More dairy, eggs, wheat
   butter: { th: "เนย", groups: ["butter", "milk", "dairy", "lactose"] },
   cheese: { th: "ชีส", groups: ["cheese", "milk", "dairy", "lactose"] },
+  cream: { th: "ครีม", groups: ["milk", "dairy", "lactose"] },
   "ice cream": { th: "ไอศกรีม", groups: ["milk", "dairy", "lactose"] },
   mayonnaise: { th: "มายองเนส", groups: ["egg"] },
   bread: { th: "ขนมปัง", groups: ["wheat", "gluten"] },

@@ -7,6 +7,7 @@ import { IconTile } from "@/components/ui/icon-tile";
 import { cn } from "@/lib/cn";
 import { formatPrice } from "@/lib/format";
 import type { Dish } from "@/lib/types";
+import { NameNote, titleIsThai } from "./name-note";
 import { DISH_ICONS, REASON_STYLES, ReasonIcon, STATUS_STYLES, StatusBadge } from "./status";
 
 interface DishCardProps {
@@ -36,7 +37,10 @@ export function DishCard({ dish, selected, onToggle, onOpen }: DishCardProps) {
         />
         <div className="min-w-0 flex-1">
           <StatusBadge status={dish.status} className="mb-1.5" />
-          <h3 className="text-base leading-tight font-black text-ink">
+          <h3
+            lang={titleIsThai(dish) ? "th" : undefined}
+            className={cn("text-base leading-tight font-black text-ink", titleIsThai(dish) && "font-thai text-lg")}
+          >
             {dish.aiGuess?.nameEn ?? dish.nameEn}
             {dish.aiGuess && (
               <span className="ml-1.5 inline-block rounded-full bg-stone-soft px-1.5 py-0.5 align-middle text-[10px] font-bold text-muted">
@@ -44,9 +48,12 @@ export function DishCard({ dish, selected, onToggle, onOpen }: DishCardProps) {
               </span>
             )}
           </h3>
-          <p lang="th" className="font-thai text-sm font-medium text-subtle">
-            {dish.nameThai}
-          </p>
+          {!titleIsThai(dish) && (
+            <p lang="th" className="font-thai text-sm font-medium text-subtle">
+              {dish.nameThai}
+            </p>
+          )}
+          <NameNote dish={dish} className="mt-0.5" />
           {dish.nameOnMenu && <p className="text-xs text-subtle">On the menu: {dish.nameOnMenu}</p>}
           <p className="mt-0.5 text-sm font-black text-brand">
             {formatPrice(dish.price, dish.priceFrom)}

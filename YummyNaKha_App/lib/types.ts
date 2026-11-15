@@ -97,6 +97,12 @@ export interface ExtractedDish {
   description?: string;
   /** 0 = not spicy … 3 = very spicy (standard recipe). */
   spice?: SpiceLevel;
+  /**
+   * How the English name was made, when not from the dish guide or the menu itself:
+   * "rough" = pieced together from the few words we recognised; "untranslated" =
+   * no word recognised, so nameEn is the Thai name. Shown as a small note under the title.
+   */
+  nameQuality?: "rough" | "untranslated";
   /** false when the dish isn't in our Thai dish guide, so its ingredients are unknown. */
   inGuide?: boolean;
   /**
