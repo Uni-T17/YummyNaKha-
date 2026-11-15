@@ -17,7 +17,8 @@ const HIDDEN_ON = ["/analyzing", "/consent", "/order/thai", "/profile"];
 
 export function BottomNav() {
   const pathname = usePathname();
-  const { hasOnboarded, selectedIds } = useAppState();
+  const { hasOnboarded, selectedIds, quantities } = useAppState();
+  const portions = selectedIds.reduce((sum, id) => sum + (quantities[id] ?? 1), 0);
 
   if (!hasOnboarded || HIDDEN_ON.some((p) => pathname.startsWith(p))) return null;
 
@@ -28,7 +29,7 @@ export function BottomNav() {
     >
       {ITEMS.map(({ href, label, icon: Icon, matches }) => {
         const active = matches.some((m) => pathname === m || pathname.startsWith(`${m}/`));
-        const badge = href === "/order" && selectedIds.length > 0 ? selectedIds.length : null;
+        const badge = href === "/order" && portions > 0 ? portions : null;
         return (
           <Link
             key={href}

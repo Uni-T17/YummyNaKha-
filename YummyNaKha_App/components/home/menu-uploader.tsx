@@ -87,14 +87,19 @@ export function MenuUploader() {
           onClick={openPicker}
           {...dropHandlers}
           className={cn(
-            "flex w-full flex-col items-center gap-3 rounded-3xl border-2 border-dashed py-14 transition-colors hover:border-brand",
-            dragging ? "border-brand bg-brand-tint/50" : "border-line",
+            "group flex w-full flex-col items-center gap-3 rounded-3xl border-2 border-dashed px-6 py-12 transition-all hover:border-brand hover:bg-brand-tint/40 active:scale-[0.99]",
+            dragging ? "border-brand bg-brand-tint/60" : "border-brand-soft bg-white",
           )}
         >
-          <IconTile icon={Camera} size="lg" className="h-14 w-14 rounded-2xl bg-brand-tint text-brand" />
+          <IconTile
+            icon={Camera}
+            size="lg"
+            className="h-16 w-16 rounded-full bg-brand text-white shadow-md shadow-brand/25 transition-transform group-hover:scale-105"
+          />
           <span className="text-center">
-            <span className="block text-base font-bold text-ink">Drop your menu here</span>
-            <span className="mt-0.5 block text-xs text-subtle">or tap to choose menu images</span>
+            <span className="block text-base font-black text-ink">Snap or choose a menu photo</span>
+            <span className="mt-1 block text-xs text-muted">One page per photo, taken straight on. You can add several.</span>
+            <span className="mt-1 hidden text-xs text-subtle md:block">Or drop images here</span>
           </span>
         </button>
       ) : (

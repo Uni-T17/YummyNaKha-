@@ -71,3 +71,40 @@ export function staffPhrases(profile: TasteProfile): StaffPhrase[] {
 
   return phrases.map((p) => ({ ...p, thai: p.thai.replace(/\s+/g, " ").trim() }));
 }
+
+/** A request the diner can add to one dish on the order ("ไม่เผ็ด" — not spicy). */
+export interface DishRequest {
+  id: string;
+  thai: string;
+  english: string;
+}
+
+/** Common requests every diner may want. DRAFT TEXT — Thai to be reviewed. */
+const COMMON_REQUESTS: DishRequest[] = [
+  { id: "spice-0", thai: "ไม่เผ็ด", english: "Not spicy" },
+  { id: "spice-1", thai: "เผ็ดน้อย", english: "A little spicy" },
+  { id: "spice-3", thai: "เผ็ดมาก", english: "Extra spicy" },
+  { id: "no-msg", thai: "ไม่ใส่ผงชูรส", english: "No MSG" },
+  { id: "add-egg", thai: "เพิ่มไข่ดาว", english: "Add a fried egg" },
+  { id: "takeaway", thai: "ใส่กล่องกลับบ้าน", english: "Take away" },
+];
+
+/**
+ * Requests offered under each dish on My Order: leave out each Avoid-list
+ * item we have a Thai word for, then the common ones. Picked from a list, not
+ * typed, so staff always get correct Thai and no text needs translating.
+ * A request is not a guarantee: the dish's 🟡/🔴 advice to ask staff still applies.
+ */
+export function dishRequestOptions(profile: TasteProfile): DishRequest[] {
+  const avoid = profile.avoid
+    .filter((a) => a.nameThai)
+    .map((a) => ({
+      id: `no-${a.name.toLowerCase()}`,
+      thai: a.reason === "allergy" ? `ไม่ใส่${a.nameThai} (แพ้)` : `ไม่ใส่${a.nameThai}`,
+      english: a.reason === "allergy" ? `No ${a.name.toLowerCase()} (allergy)` : `No ${a.name.toLowerCase()}`,
+    }));
+  // The diner's own spice level first among the spice options.
+  const ownSpice = profile.spice !== undefined ? `spice-${profile.spice}` : null;
+  const common = [...COMMON_REQUESTS].sort((a, b) => Number(b.id === ownSpice) - Number(a.id === ownSpice));
+  return [...avoid, ...common];
+}

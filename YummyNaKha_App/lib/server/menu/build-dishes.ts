@@ -1,6 +1,6 @@
 import "server-only";
 import { normalizeTerm } from "@/lib/matching";
-import type { DishChoice, DishIconKey, ExtractedDish, InferredIngredient } from "@/lib/types";
+import type { DishChoice, DishIconKey, ExtractedDish, InferredIngredient, OtherMenuLine } from "@/lib/types";
 import type { GuideDish } from "../thai-food/dishes";
 import { INGREDIENTS, type IngredientKey } from "../thai-food/ingredients";
 import { thaiNameFor } from "../thai-food/english";
@@ -112,14 +112,19 @@ function englishName(dish: GuideDish | null, words: MenuWord[], choices: Set<Men
 
 /** Lines that only name a meat with a price ("หมูชิ้น 50.-", "ไก่กรอบ 60.-", "ทะเล 70.-"). */
 function isMeatChoice(item: MenuItem, match: ReturnType<typeof matchMenuLine>) {
-  const { words, quality } = match;
+  const { words, quality, coverage } = match;
   return (
     item.price !== null &&
     quality === "decoded" &&
+    // The whole line is the meat ("หมูชิ้น"), not a dish with unknown words ("ตำกุ้งสด", "สเต็กปลาแซลมอน").
+    coverage >= MEAT_LINE_COVERAGE &&
     words.some((w) => w.kind === "protein") &&
     words.every((w) => w.kind === "protein" || w.kind === "style" || w.kind === "method")
   );
 }
+
+/** Share of a line that must be read as meat / style words for it to be just a meat. */
+const MEAT_LINE_COVERAGE = 0.85;
 
 /** At least this many meat lines make a "pick your meat" list rather than a few odd items. */
 const MIN_MEAT_CHOICES = 3;
@@ -163,8 +168,12 @@ export interface MeatPair {
  * each dish + meat into its own dish with that meat's price ("ข้าวผัด" +
  * "ไก่ชิ้น 50.-" → ข้าวผัดไก่ชิ้น ฿50); dishes without pairs get the meat list
  * as choices instead.
+ *
+ * Lines that don't become a dish (headings, the shop name, dishes we can't
+ * recognise without a price) are added to `other` when given, with their place
+ * on the menu, so the diner still sees every line that was read.
  */
-export function buildDishes(items: MenuItem[], analysisId: string, pairs: MeatPair[] = []): ExtractedDish[] {
+export function buildDishes(items: MenuItem[], analysisId: string, pairs: MeatPair[] = [], other?: OtherMenuLine[]): ExtractedDish[] {
   const dishes: ExtractedDish[] = [];
   const seen = new Set<string>();
 
@@ -180,6 +189,7 @@ export function buildDishes(items: MenuItem[], analysisId: string, pairs: MeatPa
         .map((p) => ({
           name: isEnglishLine(p.dish.name) ? `${p.dish.name.trim()} ${p.meat.name.trim()}` : `${p.dish.name.trim()}${p.meat.name.trim()}`,
           price: p.dish.price ?? p.meat.price,
+          spot: p.dish.spot,
         }));
     });
   }
@@ -203,21 +213,46 @@ export function buildDishes(items: MenuItem[], analysisId: string, pairs: MeatPa
       : [];
   const cheapestMeat = Math.min(...meatChoices.map((c) => c.price ?? Infinity));
 
+  const otherSeen = new Set<string>();
+  /** Not a dish — but keep it, in place, so nothing read from the menu is hidden. */
+  const keepAsOther = (item: MenuItem) => {
+    const text = (isEnglishLine(item.name) ? item.name : item.name.replace(/(?<=[฀-๿])\s+(?=[฀-๿])/g, "")).trim();
+    const shown = item.price === null ? text : `${text} ${item.price}`;
+    if (!other || !text || otherSeen.has(shown)) return;
+    otherSeen.add(shown);
+    other.push({ text: shown, before: dishes.length });
+  };
+
   for (const item of items) {
     const english = isEnglishLine(item.name);
     // English menus print a price next to every dish; a line without one is a heading or a description.
-    if (english && item.price === null) continue;
+    if (english && item.price === null) {
+      keepAsOther(item);
+      continue;
+    }
     if (meatMenu && meatLines.includes(item)) continue; // a meat choice: shown with, or combined into, each dish
     // "(ราคาตามขนาดตัว)" — price by size — and other bracketed notes aren't part of the name.
     const { dish, words, quality, coverage, partlyRead } = matches.get(item)!;
     // A heading or the restaurant name: nothing recognised, or only a loose match, and no price.
-    if ((quality === "none" || quality === "fuzzy") && item.price === null) continue;
+    if ((quality === "none" || quality === "fuzzy") && item.price === null) {
+      keepAsOther(item);
+      continue;
+    }
     // Just a meat ("หมูชิ้น", "ไก่สับ", "ทะเล +10") is a choice for the made-to-order dishes, not a dish —
     // unless an English line names more than the meat ("Tofu with Black Bean Sauce").
-    if (quality === "decoded" && words.every((w) => w.kind === "protein" || w.kind === "style") && !(english && coverage < 1)) continue;
+    if (
+      quality === "decoded" &&
+      coverage >= MEAT_LINE_COVERAGE &&
+      words.every((w) => w.kind === "protein" || w.kind === "style") &&
+      !(english && coverage < 1)
+    ) {
+      keepAsOther(item);
+      continue;
+    }
     // Without a price, a decoded line must clearly name a dish, not a section ("เมนูทอด").
     const named = (kinds: MenuWord["kind"][]) => words.some((w) => kinds.includes(w.kind));
     if (quality === "decoded" && item.price === null && !(coverage >= 0.85 && named(["method", "dish"]) && named(["protein", "ingredient"]))) {
+      keepAsOther(item);
       continue;
     }
 
@@ -297,6 +332,7 @@ export function buildDishes(items: MenuItem[], analysisId: string, pairs: MeatPa
       iconColor: ICON_STYLES[icon].color,
       inGuide: dish !== null,
       ...(dish ? { romanized: dish.romanized, description: dish.description, spice: dish.spice } : {}),
+      ...(item.spot ? { spot: item.spot } : {}),
       ...(uncertainties.length > 0 ? { uncertainties } : {}),
     });
   }

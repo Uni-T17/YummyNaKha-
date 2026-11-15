@@ -24,7 +24,7 @@ export function DishCard({ dish, selected, onToggle, onOpen }: DishCardProps) {
       onClick={onOpen}
       className={cn(
         "flex cursor-pointer flex-col rounded-2xl border p-4 transition-all hover:shadow-md active:scale-[0.99]",
-        selected ? cn(style.cardSelected, "border-brand shadow-[0_0_0_2px_#FF654230]") : cn(style.card, style.border, "shadow-[0_1px_3px_rgba(0,0,0,0.04)]"),
+        selected ? cn(style.cardSelected, "border-brand shadow-[0_0_0_3px_var(--color-brand-soft)]") : cn(style.card, style.border, "shadow-[0_1px_3px_rgba(0,0,0,0.04)]"),
       )}
       aria-label={`${dish.nameEn}, ${style.label}, ${formatPrice(dish.price, dish.priceFrom)}${selected ? ", selected" : ""}`}
     >

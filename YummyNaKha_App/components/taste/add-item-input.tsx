@@ -9,7 +9,7 @@ interface AddItemInputProps {
   placeholder: string;
   label: string;
   onSubmit: (value: string) => void;
-  /** Coral for Favs, ink for the Avoid list (as in Figma). */
+  /** Brand green for Favs, ink for the Avoid list (as in Figma). */
   tone?: "brand" | "ink";
 }
 

@@ -3,6 +3,7 @@ import { z } from "zod";
 import { getOcrSpaceConfig } from "../env";
 import { errors } from "../http";
 import type { OcrResult } from "./client";
+import { imageSize } from "../images/image-size";
 
 // The OCR.space API (free tier: 1 MB per photo, 500 photos a day). Used only
 // when NEXT_PUBLIC_OCR_PROVIDER=ocrspace, and only after the user accepted the
@@ -84,9 +85,11 @@ export async function readWithOcrSpace(image: { data: Uint8Array; mimeType: stri
       return { text: l.LineText.trim(), score: 1, box: [x0, y0, x1, y1] as [number, number, number, number] };
     });
 
+  // Boxes are on the photo as uploaded; its real size (from the file header) lets the app place them on it.
+  const size = imageSize(image.data, image.mimeType);
   return {
-    width: Math.max(0, ...lines.map((l) => l.box[2])),
-    height: Math.max(0, ...lines.map((l) => l.box[3])),
+    width: size?.width ?? Math.max(0, ...lines.map((l) => l.box[2])),
+    height: size?.height ?? Math.max(0, ...lines.map((l) => l.box[3])),
     lines,
     model: `ocr.space/engine${engine}`,
     elapsedMs: Date.now() - started,

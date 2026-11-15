@@ -1,13 +1,13 @@
 import "server-only";
 import { Prisma, ProcessingStatus } from "@/lib/generated/prisma/client";
-import type { ExtractedDish } from "@/lib/types";
+import type { ExtractedDish, OtherMenuLine } from "@/lib/types";
 import { AI_HELPER_CONSENT, hasAccepted } from "@/lib/consent";
 import { assertProcessingConsent, listConsentRecords } from "../consent/service";
 import { prisma } from "../db";
 import { countUnlistedDishes } from "../guide-feedback/unlisted";
 import { errors, HttpError } from "../http";
 import { buildDishes, findMeatMenu } from "../menu/build-dishes";
-import { parseMenuLines } from "../menu/parse-ocr";
+import { parseMenuLines, placeOnPhoto } from "../menu/parse-ocr";
 import { GUIDE_VERSION } from "../thai-food/dishes";
 import { getPreferenceFlags } from "../preferences/service";
 import { pairDishesWithMeats } from "./pair-meats";
@@ -24,6 +24,8 @@ import { processMenuImage } from "./process-image";
 export interface MenuAnalysisResult {
   analysisId: string;
   dishes: ExtractedDish[];
+  /** Lines read from the menu that aren't dishes (headings, unrecognised lines), in menu order. */
+  otherLines: OtherMenuLine[];
   summary: string;
 }
 
@@ -49,11 +51,12 @@ export async function analyzeMenu(userId: string, imageIds: string[]): Promise<M
   });
 
   try {
-    const items = pages.flatMap((page) => parseMenuLines(page.lines));
+    const items = pages.flatMap((page, i) => placeOnPhoto(parseMenuLines(page.lines), i, page.size));
     const meatMenu = findMeatMenu(items);
     const pairing =
       meatMenu && hasAccepted(await listConsentRecords(userId), [AI_HELPER_CONSENT]) ? await pairDishesWithMeats(meatMenu) : null;
-    const dishes = buildDishes(items, analysis.id, pairing?.pairs);
+    const otherLines: OtherMenuLine[] = [];
+    const dishes = buildDishes(items, analysis.id, pairing?.pairs, otherLines);
     if (dishes.length === 0) {
       throw new HttpError(422, "MENU_UNREADABLE", "We couldn't find any dishes in this photo. Try a clearer photo of the dish list.");
     }
@@ -71,13 +74,14 @@ export async function analyzeMenu(userId: string, imageIds: string[]): Promise<M
           dishes,
           summary,
           items,
+          otherLines,
           ...(pairing ? { pairing: { model: pairing.model, pairs: pairing.pairs.map((p) => [p.dish.name, p.meat.name]) } } : {}),
         } as unknown as Prisma.InputJsonValue,
       },
     });
 
     await countUnlistedDishes(dishes);
-    return { analysisId: analysis.id, dishes, summary };
+    return { analysisId: analysis.id, dishes, otherLines, summary };
   } catch (error) {
     const message = error instanceof HttpError ? error.message : "Menu analysis failed.";
     await prisma.menuAnalysis

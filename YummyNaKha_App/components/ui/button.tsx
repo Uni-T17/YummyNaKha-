@@ -16,8 +16,8 @@ const base =
   "inline-flex items-center justify-center gap-2 select-none transition-all active:scale-95 disabled:pointer-events-none disabled:opacity-50";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-brand text-white font-black shadow-md hover:brightness-105",
-  dark: "bg-ink text-white font-black shadow-xl hover:bg-[#292524]",
+  primary: "bg-brand text-white font-black shadow-md shadow-brand/20 hover:bg-brand-strong",
+  dark: "bg-ink text-white font-black shadow-xl hover:bg-body",
   success: "bg-success text-white font-black shadow-md",
   danger: "bg-danger text-white font-black shadow-md hover:brightness-105",
   outline: "border border-line bg-white text-muted font-bold hover:border-brand hover:text-brand",

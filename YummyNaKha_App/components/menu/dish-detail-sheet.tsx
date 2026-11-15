@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { AlertTriangle, Check, CircleHelp, Flame, Heart, Info, ShoppingCart, Sparkles, X } from "lucide-react";
+import { AlertTriangle, Check, ChevronRight, CircleHelp, Flame, Heart, Info, MapPin, ShoppingCart, Sparkles, X } from "lucide-react";
 import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { Button } from "@/components/ui/button";
 import { IconTile } from "@/components/ui/icon-tile";
+import { SpeakButton } from "@/components/ui/speak-button";
 import { cn } from "@/lib/cn";
 import { formatPrice, reasonLabel, SPICE_LABELS } from "@/lib/format";
 import type { Dish, InferredIngredient, SpiceLevel as Spice } from "@/lib/types";
@@ -52,9 +53,13 @@ interface DishDetailSheetProps {
   selected: boolean;
   onToggle: () => void;
   onClose: () => void;
+  /** Set when the dish can be shown on the menu photo. */
+  onShowOnPhoto?: () => void;
+  /** Why the dish can't be shown on the photo, when it can't. */
+  photoHint?: string;
 }
 
-export function DishDetailSheet({ dish, selected, onToggle, onClose }: DishDetailSheetProps) {
+export function DishDetailSheet({ dish, selected, onToggle, onClose, onShowOnPhoto, photoHint }: DishDetailSheetProps) {
   return (
     <BottomSheet open={dish !== null} onClose={onClose} label={dish ? `${dish.nameEn} details` : "Dish details"}>
       {dish && (
@@ -68,13 +73,33 @@ export function DishDetailSheet({ dish, selected, onToggle, onClose }: DishDetai
             <div>
               <StatusBadge status={dish.status} className="mb-1.5" />
               <h2 className="text-xl leading-tight font-black text-ink">{dish.aiGuess?.nameEn ?? dish.nameEn}</h2>
-              <p lang="th" className="font-thai text-base font-medium text-subtle">
-                {dish.nameThai}
-              </p>
+              <div className="flex items-center gap-2">
+                <p lang="th" className="font-thai text-base font-medium text-subtle">
+                  {dish.nameThai}
+                </p>
+                <SpeakButton text={dish.nameThai} label={`Listen to ${dish.nameEn} in Thai`} />
+              </div>
               {dish.nameOnMenu && <p className="text-sm text-subtle">On the menu: {dish.nameOnMenu}</p>}
               <p className="text-lg font-black text-brand">{formatPrice(dish.price, dish.priceFrom)}</p>
             </div>
           </div>
+
+          {onShowOnPhoto && (
+            <button
+              type="button"
+              onClick={onShowOnPhoto}
+              className="mb-4 flex w-full items-center gap-3 rounded-2xl border-2 border-brand bg-brand-tint p-3 text-left transition-colors hover:bg-brand-soft active:scale-[0.99]"
+            >
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand text-white shadow-sm">
+                <MapPin size={20} aria-hidden />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-base font-black text-brand">Show on menu photo</span>
+                <span className="block text-xs text-muted">See where this dish is on your menu — point at it to order</span>
+              </span>
+              <ChevronRight size={20} className="shrink-0 text-brand" aria-hidden />
+            </button>
+          )}
 
           {dish.aiGuess && (
             <section className="mb-4 rounded-2xl border border-dashed border-line p-4">
@@ -230,6 +255,26 @@ export function DishDetailSheet({ dish, selected, onToggle, onClose }: DishDetai
           )}
 
           <ReportProblem key={dish.id} dish={dish} />
+
+          {onShowOnPhoto ? (
+            <Button
+              variant="outline"
+              size="md"
+              fullWidth
+              className="mb-3 border-2 border-brand bg-brand-tint text-brand hover:bg-brand-soft"
+              onClick={onShowOnPhoto}
+            >
+              <MapPin size={18} aria-hidden />
+              Show on menu photo
+            </Button>
+          ) : (
+            photoHint && (
+              <p className="mb-3 flex items-center justify-center gap-1.5 text-center text-xs text-subtle">
+                <MapPin size={12} aria-hidden />
+                {photoHint}
+              </p>
+            )
+          )}
 
           <Button
             fullWidth

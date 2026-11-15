@@ -12,7 +12,7 @@ interface CheckboxProps {
   className?: string;
 }
 
-/** Large tappable checkbox row with a coral check (44px+ target). */
+/** Large tappable checkbox row with a green check (44px+ target). */
 export function Checkbox({ checked, onChange, children, disabled, className }: CheckboxProps) {
   const id = useId();
   return (

@@ -18,15 +18,26 @@ const storedLinesSchema = z.array(
   z.object({ text: z.string(), score: z.number(), box: z.tuple([z.number(), z.number(), z.number(), z.number()]) }),
 );
 
+const storedSizeSchema = z.object({ width: z.number().positive(), height: z.number().positive() });
+
 export interface ProcessedImage {
   id: string;
   lines: OcrLine[];
+  /** The size the OCR boxes refer to (the photo as uploaded); absent for photos read before this was stored. */
+  size?: { width: number; height: number };
 }
 
 function cachedLines(metadata: Prisma.JsonValue | null): OcrLine[] | null {
   const lines = (metadata as { ocr?: { lines?: unknown } } | null)?.ocr?.lines;
   const parsed = storedLinesSchema.safeParse(lines);
   return parsed.success ? parsed.data : null;
+}
+
+function cached(id: string, metadata: Prisma.JsonValue | null): ProcessedImage | null {
+  const lines = cachedLines(metadata);
+  if (!lines) return null;
+  const size = storedSizeSchema.safeParse((metadata as { ocr?: { size?: unknown } } | null)?.ocr?.size);
+  return { id, lines, ...(size.success ? { size: size.data } : {}) };
 }
 
 async function waitForProcessing(userId: string, imageId: string): Promise<ProcessedImage> {
@@ -38,8 +49,8 @@ async function waitForProcessing(userId: string, imageId: string): Promise<Proce
       select: { status: true, metadata: true, error: true },
     });
     if (!row) throw errors.notFound("Menu photo not found.");
-    const lines = cachedLines(row.metadata);
-    if (row.status === ProcessingStatus.PROCESSED && lines) return { id: imageId, lines };
+    const done = cached(imageId, row.metadata);
+    if (row.status === ProcessingStatus.PROCESSED && done) return done;
     if (row.status === ProcessingStatus.FAILED) {
       throw errors.badGateway(row.error ?? "We couldn't read this photo. Please try again.");
     }
@@ -51,8 +62,8 @@ export async function processMenuImage(userId: string, imageId: string): Promise
   const image = await prisma.menuImage.findFirst({ where: { id: imageId, userId } });
   if (!image) throw errors.notFound("Menu photo not found.");
 
-  const cached = cachedLines(image.metadata);
-  if (image.status === ProcessingStatus.PROCESSED && cached) return { id: image.id, lines: cached };
+  const done = cached(image.id, image.metadata);
+  if (image.status === ProcessingStatus.PROCESSED && done) return done;
   if (!image.data) throw errors.conflict("This photo is no longer available. Please upload it again.");
 
   // Another request is already reading this photo: wait for its result instead of failing.
@@ -85,13 +96,15 @@ export async function processMenuImage(userId: string, imageId: string): Promise
         translatedText: null,
         ocrModel: ocr.model,
         translationModel: null,
-        metadata: { ocr: { lines: ocr.lines, elapsedMs: ocr.elapsedMs } } as Prisma.InputJsonValue,
+        metadata: {
+          ocr: { lines: ocr.lines, size: { width: ocr.width, height: ocr.height }, elapsedMs: ocr.elapsedMs },
+        } as Prisma.InputJsonValue,
         data: null,
         processedAt: new Date(),
       },
     });
 
-    return { id: image.id, lines: ocr.lines };
+    return { id: image.id, lines: ocr.lines, size: { width: ocr.width, height: ocr.height } };
   } catch (error) {
     const message =
       error instanceof HttpError ? error.message : "We couldn't read this photo. Please try again.";

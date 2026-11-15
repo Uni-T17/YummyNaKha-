@@ -6,7 +6,7 @@ const sizes = {
   lg: "h-20 w-20 text-2xl shadow-md",
 } as const;
 
-/** Coral initials avatar. */
+/** Brand-green initials avatar. */
 export function Avatar({ name, size = "sm", className }: { name?: string; size?: keyof typeof sizes; className?: string }) {
   return (
     <span

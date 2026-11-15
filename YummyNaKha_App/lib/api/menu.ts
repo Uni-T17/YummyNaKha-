@@ -1,4 +1,4 @@
-import type { ExtractedDish, MenuUpload } from "../types";
+import type { ExtractedDish, MenuUpload, OtherMenuLine } from "../types";
 import { ApiError, apiFetch } from "./client";
 
 // Menu photos and analysis. Uploading stores the photo on our server; the
@@ -29,6 +29,9 @@ export function deleteMenuImage(id: string): Promise<void> {
 export interface AnalyzedMenu {
   analysisId: string;
   dishes: ExtractedDish[];
+  otherLines: OtherMenuLine[];
+  /** The photos this menu was read from, to show them next to the results. */
+  imageIds: string[];
 }
 
 const inFlight = new Map<string, Promise<AnalyzedMenu>>();
@@ -41,8 +44,8 @@ export function analyzeMenu(uploads: MenuUpload[]): Promise<AnalyzedMenu> {
   const running = inFlight.get(key);
   if (running) return running;
 
-  const request = apiFetch<AnalyzedMenu>("/api/ai/analyze", { body: { imageIds } })
-    .then((r) => ({ analysisId: r.analysisId, dishes: r.dishes }))
+  const request = apiFetch<Omit<AnalyzedMenu, "imageIds">>("/api/ai/analyze", { body: { imageIds } })
+    .then((r) => ({ analysisId: r.analysisId, dishes: r.dishes, otherLines: r.otherLines ?? [], imageIds }))
     .finally(() => inFlight.delete(key));
   inFlight.set(key, request);
   return request;

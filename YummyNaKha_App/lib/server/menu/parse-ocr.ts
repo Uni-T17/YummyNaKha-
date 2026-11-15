@@ -1,4 +1,5 @@
 import "server-only";
+import type { PhotoSpot } from "@/lib/types";
 import type { OcrLine } from "../ocr/client";
 
 // Turns OCR text boxes into menu items: a dish name plus the price printed on
@@ -10,6 +11,10 @@ export interface MenuItem {
   name: string;
   /** null when no price is printed for the item (never guessed). */
   price: number | null;
+  /** Where the name is on the photo, in OCR pixels. */
+  box?: [number, number, number, number];
+  /** Where it is on the photo, as shares of the photo's size (set by the caller, see placeOnPhoto). */
+  spot?: PhotoSpot;
 }
 
 type Box = OcrLine["box"];
@@ -48,6 +53,11 @@ const SHOP_INFO = new RegExp(
   ].join("|"),
   "i",
 );
+
+/** Item numbers at the start of a line: "1. ", "12)", "5.ตำ…". Only before a letter, so "60.-" stays a price. */
+const NUMBERING = /^\s*\d{1,2}\s*[.)]\s*(?=[\u0E01-\u0E4EA-Za-z])/; // Thai letters and leading vowels (เ แ โ ใ ไ)
+/** Stars and similar marks menus put beside recommended dishes. */
+const MARKS = /[*★☆✩✪✭✮✯]+/g;
 
 /** "บาท" / "THB" printed in its own box next to a price. */
 const CURRENCY_ONLY = /^(?:บาท\S?|บ\.?|฿|THB|[Bb]aht|B)$/;
@@ -110,6 +120,11 @@ interface Name {
   text: string;
   box: Box;
   price: number | null;
+  /**
+   * An English line on a Thai menu: usually the translation under a Thai name,
+   * but a dish of its own ("1. Carbonara 125") when it has its own price.
+   */
+  englishCopy?: boolean;
 }
 
 export function parseMenuLines(lines: OcrLine[]): MenuItem[] {
@@ -119,7 +134,7 @@ export function parseMenuLines(lines: OcrLine[]): MenuItem[] {
 
   for (const raw of lines) {
     let line = raw;
-    let text = toArabic(raw.text).trim();
+    let text = toArabic(raw.text).replace(MARKS, " ").replace(NUMBERING, "").trim();
     if (SHOP_INFO.test(text)) continue; // phone, hours, social media — not a dish, and its digits aren't a price
     // Split a leading price off: it belongs to the item on the left, the rest is a new name.
     const lead = text.match(PRICE_THEN_NAME);
@@ -143,15 +158,16 @@ export function parseMenuLines(lines: OcrLine[]): MenuItem[] {
       text = both[3].trim();
       line = { ...line, box: [split, y0, x1, y1] };
     }
-    text = text.replace(/^[\s.…_:,-]+/, ""); // leaders left over from ". . . . 60" layouts
-    // Stray marks, noise, a lone "บาท"; on a Thai menu, also the English copies of the names.
-    if (!(isThaiName(text) || (english && isEnglishName(text))) || CURRENCY_ONLY.test(text)) continue;
+    text = text.replace(/^[\s.…_:,-]+/, "").replace(NUMBERING, ""); // leaders left over from ". . . . 60" layouts
+    // Stray marks, noise, a lone "บาท".
+    if (!(isThaiName(text) || isEnglishName(text)) || CURRENCY_ONLY.test(text)) continue;
+    const englishCopy = !english && !isThaiName(text);
     const inline = text.match(NAME_THEN_PRICE);
-    names.push(
-      inline
-        ? { text: inline[1].trim(), box: line.box, price: Number(inline[2]) }
-        : { text, box: line.box, price: null },
-    );
+    names.push({
+      ...(inline ? { text: inline[1].trim(), price: Number(inline[2]) } : { text, price: null }),
+      box: line.box,
+      ...(englishCopy ? { englishCopy } : {}),
+    });
   }
 
   // A name split into two boxes on the same row ("ผัดกะ" + "เพราหมู", "Crab" + "Fried Rice") is one name.
@@ -160,11 +176,13 @@ export function parseMenuLines(lines: OcrLine[]): MenuItem[] {
     const a = names[i];
     const b = names[i + 1];
     const gap = b.box[0] - a.box[2];
-    if (a.price === null && rowOverlap(a.box, b.box) >= 0.6 && gap >= 0 && gap < height(a.box) * 0.8) {
+    const sameLanguage = !!a.englishCopy === !!b.englishCopy; // never glue a Thai name to its English copy
+    if (a.price === null && sameLanguage && rowOverlap(a.box, b.box) >= 0.6 && gap >= 0 && gap < height(a.box) * 0.8) {
       names.splice(i, 2, {
         text: /[A-Za-z]$/.test(a.text) && /^[A-Za-z]/.test(b.text) ? `${a.text} ${b.text}` : `${a.text}${b.text}`,
         box: [a.box[0], Math.min(a.box[1], b.box[1]), b.box[2], Math.max(a.box[3], b.box[3])],
         price: b.price,
+        ...(a.englishCopy ? { englishCopy: true } : {}),
       });
       i--;
     }
@@ -181,7 +199,15 @@ export function parseMenuLines(lines: OcrLine[]): MenuItem[] {
       if (overlap >= 0.3) pairs.push({ name, price: index, overlap, distance: price.box[0] - name.box[2] });
     }
   });
-  pairs.sort((a, b) => b.overlap - a.overlap || a.distance - b.distance);
+  // About equally good matches: a Thai name wins over an English copy beside it.
+  const bucket = (overlap: number) => Math.floor(overlap * 4);
+  pairs.sort(
+    (a, b) =>
+      bucket(b.overlap) - bucket(a.overlap) ||
+      Number(!!a.name.englishCopy) - Number(!!b.name.englishCopy) ||
+      b.overlap - a.overlap ||
+      a.distance - b.distance,
+  );
   const usedPrices = new Set<number>();
   for (const pair of pairs) {
     if (pair.name.price !== null || usedPrices.has(pair.price)) continue;
@@ -189,5 +215,31 @@ export function parseMenuLines(lines: OcrLine[]): MenuItem[] {
     usedPrices.add(pair.price);
   }
 
-  return names.map((n) => ({ name: n.text, price: n.price }));
+  // An English copy without a price of its own is a translation or a heading, not a dish.
+  return names.filter((n) => !n.englishCopy || n.price !== null).map((n) => ({ name: n.text.trim(), price: n.price, box: n.box }));
+}
+
+/**
+ * Turns each item's OCR box into a spot on photo `page` (shares of its width
+ * and height), so the Menu screen can highlight the dish on the photo. Without
+ * the photo's size, or with boxes that don't fit it, items get no spot.
+ */
+export function placeOnPhoto(items: MenuItem[], page: number, size?: { width: number; height: number }): MenuItem[] {
+  const fits = (b: Box) => b[0] >= -2 && b[1] >= -2 && b[2] <= size!.width + 2 && b[3] <= size!.height + 2;
+  if (!size || !items.every((i) => !i.box || fits(i.box))) return items;
+  const clamp = (v: number) => Math.min(1, Math.max(0, v));
+  return items.map((item) => {
+    if (!item.box) return item;
+    const [x0, y0, x1, y1] = item.box;
+    return {
+      ...item,
+      spot: {
+        page,
+        x: clamp(x0 / size.width),
+        y: clamp(y0 / size.height),
+        w: clamp((x1 - x0) / size.width),
+        h: clamp((y1 - y0) / size.height),
+      },
+    };
+  });
 }

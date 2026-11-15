@@ -1,12 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, MessageCircle, ShoppingCart } from "lucide-react";
-import { ButtonLink } from "@/components/ui/button";
+import { ArrowLeft, Maximize2, MessageCircle, ShoppingCart } from "lucide-react";
+import { Button, ButtonLink } from "@/components/ui/button";
+import { SpeakButton } from "@/components/ui/speak-button";
 import { EmptyState } from "@/components/ui/feedback";
 import { staffPhrases } from "@/lib/staff-phrases";
 import { useAppState } from "@/lib/store/app-store";
 import { useOrder } from "@/lib/store/use-order";
+import { StaffView } from "./staff-view";
 
 /** Sentences to show staff, built from the diner's Avoid list and spice level. */
 function StaffCards() {
@@ -26,9 +29,12 @@ function StaffCards() {
       <ul className="flex flex-col gap-3">
         {phrases.map((p) => (
           <li key={p.id} className="rounded-2xl border-2 border-line p-4">
-            <p lang="th" className="font-thai text-xl leading-snug font-bold text-ink md:text-2xl">
-              {p.thai}
-            </p>
+            <div className="flex items-start gap-2">
+              <p lang="th" className="flex-1 font-thai text-xl leading-snug font-bold text-ink md:text-2xl">
+                {p.thai}
+              </p>
+              <SpeakButton text={p.thai} label={`Read aloud in Thai: ${p.english}`} />
+            </div>
             <p className="mt-1.5 text-xs text-subtle">{p.english}</p>
             {p.missingThai && (
               <p className="mt-1 text-xs font-semibold text-check-ink">
@@ -45,6 +51,7 @@ function StaffCards() {
 /** Large-type order in Thai, for showing restaurant staff at arm's length. */
 export function ThaiOrder() {
   const { items, total } = useOrder();
+  const [staffView, setStaffView] = useState(false);
 
   if (items.length === 0) {
     return (
@@ -71,15 +78,36 @@ export function ThaiOrder() {
         <h1 lang="th" className="font-thai text-2xl font-bold text-ink">
           รายการที่ต้องการสั่ง
         </h1>
+        <Button onClick={() => setStaffView(true)} className="mx-auto mt-4">
+          <Maximize2 size={16} aria-hidden />
+          Show to staff (full screen)
+        </Button>
       </header>
 
       <div lang="th" className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-4 px-5 py-6">
         <ul className="flex flex-col gap-4">
           {items.map((dish) => (
             <li key={dish.id} className="rounded-2xl border-2 border-line p-5">
-              <p className="font-thai text-[2rem] leading-[1.3] font-bold text-ink md:text-[2.5rem]">{dish.nameThai}</p>
+              <div className="flex items-start gap-3">
+                <p className="flex-1 font-thai text-[2rem] leading-[1.3] font-bold text-ink md:text-[2.5rem]">
+                  {dish.nameThai}
+                  {dish.quantity > 1 && <span className="ml-2 whitespace-nowrap text-brand">× {dish.quantity}</span>}
+                </p>
+                <SpeakButton text={dish.nameThai} label={`Listen to ${dish.nameEn} in Thai`} />
+              </div>
+              {dish.requests.length > 0 && (
+                <ul className="mt-2 flex flex-wrap gap-2">
+                  {dish.requests.map((r) => (
+                    <li key={r.id} className="rounded-full bg-brand-tint px-3 py-1 font-thai text-lg font-bold text-brand">
+                      {r.thai}
+                    </li>
+                  ))}
+                </ul>
+              )}
               {dish.price !== null && (
-                <p className="mt-2 font-thai text-2xl font-black text-brand">{dish.price} บาท</p>
+                <p className="mt-2 font-thai text-2xl font-black text-brand">
+                  {dish.quantity > 1 ? `${dish.price} × ${dish.quantity} = ${dish.price * dish.quantity}` : dish.price} บาท
+                </p>
               )}
             </li>
           ))}
@@ -90,6 +118,8 @@ export function ThaiOrder() {
       </div>
 
       <StaffCards />
+
+      {staffView && <StaffView items={items} total={total} onClose={() => setStaffView(false)} />}
 
       <div className="px-5 pb-12 text-center">
         <Link

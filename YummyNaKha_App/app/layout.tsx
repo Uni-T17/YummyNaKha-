@@ -21,10 +21,13 @@ export const metadata: Metadata = {
   },
   description:
     "Upload a Thai menu and get picks that fit your taste, with warnings for your avoid list and your order shown back in Thai.",
+  applicationName: "YummyNaKha!",
+  // Opened from the iPhone home screen: full screen, with our own title.
+  appleWebApp: { capable: true, title: "YummyNaKha", statusBarStyle: "default" },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#FFFBF7",
+  themeColor: "#F8F8F2",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",

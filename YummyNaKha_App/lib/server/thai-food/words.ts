@@ -55,6 +55,10 @@ export const WORDS: MenuWord[] = [
   { th: ["ต้ม", "ซุป"], en: "soup", kind: "dish", ingredients: [], mayContain: ["fish sauce"], tags: ["soup"] },
   { th: ["น้ำพริก"], en: "chili dip", kind: "dish", ingredients: ["chili", "garlic"], mayContain: ["shrimp paste", "fish sauce", "lime"], tags: ["spicy"] },
   { th: ["สลัด"], en: "salad", kind: "dish", ingredients: [], mayContain: ["mayonnaise"], tags: ["salad"] },
+  // ตำ = pounded salad (ตำไทย, ตำกุ้งสด); ยำ = spicy Thai salad. OCR often reads ตำ as ต่ำ — tone marks are ignored when matching.
+  { th: ["ตำ"], en: "pounded salad", kind: "dish", ingredients: ["chili", "garlic", "lime"], mayContain: ["fish sauce", "palm sugar"], tags: ["salad", "spicy"] },
+  { th: ["ยำ"], en: "spicy salad", kind: "dish", ingredients: ["chili", "lime"], mayContain: ["fish sauce", "sugar"], tags: ["salad", "spicy"] },
+  { th: ["สเต็ก", "สเต๊ก"], en: "steak", kind: "dish", ingredients: [], mayContain: ["butter", "pepper"], tags: ["grilled"] },
   // Its own word so นม (milk) isn't read inside ขนม; ขนมจีน / ขนมปัง still win as longer matches.
   { th: ["ขนม"], en: "Thai dessert", kind: "dish", ingredients: [], mayContain: ["coconut milk", "sugar"], tags: ["dessert", "sweet"] },
   { th: ["ปั่น"], en: "smoothie", kind: "dish", ingredients: [], mayContain: ["sugar"], tags: ["drink"] },
@@ -167,4 +171,5 @@ export const WORDS: MenuWord[] = [
   { th: ["มาม่า"], en: "instant noodles", kind: "base", ingredients: ["instant noodles"], tags: ["noodle"] },
   { th: ["ขนมจีน"], en: "fermented rice noodles", kind: "base", ingredients: ["fermented rice noodles"], tags: ["noodle"] },
   { th: ["ขนมปัง"], en: "bread", kind: "base", ingredients: ["bread"] },
+  { th: ["สปาเกตตี", "สปาเก็ตตี้", "สปาเกตตี้", "สปาเก็ตตี"], en: "spaghetti", kind: "base", ingredients: ["wheat flour"], tags: ["noodle"] },
 ];

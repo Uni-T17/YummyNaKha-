@@ -1,29 +1,38 @@
 @import "tailwindcss";
 
 /*
- * YummyNaKha! design tokens — taken from the Figma Make prototype (v7).
- * Warm coral on cream, stone neutrals, and three result colours
- * (top / check / avoid). Use these tokens instead of raw hex values.
+ * YummyNaKha! design tokens — from the team logo: a smiling spoon-and-fork
+ * face in soft sage green, a leaf, and a pink heart, on warm off-white.
+ * Brand green is a deeper olive of the logo green so text and buttons stay
+ * readable (5.6:1 on white). Three result colours stay separate from the
+ * brand (top / check / avoid). Use these tokens instead of raw hex values.
  */
 @theme {
-  /* Brand */
-  --color-brand: #ff6542;
-  --color-brand-soft: #ffe8e0;
-  --color-brand-tint: #fff0e8;
+  /* Brand (logo green) */
+  --color-brand: #557029;
+  --color-brand-strong: #44591f;
+  --color-brand-soft: #e3ebd2;
+  --color-brand-tint: #f0f5e6;
+  /* The logo's own light green, for decoration only (not text). */
+  --color-leaf: #9db25e;
+  /* The logo's heart */
+  --color-heart: #e8868d;
+  --color-heart-soft: #fdecee;
+  --color-heart-ink: #b03f50;
 
   /* Surfaces & lines */
-  --color-cream: #fffbf7;
-  --color-backdrop: #ede8e1;
-  --color-line: #ede8e1;
-  --color-sand: #f0ebe3;
-  --color-stone-soft: #f5f0e8;
+  --color-cream: #f8f8f2;
+  --color-backdrop: #e9ebdf;
+  --color-line: #e4e7d8;
+  --color-sand: #eff1e6;
+  --color-stone-soft: #f3f4ec;
 
   /* Text */
-  --color-ink: #1c1917;
-  --color-body: #4a4440;
-  --color-muted: #78716c;
-  --color-subtle: #a8a29e;
-  --color-faint: #c4bbb4;
+  --color-ink: #1d2418;
+  --color-body: #434b3b;
+  --color-muted: #687060;
+  --color-subtle: #868d7c;
+  --color-faint: #bcc2b0;
 
   /* Feedback */
   --color-success: #10b981;
@@ -70,6 +79,15 @@
   --animate-fade-in: fade-in 200ms ease-out;
   --animate-fade-up: fade-up 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
 
+  @keyframes logo-bob {
+    0%,
+    100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-6px) rotate(-3deg);
+    }
+  }
   @keyframes sheet-up {
     from {
       transform: translateY(100%);
@@ -130,7 +148,7 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* Visible keyboard focus everywhere; text inputs show focus via their coral border. */
+  /* Visible keyboard focus everywhere; text inputs show focus via their green border. */
   :focus-visible {
     outline: 2px solid var(--color-brand);
     outline-offset: 2px;

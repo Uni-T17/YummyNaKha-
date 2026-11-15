@@ -1,11 +1,12 @@
 import { useMemo, useSyncExternalStore } from "react";
 import { fetchSession, markOnboarded, signOutRequest } from "../api/auth";
 import { createId } from "../api/client";
-import { deleteMenuImage, describeUnlisted, uploadMenuImage } from "../api/menu";
+import { deleteMenuImage, describeUnlisted, uploadMenuImage, type AnalyzedMenu } from "../api/menu";
 import { addDislike, addFavorite, getTasteProfile, removeDislike, removeFavorite, setSpiceLevel } from "../api/preferences";
 import { prepareForUpload } from "../image-resize";
+import { clearPhotos, deletePhoto, savePhoto } from "../photo-cache";
 import { categorizeMenu } from "../matching";
-import type { AppUser, AvoidItem, Dish, ExtractedDish, MenuUpload, SpiceLevel, TasteProfile } from "../types";
+import type { AppUser, AvoidItem, Dish, ExtractedDish, MenuUpload, OtherMenuLine, SpiceLevel, TasteProfile } from "../types";
 
 // Client-side view of the session. The server is the source of truth for the
 // user, onboarding and the taste profile; this store mirrors it (cached in
@@ -23,12 +24,20 @@ export interface AppState {
   menu: ExtractedDish[] | null;
   /** The server's id for that analysis (for the background lookup of unlisted dishes). */
   menuAnalysisId: string | null;
+  /** Lines read from the menu that aren't dishes, with their place on the menu. */
+  menuOtherLines: OtherMenuLine[];
+  /** The photos the menu was read from. */
+  menuImageIds: string[];
   /**
    * The optional Menu helper's lookup of dishes not in our guide: running,
    * finished, not turned on, or no answer this time.
    */
   aiLookup: "idle" | "pending" | "done" | "off" | "unavailable";
   selectedIds: string[];
+  /** How many of each selected dish (1 when not set). */
+  quantities: Record<string, number>;
+  /** Requests chosen for each selected dish ("not spicy", "no coriander"), by request id. */
+  dishRequests: Record<string, string[]>;
 }
 
 const STORAGE_KEY = "yummynakha:session:v2";
@@ -43,8 +52,12 @@ const initialState: AppState = {
   uploads: [],
   menu: null,
   menuAnalysisId: null,
+  menuOtherLines: [],
+  menuImageIds: [],
   aiLookup: "idle",
   selectedIds: [],
+  quantities: {},
+  dishRequests: {},
 };
 
 let state: AppState = initialState;
@@ -109,8 +122,18 @@ export function useDishes(): Dish[] | null {
   return useMemo(() => (menu ? categorizeMenu(menu, profile) : null), [menu, profile]);
 }
 
+/** Uploads the photo as prepared, keeping a copy in this browser for the Menu screen. */
+async function uploadAndKeep(file: File) {
+  const prepared = await prepareForUpload(file);
+  const image = await uploadMenuImage(prepared);
+  // The OCR positions refer to this prepared photo, so this is the copy to keep.
+  void savePhoto(image.id, prepared);
+  return image;
+}
+
 function resetLocal() {
   state.uploads.forEach((u) => u.previewUrl && URL.revokeObjectURL(u.previewUrl));
+  void clearPhotos();
   setState(() => ({ ...initialState, hydrated: true }));
 }
 
@@ -251,8 +274,7 @@ export const appActions = {
     setState((s) => ({ ...s, uploads: [...s.uploads, ...pending.map((p) => p.upload)] }));
 
     for (const { file, upload } of pending) {
-      prepareForUpload(file)
-        .then(uploadMenuImage)
+      uploadAndKeep(file)
         .then((image) =>
           setState((s) => ({
             ...s,
@@ -278,8 +300,8 @@ export const appActions = {
     if (target.previewUrl) URL.revokeObjectURL(target.previewUrl);
     const upload: MenuUpload = { id: createId("local"), fileName: file.name, status: "uploading", previewUrl: URL.createObjectURL(file) };
     setState((s) => ({ ...s, uploads: s.uploads.map((u) => (u.id === id ? upload : u)) }));
-    prepareForUpload(file)
-      .then(uploadMenuImage)
+    if (target.status === "ready") void deletePhoto(id);
+    uploadAndKeep(file)
       .then((image) =>
         setState((s) => ({ ...s, uploads: s.uploads.map((u) => (u.id === upload.id ? { ...u, id: image.id, status: "ready" } : u)) })),
       )
@@ -295,12 +317,28 @@ export const appActions = {
     const target = state.uploads.find((u) => u.id === id);
     if (target?.previewUrl) URL.revokeObjectURL(target.previewUrl);
     if (target?.status === "ready") deleteMenuImage(id).catch(() => {});
+    // Keep the local copy while the current results still show this photo.
+    if (!state.menuImageIds.includes(id)) void deletePhoto(id);
     setState((s) => ({ ...s, uploads: s.uploads.filter((u) => u.id !== id) }));
   },
 
-  setMenu(menu: ExtractedDish[], analysisId: string) {
+  setMenu({ dishes, analysisId, otherLines, imageIds }: AnalyzedMenu) {
+    // Photos of the previous results that are no longer on Home aren't needed any more.
+    state.menuImageIds
+      .filter((id) => !imageIds.includes(id) && !state.uploads.some((u) => u.id === id))
+      .forEach((id) => void deletePhoto(id));
     // A new analysis starts a new order.
-    setState((s) => ({ ...s, menu, menuAnalysisId: analysisId, aiLookup: "idle", selectedIds: [] }));
+    setState((s) => ({
+      ...s,
+      menu: dishes,
+      menuAnalysisId: analysisId,
+      menuOtherLines: otherLines,
+      menuImageIds: imageIds,
+      aiLookup: "idle",
+      selectedIds: [],
+      quantities: {},
+      dishRequests: {},
+    }));
     appActions.lookUpUnlisted();
   },
 
@@ -321,11 +359,34 @@ export const appActions = {
   },
 
   toggleDish(id: string) {
-    setState((s) => ({
-      ...s,
-      selectedIds: s.selectedIds.includes(id)
-        ? s.selectedIds.filter((x) => x !== id)
-        : [...s.selectedIds, id],
-    }));
+    setState((s) => {
+      if (!s.selectedIds.includes(id)) return { ...s, selectedIds: [...s.selectedIds, id] };
+      const without = <T,>(record: Record<string, T>) => Object.fromEntries(Object.entries(record).filter(([key]) => key !== id));
+      return {
+        ...s,
+        selectedIds: s.selectedIds.filter((x) => x !== id),
+        quantities: without(s.quantities),
+        dishRequests: without(s.dishRequests),
+      };
+    });
+  },
+
+  /** Sets how many of a selected dish to order (1–20). */
+  setQuantity(id: string, quantity: number) {
+    const q = Math.min(20, Math.max(1, Math.round(quantity)));
+    setState((s) => (s.selectedIds.includes(id) ? { ...s, quantities: { ...s.quantities, [id]: q } } : s));
+  },
+
+  /** Adds or removes a request ("not spicy") for one selected dish. */
+  toggleRequest(id: string, requestId: string) {
+    setState((s) => {
+      const current = s.dishRequests[id] ?? [];
+      // Only one spice level per dish: picking one replaces the other.
+      const isSpice = (r: string) => r.startsWith("spice-");
+      const next = current.includes(requestId)
+        ? current.filter((r) => r !== requestId)
+        : [...current.filter((r) => !(isSpice(requestId) && isSpice(r))), requestId];
+      return { ...s, dishRequests: { ...s.dishRequests, [id]: next } };
+    });
   },
 };

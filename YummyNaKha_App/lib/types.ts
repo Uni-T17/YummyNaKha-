@@ -64,6 +64,15 @@ export interface DishChoice {
   ingredients: InferredIngredient[];
 }
 
+/** Where a dish is on the menu photo: photo number, then shares (0–1) of its width and height. */
+export interface PhotoSpot {
+  page: number;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
 /** A dish as extracted + translated from the uploaded menu (before matching). */
 export interface ExtractedDish {
   id: string;
@@ -96,8 +105,21 @@ export interface ExtractedDish {
    * only, so a guess can add a warning but never makes a dish look safer.
    */
   aiGuess?: { nameEn: string; description: string; model: string };
+  /** Where the dish's name is on the menu photo, when known. */
+  spot?: PhotoSpot;
   /** Reasons the result is uncertain; any of these keeps a dish out of Top Picks (F10). */
   uncertainties?: string[];
+}
+
+/**
+ * A line read from the menu that we didn't turn into a dish: a section heading,
+ * the restaurant name, a description, or a dish we couldn't recognise without
+ * a price. Shown so the diner sees everything on the menu, never hidden.
+ */
+export interface OtherMenuLine {
+  text: string;
+  /** Where it sat on the menu: before the dish at this index of the dish list. */
+  before: number;
 }
 
 export interface DishConflict {

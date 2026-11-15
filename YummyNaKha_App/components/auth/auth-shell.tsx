@@ -1,12 +1,11 @@
 import type { ReactNode } from "react";
-import { UtensilsCrossed } from "lucide-react";
-import { IconTile } from "@/components/ui/icon-tile";
+import { Logo } from "@/components/ui/logo";
 
 export function AuthShell({ title, subtitle, children }: { title: string; subtitle: string; children: ReactNode }) {
   return (
     <main className="flex flex-1 flex-col md:justify-center md:py-12">
       <div className="mx-auto flex w-full max-w-md flex-col items-center px-6 pt-16 pb-8 md:pt-0">
-        <IconTile icon={UtensilsCrossed} size="lg" className="mb-5 rounded-2xl bg-brand text-white shadow-sm" />
+        <Logo width={112} priority className="mb-4" />
         <h1 className="text-2xl font-black text-ink">{title}</h1>
         <p className="mt-1 text-center text-sm text-muted">{subtitle}</p>
       </div>

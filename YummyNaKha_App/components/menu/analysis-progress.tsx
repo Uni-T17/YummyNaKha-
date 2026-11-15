@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { AlertTriangle, Check, Loader2, Sparkles } from "lucide-react";
+import { AlertTriangle, Check, Sparkles } from "lucide-react";
 import { Button, ButtonLink } from "@/components/ui/button";
 import { IconTile } from "@/components/ui/icon-tile";
+import { Logo } from "@/components/ui/logo";
 import { analyzeMenu, ANALYSIS_STEPS, type AnalyzedMenu } from "@/lib/api/menu";
 import { ApiError } from "@/lib/api/client";
 import { cn } from "@/lib/cn";
@@ -28,8 +29,11 @@ export function AnalysisProgress() {
       .catch((e) => {
         if (cancelled) return;
         // Consent withdrawn or missing (server-side check) → back to the consent screen.
-        if (e instanceof ApiError && e.code === "CONSENT_REQUIRED") return router.replace("/consent");
-        setError(e instanceof ApiError ? e.message : "We couldn't read this menu.");
+        if (e instanceof ApiError && e.code === "CONSENT_REQUIRED")
+          return router.replace("/consent");
+        setError(
+          e instanceof ApiError ? e.message : "We couldn't read this menu.",
+        );
       });
     return () => {
       cancelled = true;
@@ -48,7 +52,7 @@ export function AnalysisProgress() {
     }
     if (step < ANALYSIS_STEPS.length || !result) return;
     const t = setTimeout(() => {
-      appActions.setMenu(result.dishes, result.analysisId);
+      appActions.setMenu(result);
       router.replace("/menu");
     }, 700);
     return () => clearTimeout(t);
@@ -56,9 +60,18 @@ export function AnalysisProgress() {
 
   if (error) {
     return (
-      <div role="alert" className="flex w-full max-w-xs animate-fade-up flex-col items-center text-center">
-        <IconTile icon={AlertTriangle} size="xl" className="mb-6 rounded-3xl bg-danger-soft text-danger" />
-        <h1 className="mb-2 text-2xl font-black text-ink">Couldn&apos;t read the menu</h1>
+      <div
+        role="alert"
+        className="flex w-full max-w-xs animate-fade-up flex-col items-center text-center"
+      >
+        <IconTile
+          icon={AlertTriangle}
+          size="xl"
+          className="mb-6 rounded-3xl bg-danger-soft text-danger"
+        />
+        <h1 className="mb-2 text-2xl font-black text-ink">
+          Couldn&apos;t read the menu
+        </h1>
         <p className="mb-8 text-sm text-muted">{error}</p>
         <div className="flex w-full flex-col gap-3">
           {uploads.length > 0 && (
@@ -86,8 +99,24 @@ export function AnalysisProgress() {
 
   return (
     <div className="flex w-full flex-col items-center">
-      <IconTile icon={Loader2} size="xl" className="mb-8 rounded-3xl bg-brand text-white shadow-md [&>svg]:animate-spin" />
-      <h1 className="mb-10 text-center text-2xl font-black text-ink">Finding your yummy…</h1>
+      <div className="relative mb-8 flex h-36 w-36 items-center justify-center">
+        <span
+          aria-hidden
+          className="absolute inset-0 animate-ping rounded-full bg-leaf/20 [animation-duration:2s]"
+        />
+        <span
+          aria-hidden
+          className="absolute inset-3 rounded-full bg-brand-tint"
+        />
+        <Logo
+          width={104}
+          priority
+          className="relative animate-[logo-bob_1.6s_ease-in-out_infinite]"
+        />
+      </div>
+      <h1 className="mb-10 text-center text-2xl font-black text-ink">
+        Finding your yummy…
+      </h1>
 
       <ol className="flex w-full max-w-xs flex-col gap-3.5" aria-live="polite">
         {ANALYSIS_STEPS.map((label, i) => {
@@ -98,24 +127,38 @@ export function AnalysisProgress() {
               key={label}
               className={cn(
                 "flex items-center gap-3 transition-all duration-500",
-                visible ? "translate-x-0 opacity-100" : "translate-x-4 opacity-0",
+                visible
+                  ? "translate-x-0 opacity-100"
+                  : "translate-x-4 opacity-0",
               )}
               aria-hidden={!visible}
             >
               <span
                 className={cn(
                   "flex h-6 w-6 shrink-0 items-center justify-center rounded-full transition-colors duration-300",
-                  visible ? (isLast ? "bg-brand" : "bg-success") : "bg-line",
+                  visible ? "bg-brand" : "bg-line",
                 )}
               >
                 {visible &&
                   (isLast ? (
                     <Sparkles size={12} className="text-white" aria-hidden />
                   ) : (
-                    <Check size={12} strokeWidth={3} className="text-white" aria-hidden />
+                    <Check
+                      size={12}
+                      strokeWidth={3}
+                      className="text-white"
+                      aria-hidden
+                    />
                   ))}
               </span>
-              <span className={cn("text-sm font-bold", isLast ? "text-brand" : "text-ink")}>{label}</span>
+              <span
+                className={cn(
+                  "text-sm font-bold",
+                  isLast ? "text-brand" : "text-ink",
+                )}
+              >
+                {label}
+              </span>
             </li>
           );
         })}
@@ -129,7 +172,10 @@ export function AnalysisProgress() {
         aria-valuemin={0}
         aria-valuemax={100}
       >
-        <div className="h-full rounded-full bg-brand transition-all duration-700" style={{ width: `${progress}%` }} />
+        <div
+          className="h-full rounded-full bg-brand transition-all duration-700"
+          style={{ width: `${progress}%` }}
+        />
       </div>
     </div>
   );

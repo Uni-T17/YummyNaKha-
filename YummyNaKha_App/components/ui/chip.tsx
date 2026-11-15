@@ -1,7 +1,7 @@
 import { Heart, Plus, X } from "lucide-react";
 import { cn } from "@/lib/cn";
 
-/** Removable coral chip for a saved Fav. */
+/** Removable brand-green chip for a saved Fav. */
 export function FavChip({ label, onRemove }: { label: string; onRemove: () => void }) {
   return (
     <span className="inline-flex animate-fade-up items-center gap-1 rounded-full bg-brand-soft py-1.5 pr-1.5 pl-3 text-sm font-bold text-brand">
