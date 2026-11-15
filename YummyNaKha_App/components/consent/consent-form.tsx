@@ -12,6 +12,7 @@ import { acceptDocuments } from "@/lib/api/consent";
 import { ApiError } from "@/lib/api/client";
 import { cn } from "@/lib/cn";
 import { AI_HELPER_CONSENT, getConsentStatus, hasAccepted, TERMS_BUNDLE, type ConsentDocumentId } from "@/lib/consent";
+import { USES_THIRD_PARTY_OCR } from "@/lib/ocr-provider";
 import { formatDate } from "@/lib/format";
 import { DocumentSheet } from "./document-sheet";
 import { useConsentRecords } from "./use-consent-records";
@@ -151,6 +152,7 @@ export function ConsentForm() {
             <ReadLink onClick={() => setReading("terms")}>Terms of Use</ReadLink>
             <ReadLink onClick={() => setReading("privacy")}>Privacy Notice</ReadLink>
             <ReadLink onClick={() => setReading("ai-disclaimer")}>AI &amp; Accuracy Disclaimer</ReadLink>
+            {USES_THIRD_PARTY_OCR && <ReadLink onClick={() => setReading("photo-reading")}>Menu photo reading</ReadLink>}
           </div>
           {termsDone ? (
             <p className="flex items-center gap-1.5 text-sm font-bold text-success">
@@ -159,18 +161,27 @@ export function ConsentForm() {
             </p>
           ) : (
             <Checkbox checked={termsChecked} onChange={setTermsChecked}>
-              I accept the Terms of Use, Privacy Notice and AI &amp; Accuracy Disclaimer.
+              I accept the Terms of Use, Privacy Notice and AI &amp; Accuracy Disclaimer
+              {USES_THIRD_PARTY_OCR && ", and agree that my menu photos are sent to OCR.space to read the text"}.
             </Checkbox>
           )}
         </StepCard>
 
         <section className="flex items-start gap-3 rounded-2xl border border-line bg-white p-4 shadow-sm md:p-5">
           <Server size={18} className="mt-0.5 shrink-0 text-success" aria-hidden />
-          <p className="text-sm leading-relaxed text-body">
-            Your menu photo is read on <span className="font-bold text-ink">our own server</span> and checked against our
-            Thai dish guide. Your photos, food profile and account details are{" "}
-            <span className="font-bold text-ink">never sent to any outside AI provider</span>.
-          </p>
+          {USES_THIRD_PARTY_OCR ? (
+            <p className="text-sm leading-relaxed text-body">
+              Your menu photo is sent to <span className="font-bold text-ink">OCR.space</span> only to read its text. Each
+              dish is then checked against our Thai dish guide on our side. Your food profile and account details are{" "}
+              <span className="font-bold text-ink">never sent to OCR.space or any outside AI provider</span>.
+            </p>
+          ) : (
+            <p className="text-sm leading-relaxed text-body">
+              Your menu photo is read on <span className="font-bold text-ink">our own server</span> and checked against our
+              Thai dish guide. Your photos, food profile and account details are{" "}
+              <span className="font-bold text-ink">never sent to any outside AI provider</span>.
+            </p>
+          )}
         </section>
 
         {!helperOn && (

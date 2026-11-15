@@ -1,7 +1,9 @@
 import "server-only";
 import { z } from "zod";
 import { getOcrServiceToken, getOcrServiceUrl } from "../env";
+import { USES_THIRD_PARTY_OCR } from "@/lib/ocr-provider";
 import { errors, HttpError } from "../http";
+import { readWithOcrSpace } from "./ocrspace";
 
 // Client for our own OCR service (ocr-service/, PaddleOCR). It runs our own
 // code — next to the app, or in our private Hugging Face Space — and receives
@@ -37,6 +39,14 @@ export class UnreadableImageError extends HttpError {
 }
 
 export async function readMenuImage(image: { data: Uint8Array; mimeType: string }): Promise<OcrResult> {
+  const result = USES_THIRD_PARTY_OCR ? await readWithOcrSpace(image) : await readWithOwnService(image);
+  // Some Thai or English words, not just stray marks or numbers.
+  if (!result.lines.some((l) => /[ก-ฮ]/.test(l.text) || /[A-Za-z]{3}/.test(l.text))) throw new UnreadableImageError();
+  return result;
+}
+
+/** Our own OCR service (ocr-service/, PaddleOCR). */
+async function readWithOwnService(image: { data: Uint8Array; mimeType: string }): Promise<OcrResult> {
   let response: Response;
   try {
     response = await fetch(`${getOcrServiceUrl()}/ocr`, {
@@ -72,7 +82,5 @@ export async function readMenuImage(image: { data: Uint8Array; mimeType: string 
     console.error("[ocr] unexpected response shape");
     throw errors.badGateway("We couldn't read this photo. Please try again.");
   }
-  // Some Thai or English words, not just stray marks or numbers.
-  if (!parsed.data.lines.some((l) => /[ก-ฮ]/.test(l.text) || /[A-Za-z]{3}/.test(l.text))) throw new UnreadableImageError();
   return parsed.data;
 }

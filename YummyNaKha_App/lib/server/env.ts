@@ -31,6 +31,14 @@ export function getOcrServiceToken(): string | null {
   return process.env.OCR_SERVICE_TOKEN?.trim() || null;
 }
 
+/** OCR.space API key (free tier) and engine ("1" or "2"); used when NEXT_PUBLIC_OCR_PROVIDER=ocrspace. */
+export function getOcrSpaceConfig(): { apiKey: string; engine: "1" | "2" } {
+  return {
+    apiKey: read(z.string().min(1), process.env.OCR_SPACE_API_KEY?.trim(), "OCR_SPACE_API_KEY"),
+    engine: process.env.OCR_SPACE_ENGINE?.trim() === "1" ? "1" : "2",
+  };
+}
+
 export function getOcrServiceUrl(): string {
   return (process.env.OCR_SERVICE_URL?.trim() || DEFAULT_OCR_SERVICE_URL).replace(/\/+$/, "");
 }

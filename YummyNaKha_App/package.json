@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "ocr": "cd ocr-service && uv run --python 3.12 uvicorn server:app --host 127.0.0.1 --port 8765",
+    "ocr:public": "node -e \"if(!process.env.OCR_TOKEN){console.error('Set OCR_TOKEN first (see DEPLOY-FREE.md).');process.exit(1)}\" && npm run ocr",
     "build": "next build",
     "vercel-build": "prisma migrate deploy && next build",
     "start": "next start",

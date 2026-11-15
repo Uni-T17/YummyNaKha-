@@ -9,6 +9,7 @@ Run:  uv run uvicorn server:app --host 127.0.0.1 --port 8765
 
 from __future__ import annotations
 
+import hmac
 import io
 import os
 import threading
@@ -25,6 +26,9 @@ MAX_BYTES = 10 * 1024 * 1024
 # Phone photos are often 4000+ px; text stays readable at this size and OCR is much faster.
 MAX_SIDE = 2000
 MIN_SCORE = 0.5
+# When set, /ocr requires "Authorization: Bearer <OCR_TOKEN>" — needed whenever
+# the service is reachable from the internet (e.g. through a tunnel).
+OCR_TOKEN = os.environ.get("OCR_TOKEN", "").strip()
 
 _ocr = None
 # PaddleOCR pipelines are not thread-safe; one photo at a time.
@@ -75,6 +79,10 @@ def health():
 
 @app.post("/ocr")
 async def ocr(request: Request):
+    if OCR_TOKEN:
+        sent = request.headers.get("authorization", "").removeprefix("Bearer ").strip()
+        if not hmac.compare_digest(sent, OCR_TOKEN):
+            raise HTTPException(401, "Missing or wrong token.")
     data = await request.body()
     if not data:
         raise HTTPException(400, "Empty image.")

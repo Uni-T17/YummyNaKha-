@@ -3,7 +3,9 @@
 // the final legal text, and bump `version` whenever a document changes so users
 // are asked to accept the new version.
 
-export type ConsentDocumentId = "terms" | "privacy" | "ai-disclaimer" | "health-data" | "ai-transfer";
+import { USES_THIRD_PARTY_OCR } from "./ocr-provider";
+
+export type ConsentDocumentId = "terms" | "privacy" | "ai-disclaimer" | "health-data" | "ai-transfer" | "photo-reading";
 
 export interface ConsentDocument {
   id: ConsentDocumentId;
@@ -41,12 +43,15 @@ export const CONSENT_DOCUMENTS: Record<ConsentDocumentId, ConsentDocument> = {
   privacy: {
     id: "privacy",
     title: "Privacy Notice",
-    version: "0.4-draft",
+    // A different text (and so a different version) when photos are read by OCR.space.
+    version: USES_THIRD_PARTY_OCR ? "0.5-draft-ocrspace" : "0.4-draft",
     withdrawable: false,
     summary: [
       "We keep your account name and email, your food profile and, for the length of a scan, your menu photos.",
       "If you sign in with Google, we receive only your name, email address and Google account ID. We don't keep any Google password or access token.",
-      "Your menu photos are read on our own server. We don't send your photos, food profile or account details to any outside AI provider.",
+      USES_THIRD_PARTY_OCR
+        ? "Your menu photos are sent to OCR.space, an outside text-reading service, to read the menu text — see Menu photo reading. Your food profile and account details are never sent to it or to any outside AI provider."
+        : "Your menu photos are read on our own server. We don't send your photos, food profile or account details to any outside AI provider.",
       "Only if you turn on the optional Menu helper, the text of a menu's dish and meat lists is sent to Google Gemini to pair them.",
       "This data is used only to understand menus and recommend dishes — never for advertising, resale or profiling.",
       "Allergies and doctor-advised restrictions are sensitive health data. We store them only with your separate Health information consent, which you can withdraw at any time in Privacy & consents.",
@@ -93,10 +98,30 @@ export const CONSENT_DOCUMENTS: Record<ConsentDocumentId, ConsentDocument> = {
       "Without this helper you still get the same menu, with a \"choose your meat\" list instead of separate cards. You can turn it off at any time in Privacy & consents.",
     ],
   },
+  "photo-reading": {
+    id: "photo-reading",
+    title: "Menu photo reading (OCR.space)",
+    version: "0.1-draft",
+    withdrawable: false,
+    // Asked for only while photos are read by OCR.space; kept for history otherwise (LR9).
+    retired: !USES_THIRD_PARTY_OCR,
+    summary: [
+      "To read the text on your menu photo, we send the photo to OCR.space (a text-reading service run by a company outside Thailand).",
+      "Only the photo is sent. Never your name, email, Favs, Avoid list or allergies.",
+      "OCR.space returns the text it found; we then look up each dish in our own Thai dish guide and check it against your taste on our side.",
+      "Upload only photos of menus — not photos of people or personal documents.",
+      "If you don't agree, we can't read menus for you. You can delete your photos and your account at any time.",
+    ],
+  },
 };
 
 /** Accepted together as one action (F15) — kept as separate records (LR9). */
-export const TERMS_BUNDLE: ConsentDocumentId[] = ["terms", "privacy", "ai-disclaimer"];
+export const TERMS_BUNDLE: ConsentDocumentId[] = [
+  "terms",
+  "privacy",
+  "ai-disclaimer",
+  ...(USES_THIRD_PARTY_OCR ? (["photo-reading"] as const) : []),
+];
 
 export const REQUIRED_DOCUMENTS: ConsentDocumentId[] = TERMS_BUNDLE;
 
