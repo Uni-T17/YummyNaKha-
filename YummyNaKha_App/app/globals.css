@@ -117,6 +117,41 @@
 }
 
 /*
+ * Colour themes (Profile → Appearance, lib/theme.ts). Each one swaps only the
+ * brand colours; result colours stay the same in every theme. Main colours
+ * keep white text at 4.5:1+ (Coral uses a deeper shade of the original
+ * #ff6542 for text and buttons; the bright one is for decoration only).
+ */
+:root[data-theme="ocean"] {
+  --color-brand: #1f5f8b;
+  --color-brand-strong: #174a6d;
+  --color-brand-soft: #d6e6f2;
+  --color-brand-tint: #ebf3f9;
+  --color-leaf: #6fa3c8;
+}
+:root[data-theme="plum"] {
+  --color-brand: #6b3a7a;
+  --color-brand-strong: #552d61;
+  --color-brand-soft: #eadcef;
+  --color-brand-tint: #f5eef7;
+  --color-leaf: #b58cc2;
+}
+:root[data-theme="charcoal"] {
+  --color-brand: #3a3f44;
+  --color-brand-strong: #262a2e;
+  --color-brand-soft: #e1e3e5;
+  --color-brand-tint: #f0f1f2;
+  --color-leaf: #9aa1a8;
+}
+:root[data-theme="coral"] {
+  --color-brand: #c9431f;
+  --color-brand-strong: #a8361a;
+  --color-brand-soft: #ffe8e0;
+  --color-brand-tint: #fff0e8;
+  --color-leaf: #ff6542;
+}
+
+/*
  * The app is a phone-first column (430px, as in Figma). On tablet and desktop
  * the column widens and pages switch to multi-column layouts where it helps.
  * Fixed bars (bottom nav, sticky CTAs) read the same width from --shell-max.
@@ -153,6 +188,26 @@
     outline: 2px solid var(--color-brand);
     outline-offset: 2px;
   }
+}
+
+/*
+ * iPhone Safari zooms into any text box whose text is under 16px when it is
+ * tapped, and often stays zoomed after the keyboard closes (the page looks
+ * too wide). 16px on phones prevents that without blocking pinch-zoom.
+ * Unlayered on purpose: it beats Tailwind's text-sm utilities on form fields.
+ */
+@media (max-width: 767px) {
+  input:not([type="checkbox"], [type="radio"], [type="file"]),
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
+
+/* Nothing may make the page scroll sideways (a long word, a wide image). */
+html,
+body {
+  overflow-x: clip;
 }
 
 @utility scrollbar-hide {

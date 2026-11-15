@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Nunito, Sarabun } from "next/font/google";
+import { THEME_BOOT_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
 const nunito = Nunito({
@@ -35,7 +36,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${nunito.variable} ${sarabun.variable} h-full`}>
+    // suppressHydrationWarning: the theme script may set data-theme before React loads.
+    <html lang="en" className={`${nunito.variable} ${sarabun.variable} h-full`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
+      </head>
       <body className="min-h-full">
         <div className="relative mx-auto flex min-h-dvh w-full max-w-(--shell-max) flex-col bg-cream md:border-x md:border-line md:shadow-[0_0_40px_rgba(28,25,23,0.06)]">
           {children}

@@ -14,6 +14,7 @@ import { deleteAccount, updateUsername } from "@/lib/api/auth";
 import { ApiError } from "@/lib/api/client";
 import { cn } from "@/lib/cn";
 import { appActions, useAppState } from "@/lib/store/app-store";
+import { ThemePicker } from "./theme-picker";
 
 const rowLabel = "text-xs font-bold tracking-wider text-subtle uppercase";
 
@@ -212,6 +213,8 @@ export function ProfileView() {
             <p className="text-sm font-bold break-all text-ink">{user.email}</p>
           </div>
         </section>
+
+        <ThemePicker />
 
         <section aria-label="Account actions" className="mx-5 overflow-hidden rounded-2xl border border-line bg-white shadow-sm">
           {user.hasPassword === false ? (
