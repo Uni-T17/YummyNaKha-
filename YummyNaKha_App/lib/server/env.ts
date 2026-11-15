@@ -22,6 +22,15 @@ export function getAuthSecret(): string {
 export const DEFAULT_OCR_SERVICE_URL = "http://127.0.0.1:8765";
 
 /** Our own OCR service (ocr-service/). Runs next to the app; no API key, no third party. */
+/**
+ * Sent as a Bearer token to the OCR service when it runs elsewhere — e.g. a
+ * private Hugging Face Space, where this is a read-only Hugging Face token.
+ * Not needed when the service runs next to the app.
+ */
+export function getOcrServiceToken(): string | null {
+  return process.env.OCR_SERVICE_TOKEN?.trim() || null;
+}
+
 export function getOcrServiceUrl(): string {
   return (process.env.OCR_SERVICE_URL?.trim() || DEFAULT_OCR_SERVICE_URL).replace(/\/+$/, "");
 }

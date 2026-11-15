@@ -1,10 +1,11 @@
 import "server-only";
 import { z } from "zod";
-import { getOcrServiceUrl } from "../env";
+import { getOcrServiceToken, getOcrServiceUrl } from "../env";
 import { errors, HttpError } from "../http";
 
-// Client for our own OCR service (ocr-service/, PaddleOCR). It runs on our
-// server, so the menu photo is never sent to a third party (LR2, LR3).
+// Client for our own OCR service (ocr-service/, PaddleOCR). It runs our own
+// code — next to the app, or in our private Hugging Face Space — and receives
+// only the photo, never who uploaded it (LR3).
 
 const TIMEOUT_MS = 60_000;
 
@@ -40,7 +41,10 @@ export async function readMenuImage(image: { data: Uint8Array; mimeType: string 
   try {
     response = await fetch(`${getOcrServiceUrl()}/ocr`, {
       method: "POST",
-      headers: { "Content-Type": image.mimeType },
+      headers: {
+        "Content-Type": image.mimeType,
+        ...(getOcrServiceToken() ? { Authorization: `Bearer ${getOcrServiceToken()}` } : {}),
+      },
       body: Buffer.from(image.data),
       signal: AbortSignal.timeout(TIMEOUT_MS),
     });

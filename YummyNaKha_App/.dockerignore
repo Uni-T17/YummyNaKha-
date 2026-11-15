@@ -1,0 +1,10 @@
+node_modules
+.next
+lib/generated
+ocr-service
+.env
+.env.*
+!.env.example
+tsconfig.tsbuildinfo
+*.log
+.DS_Store

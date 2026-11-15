@@ -3,6 +3,7 @@ import { fetchSession, markOnboarded, signOutRequest } from "../api/auth";
 import { createId } from "../api/client";
 import { deleteMenuImage, describeUnlisted, uploadMenuImage } from "../api/menu";
 import { addDislike, addFavorite, getTasteProfile, removeDislike, removeFavorite, setSpiceLevel } from "../api/preferences";
+import { prepareForUpload } from "../image-resize";
 import { categorizeMenu } from "../matching";
 import type { AppUser, AvoidItem, Dish, ExtractedDish, MenuUpload, SpiceLevel, TasteProfile } from "../types";
 
@@ -250,7 +251,8 @@ export const appActions = {
     setState((s) => ({ ...s, uploads: [...s.uploads, ...pending.map((p) => p.upload)] }));
 
     for (const { file, upload } of pending) {
-      uploadMenuImage(file)
+      prepareForUpload(file)
+        .then(uploadMenuImage)
         .then((image) =>
           setState((s) => ({
             ...s,
@@ -276,7 +278,8 @@ export const appActions = {
     if (target.previewUrl) URL.revokeObjectURL(target.previewUrl);
     const upload: MenuUpload = { id: createId("local"), fileName: file.name, status: "uploading", previewUrl: URL.createObjectURL(file) };
     setState((s) => ({ ...s, uploads: s.uploads.map((u) => (u.id === id ? upload : u)) }));
-    uploadMenuImage(file)
+    prepareForUpload(file)
+      .then(uploadMenuImage)
       .then((image) =>
         setState((s) => ({ ...s, uploads: s.uploads.map((u) => (u.id === upload.id ? { ...u, id: image.id, status: "ready" } : u)) })),
       )

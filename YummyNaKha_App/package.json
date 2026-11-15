@@ -6,6 +6,7 @@
     "dev": "next dev",
     "ocr": "cd ocr-service && uv run --python 3.12 uvicorn server:app --host 127.0.0.1 --port 8765",
     "build": "next build",
+    "vercel-build": "prisma migrate deploy && next build",
     "start": "next start",
     "lint": "eslint",
     "guide:check": "tsx --conditions=react-server --tsconfig tsconfig.json scripts/guide-check.ts",
