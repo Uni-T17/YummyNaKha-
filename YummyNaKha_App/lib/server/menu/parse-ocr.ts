@@ -1,12 +1,13 @@
 import "server-only";
 import type { OcrLine } from "../ocr/client";
 
-// Turns OCR text boxes into menu items: a Thai name plus the price printed on
-// the same row. Menus usually put the price in its own box to the right of the
+// Turns OCR text boxes into menu items: a dish name plus the price printed on
+// the same row. Names are Thai, or English on a menu printed in English only. Menus usually put the price in its own box to the right of the
 // name, sometimes in a second column, and photos are rarely perfectly level.
 
 export interface MenuItem {
-  thai: string;
+  /** The dish name as printed: Thai, or English on an English menu. */
+  name: string;
   /** null when no price is printed for the item (never guessed). */
   price: number | null;
 }
@@ -14,25 +15,60 @@ export interface MenuItem {
 type Box = OcrLine["box"];
 
 const THAI_DIGITS = /[๐-๙]/g;
-const PRICE_SUFFIX = String.raw`(?:\s*(?:บาท|บ\.|฿|\.-|-|\.00))?`;
-/** "60", or a range "200-250" / "200- 250" (sold by size); the lowest price is kept. */
-const PRICE = String.raw`(\d{2,5})(?:\s*[-–]\s*\d{2,5})?`;
-/** A box that is only a price: "60", "60 บาท", "฿60", "60.-", "200- 250.-". */
-const PRICE_ONLY = new RegExp(String.raw`^฿?\s*${PRICE}${PRICE_SUFFIX}\s*$`);
-/** A name with the price in the same box: "ผัดไทย ....... 60". */
-const NAME_THEN_PRICE = new RegExp(String.raw`^(.*[ก-ฮ].*?)[\s.…_:-]*฿?\s*${PRICE}${PRICE_SUFFIX}\s*$`);
+const PRICE_SUFFIX = String.raw`(?:\s*(?:บาท|บ\.|฿|\.-|-|\.00|THB|[Bb]aht|B\b))?`;
+const PRICE_PREFIX = String.raw`(?:฿|THB)?`;
+/** A letter a dish name can contain: Thai, or Latin on an English menu. */
+const LETTER = "[ก-ฮA-Za-z]";
+/** "60", or a range "200-250" / "200- 250" / "120.00 - 150.00" (sold by size); the lowest price is kept. */
+const PRICE = String.raw`(\d{2,5})(?:\.00)?(?:\s*[-–]\s*\d{2,5}(?:\.00)?)?`;
+/** A box that is only a price: "60", "60 บาท", "฿60", "60.-", "200- 250.-", "80 THB". */
+const PRICE_ONLY = new RegExp(String.raw`^${PRICE_PREFIX}\s*${PRICE}${PRICE_SUFFIX}\s*$`);
+/** A name with the price in the same box: "ผัดไทย ....... 60", "Pad Thai 80". */
+const NAME_THEN_PRICE = new RegExp(String.raw`^(.*${LETTER}.*?)[\s.…_:-]*${PRICE_PREFIX}\s*${PRICE}${PRICE_SUFFIX}\s*$`);
 
 /** A price followed by the next item's name in one box: "200- 250.-น้ำอัดลม". */
-const PRICE_THEN_NAME = new RegExp(String.raw`^(฿?\s*${PRICE}${PRICE_SUFFIX}\s*)(.*[ก-ฮ].*)$`);
+const PRICE_THEN_NAME = new RegExp(String.raw`^(${PRICE_PREFIX}\s*${PRICE}${PRICE_SUFFIX}\s*)(.*${LETTER}.*)$`);
 
 /** Two items in one box: "ปลาทอด (ตามขนาด) 200- 250.-น้ำเปล่า". */
-const NAME_PRICE_NAME = new RegExp(String.raw`^(.*[ก-ฮ].*?)[\s.…_:-]*฿?\s*${PRICE}${PRICE_SUFFIX}\s*(.*[ก-ฮ].*)$`);
+const NAME_PRICE_NAME = new RegExp(String.raw`^(.*${LETTER}.*?)[\s.…_:-]*${PRICE_PREFIX}\s*${PRICE}${PRICE_SUFFIX}\s*(.*${LETTER}.*)$`);
 
-/** "บาท" printed in its own box next to a price. */
-const CURRENCY_ONLY = /^(?:บาท\S?|บ\.?|฿)$/;
+/**
+ * Shop details printed on menus that aren't dishes: phone numbers ("โทร. 095-849…"),
+ * opening hours, Line / Facebook / web addresses, delivery apps, Wi-Fi. A phone
+ * number would otherwise be read as a dish with its digits as the price.
+ */
+const SHOP_INFO = new RegExp(
+  [
+    String.raw`โทร|เบอร์|tel\b|phone|call\b`,
+    String.raw`\b0\d{1,2}[\s-]?\d{3}[\s-]?\d{3,4}\b`, // Thai phone number
+    // Opening hours: words, or a time written with "น." — a bare "10.00 - 20.00" could be a price range.
+    String.raw`เปิด|ปิด(?:ทุก|วัน)|open\b|close[sd]?\b|\d{1,2}[.:]\d{2}\s*น\.`,
+    String.raw`line\s*(?:id|@)|ไลน์|@\w{3,}|facebook|fb\b|เฟซบุ๊ก|เพจ|instagram|ig\b|www\.|https?:|\.com\b`,
+    String.raw`grab|lineman|line man|foodpanda|robinhood|shopee\s*food|wi-?fi|password|รหัส`,
+  ].join("|"),
+  "i",
+);
+
+/** "บาท" / "THB" printed in its own box next to a price. */
+const CURRENCY_ONLY = /^(?:บาท\S?|บ\.?|฿|THB|[Bb]aht|B)$/;
 
 const toArabic = (s: string) => s.replace(THAI_DIGITS, (d) => String(d.charCodeAt(0) - 0x0e50));
 const thaiLetters = (s: string) => (s.match(/[ก-ฮ]/g) ?? []).length;
+const latinLetters = (s: string) => (s.match(/[A-Za-z]/g) ?? []).length;
+const isThaiName = (s: string) => thaiLetters(s) >= 2;
+const isEnglishName = (s: string) => thaiLetters(s) < 2 && latinLetters(s) >= 3;
+
+/**
+ * A page is read in English only when its names are mostly English. A Thai
+ * menu with English translations underneath keeps the Thai names — the guide
+ * is matched on Thai — and ignores the English copies.
+ */
+function readsEnglish(lines: OcrLine[]) {
+  const texts = lines.map((l) => toArabic(l.text).trim()).filter((t) => !PRICE_ONLY.test(t));
+  const thai = texts.filter(isThaiName).length;
+  const english = texts.filter(isEnglishName).length;
+  return english >= 3 && thai < english * 0.25;
+}
 const height = (b: Box) => b[3] - b[1];
 
 const centerX = (b: Box) => (b[0] + b[2]) / 2;
@@ -77,12 +113,14 @@ interface Name {
 }
 
 export function parseMenuLines(lines: OcrLine[]): MenuItem[] {
+  const english = readsEnglish(lines);
   const names: Name[] = [];
   const prices: { value: number; box: Box }[] = [];
 
   for (const raw of lines) {
     let line = raw;
     let text = toArabic(raw.text).trim();
+    if (SHOP_INFO.test(text)) continue; // phone, hours, social media — not a dish, and its digits aren't a price
     // Split a leading price off: it belongs to the item on the left, the rest is a new name.
     const lead = text.match(PRICE_THEN_NAME);
     if (lead) {
@@ -106,7 +144,8 @@ export function parseMenuLines(lines: OcrLine[]): MenuItem[] {
       line = { ...line, box: [split, y0, x1, y1] };
     }
     text = text.replace(/^[\s.…_:,-]+/, ""); // leaders left over from ". . . . 60" layouts
-    if (thaiLetters(text) < 2 || CURRENCY_ONLY.test(text)) continue; // stray marks, noise, a lone "บาท"
+    // Stray marks, noise, a lone "บาท"; on a Thai menu, also the English copies of the names.
+    if (!(isThaiName(text) || (english && isEnglishName(text))) || CURRENCY_ONLY.test(text)) continue;
     const inline = text.match(NAME_THEN_PRICE);
     names.push(
       inline
@@ -115,7 +154,7 @@ export function parseMenuLines(lines: OcrLine[]): MenuItem[] {
     );
   }
 
-  // A name split into two boxes on the same row ("ผัดกะ" + "เพราหมู") is one name.
+  // A name split into two boxes on the same row ("ผัดกะ" + "เพราหมู", "Crab" + "Fried Rice") is one name.
   names.sort((a, b) => a.box[1] - b.box[1] || a.box[0] - b.box[0]);
   for (let i = 0; i < names.length - 1; i++) {
     const a = names[i];
@@ -123,7 +162,7 @@ export function parseMenuLines(lines: OcrLine[]): MenuItem[] {
     const gap = b.box[0] - a.box[2];
     if (a.price === null && rowOverlap(a.box, b.box) >= 0.6 && gap >= 0 && gap < height(a.box) * 0.8) {
       names.splice(i, 2, {
-        text: `${a.text}${b.text}`,
+        text: /[A-Za-z]$/.test(a.text) && /^[A-Za-z]/.test(b.text) ? `${a.text} ${b.text}` : `${a.text}${b.text}`,
         box: [a.box[0], Math.min(a.box[1], b.box[1]), b.box[2], Math.max(a.box[3], b.box[3])],
         price: b.price,
       });
@@ -150,5 +189,5 @@ export function parseMenuLines(lines: OcrLine[]): MenuItem[] {
     usedPrices.add(pair.price);
   }
 
-  return names.map((n) => ({ thai: n.text, price: n.price }));
+  return names.map((n) => ({ name: n.text, price: n.price }));
 }

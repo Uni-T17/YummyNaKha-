@@ -1,7 +1,8 @@
 import { getCurrentUser, requireUser, toPublicUser } from "@/lib/server/auth/current-user";
-import { updateProfile } from "@/lib/server/auth/service";
+import { deleteAccount, updateProfile } from "@/lib/server/auth/service";
 import { errors, json, parseJson, route } from "@/lib/server/http";
-import { updateMeSchema } from "@/lib/server/validation/auth";
+import { clientIp, rateLimit } from "@/lib/server/rate-limit";
+import { deleteAccountSchema, updateMeSchema } from "@/lib/server/validation/auth";
 
 /** GET /api/auth/me — the signed-in user (never the password hash). */
 export const GET = route(async () => {
@@ -16,4 +17,13 @@ export const PATCH = route(async (request) => {
   const input = await parseJson(request, updateMeSchema);
   const updated = await updateProfile(user.id, input);
   return json({ user: toPublicUser(updated), onboarded: updated.onboardedAt !== null });
+});
+
+/** DELETE /api/auth/me — delete the account and all its data (PDPA). Body: { password }. */
+export const DELETE = route(async (request) => {
+  const user = await requireUser();
+  rateLimit(`delete-account:${user.id}:${clientIp(request)}`, 5, 15 * 60 * 1000);
+  const input = await parseJson(request, deleteAccountSchema);
+  await deleteAccount(user, input);
+  return new Response(null, { status: 204 });
 });

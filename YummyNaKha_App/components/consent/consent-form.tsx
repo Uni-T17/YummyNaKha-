@@ -11,7 +11,7 @@ import { BackHeader } from "@/components/ui/page-header";
 import { acceptDocuments } from "@/lib/api/consent";
 import { ApiError } from "@/lib/api/client";
 import { cn } from "@/lib/cn";
-import { getConsentStatus, hasAccepted, TERMS_BUNDLE, type ConsentDocumentId } from "@/lib/consent";
+import { AI_HELPER_CONSENT, getConsentStatus, hasAccepted, TERMS_BUNDLE, type ConsentDocumentId } from "@/lib/consent";
 import { formatDate } from "@/lib/format";
 import { DocumentSheet } from "./document-sheet";
 import { useConsentRecords } from "./use-consent-records";
@@ -63,6 +63,7 @@ export function ConsentForm() {
   const router = useRouter();
   const { userId, records, error: loadError, reload } = useConsentRecords();
   const [termsChecked, setTermsChecked] = useState(false);
+  const [helperChecked, setHelperChecked] = useState(false);
   const [reading, setReading] = useState<ConsentDocumentId | null>(null);
   const [declined, setDeclined] = useState(false);
   const [pending, setPending] = useState(false);
@@ -95,6 +96,7 @@ export function ConsentForm() {
   }
 
   const termsDone = hasAccepted(records, TERMS_BUNDLE);
+  const helperOn = hasAccepted(records, [AI_HELPER_CONSENT]);
   const canContinue = termsDone || termsChecked;
 
   async function handleAgree() {
@@ -102,7 +104,7 @@ export function ConsentForm() {
     setError("");
     setPending(true);
     try {
-      if (!termsDone) await acceptDocuments(TERMS_BUNDLE);
+      await acceptDocuments([...(termsDone ? [] : TERMS_BUNDLE), ...(helperChecked && !helperOn ? [AI_HELPER_CONSENT] : [])]);
       router.replace("/analyzing");
     } catch (e) {
       setError(e instanceof ApiError ? e.message : "Couldn't save your choice. Please try again.");
@@ -167,9 +169,25 @@ export function ConsentForm() {
           <p className="text-sm leading-relaxed text-body">
             Your menu photo is read on <span className="font-bold text-ink">our own server</span> and checked against our
             Thai dish guide. Your photos, food profile and account details are{" "}
-            <span className="font-bold text-ink">not sent to any outside AI provider</span>.
+            <span className="font-bold text-ink">never sent to any outside AI provider</span>.
           </p>
         </section>
+
+        {!helperOn && (
+          <section className="rounded-2xl border border-line bg-white p-4 shadow-sm md:p-5">
+            <p className="mb-1 text-xs font-bold tracking-wider text-subtle uppercase">Optional</p>
+            <p className="mb-2 text-sm leading-relaxed text-body">
+              Some menus list dishes and meats separately. The <span className="font-bold text-ink">Menu helper</span> sends
+              only that menu text to Google Gemini to pair them, so each combination gets its own card and price.
+            </p>
+            <div className="mb-2">
+              <ReadLink onClick={() => setReading(AI_HELPER_CONSENT)}>What is sent to Google?</ReadLink>
+            </div>
+            <Checkbox checked={helperChecked} onChange={setHelperChecked}>
+              Use the Menu helper (Google Gemini). You can turn it off any time.
+            </Checkbox>
+          </section>
+        )}
 
         <FormError>{error}</FormError>
 

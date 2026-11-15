@@ -2,12 +2,13 @@
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { AlertTriangle, Camera, Check, Loader2, Plus, ScanLine, Sparkles, Trash2 } from "lucide-react";
+import { AlertTriangle, Camera, Check, Crop, Loader2, Plus, ScanLine, Sparkles, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/ui/feedback";
 import { IconTile } from "@/components/ui/icon-tile";
 import { cn } from "@/lib/cn";
 import { appActions, useAppState } from "@/lib/store/app-store";
+import { PhotoEditor } from "./photo-editor";
 
 const MAX_FILE_MB = 8;
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -18,6 +19,8 @@ export function MenuUploader() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
   const [error, setError] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const editing = uploads.find((u) => u.id === editingId && u.previewUrl) ?? null;
 
   function addFiles(files: FileList | null) {
     if (!files?.length) return;
@@ -129,6 +132,16 @@ export function MenuUploader() {
                     </p>
                   )}
                 </div>
+                {upload.previewUrl && upload.status !== "uploading" && (
+                  <button
+                    type="button"
+                    onClick={() => setEditingId(upload.id)}
+                    aria-label={`Crop or rotate ${upload.fileName}`}
+                    className="flex h-10 w-10 items-center justify-center rounded-lg text-faint transition-colors hover:text-brand"
+                  >
+                    <Crop size={15} aria-hidden />
+                  </button>
+                )}
                 <button
                   type="button"
                   onClick={() => appActions.removeUpload(upload.id)}
@@ -166,6 +179,16 @@ export function MenuUploader() {
       )}
 
       <FormError className="mt-3">{error}</FormError>
+
+      <PhotoEditor
+        src={editing?.previewUrl ?? null}
+        fileName={editing?.fileName ?? ""}
+        onClose={() => setEditingId(null)}
+        onSave={(file) => {
+          if (editing) appActions.replaceUpload(editing.id, file);
+          setEditingId(null);
+        }}
+      />
     </section>
   );
 }

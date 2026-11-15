@@ -59,15 +59,17 @@ creates the Python environment in `ocr-service/.venv` on first run.
 1. **Read** — `ocr-service/server.py` returns each text box with its position (~6 s per photo on a laptop CPU).
 2. **Parse** — `lib/server/menu/parse-ocr.ts` pairs each dish name with the price on its row, correcting for a tilted photo.
 3. **Match** — `lib/server/thai-food/match.ts` finds the guide dish in the line (ignoring tone marks and small OCR slips) plus its protein (`ผัดกะเพรา` + `หมูสับ`). A dish that isn't in the guide is **read from the words of its name** (`หมึก` + `ทอด` + `กระเทียม` → *Deep-fried squid with garlic*) using `words.ts`.
+   English-only menus are read the same way: English lines are matched by `english.ts` to the same guide dishes and words, and the Thai name for ordering comes from the guide. On a Thai menu with English translations, the Thai names are used.
 4. **Categorise** — `lib/matching.ts` checks the ingredients and their allergen groups against the diner's Avoid list → Top Pick / Check First / Avoid. Dishes read from their name, misread names and unstated proteins are always Check First.
 
 ### Extending the Thai dish guide
 
 | File | What goes in it |
 | --- | --- |
-| `lib/server/thai-food/dishes.ts`, `dishes-more.ts` | Dishes: Thai spellings, English name, description, spice, ingredients (listed / often added) |
+| `lib/server/thai-food/dishes.ts`, `dishes-more.ts`, `dishes-datasets.ts` | Dishes: Thai spellings, English name, description, spice, ingredients (listed / often added) |
 | `lib/server/thai-food/variants.ts` | Proteins and styles added to a dish name (หมูสับ, กุ้ง, น้ำข้น…) |
 | `lib/server/thai-food/words.ts` | Menu words for reading unlisted dishes (ผัด, ทอด, แกง, กระเทียม, เห็ด…) |
+| `lib/server/thai-food/english.ts` | English menus: how restaurants write guide dishes in English ("Basil Pork", "Tom Yum Goong") and English words → the Thai menu words above |
 | `lib/server/thai-food/ingredients.ts` | Every ingredient with its Thai name and allergen groups |
 
 Bump `GUIDE_VERSION` after any change, then:
@@ -75,10 +77,16 @@ Bump `GUIDE_VERSION` after any change, then:
 ```bash
 npm run guide:check                          # data checks (duplicate spellings, unused ingredients)
 npm run guide:check -- path/to/menu-lines.txt  # how a list of menu names is matched
+npm run guide:check -- scripts/test-menus/kaggle-thai-dishes.txt   # benchmark: 324 names from a public Kaggle list
+npm run guide:check -- scripts/test-menus/inmu-prepared-dishes.txt # benchmark: 90 prepared dishes from INMU (Mahidol)
+npm run guide:check -- scripts/test-menus/english-menu-sample.txt  # smoke test: English menu wording
+npm run guide:export                         # writes data/thai-dish-guide.csv (one row per dish) for review in a spreadsheet
 npm run guide:coverage                       # dishes from real scans that are missing from the guide, most frequent first
 ```
 
 Grow the guide from `guide:coverage`: after each round of real scans, add the most frequent missing dishes. The data is a **draft** until a Thai-literate team member has reviewed it.
+
+Public datasets are used for dish **names only** (`dishes-datasets.ts` and the benchmark lists). Their ingredient lists leave out allergens (the Kaggle Pad Thai has no peanuts, egg or shrimp), so ingredients are always written and reviewed by the team.
 
 | Endpoint | Purpose |
 | --- | --- |

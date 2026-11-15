@@ -5,11 +5,10 @@ import { useRouter } from "next/navigation";
 import { AlertTriangle, Check, Loader2, Sparkles } from "lucide-react";
 import { Button, ButtonLink } from "@/components/ui/button";
 import { IconTile } from "@/components/ui/icon-tile";
-import { analyzeMenu, ANALYSIS_STEPS } from "@/lib/api/menu";
+import { analyzeMenu, ANALYSIS_STEPS, type AnalyzedMenu } from "@/lib/api/menu";
 import { ApiError } from "@/lib/api/client";
 import { cn } from "@/lib/cn";
 import { appActions, useAppState } from "@/lib/store/app-store";
-import type { ExtractedDish } from "@/lib/types";
 
 const STEP_MS = 650;
 
@@ -18,7 +17,7 @@ export function AnalysisProgress() {
   const { uploads } = useAppState();
   const [attempt, setAttempt] = useState(0);
   const [step, setStep] = useState(0);
-  const [result, setResult] = useState<ExtractedDish[] | null>(null);
+  const [result, setResult] = useState<AnalyzedMenu | null>(null);
   const [error, setError] = useState("");
 
   // Kick off the analysis (runs alongside the step animation).
@@ -49,7 +48,7 @@ export function AnalysisProgress() {
     }
     if (step < ANALYSIS_STEPS.length || !result) return;
     const t = setTimeout(() => {
-      appActions.setMenu(result);
+      appActions.setMenu(result.dishes, result.analysisId);
       router.replace("/menu");
     }, 700);
     return () => clearTimeout(t);

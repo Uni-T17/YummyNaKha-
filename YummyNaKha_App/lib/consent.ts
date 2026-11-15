@@ -3,7 +3,7 @@
 // the final legal text, and bump `version` whenever a document changes so users
 // are asked to accept the new version.
 
-export type ConsentDocumentId = "terms" | "privacy" | "ai-disclaimer" | "ai-transfer";
+export type ConsentDocumentId = "terms" | "privacy" | "ai-disclaimer" | "health-data" | "ai-transfer";
 
 export interface ConsentDocument {
   id: ConsentDocumentId;
@@ -41,14 +41,16 @@ export const CONSENT_DOCUMENTS: Record<ConsentDocumentId, ConsentDocument> = {
   privacy: {
     id: "privacy",
     title: "Privacy Notice",
-    version: "0.3-draft",
+    version: "0.4-draft",
     withdrawable: false,
     summary: [
       "We keep your account name and email, your food profile and, for the length of a scan, your menu photos.",
+      "If you sign in with Google, we receive only your name, email address and Google account ID. We don't keep any Google password or access token.",
       "Your menu photos are read on our own server. We don't send your photos, food profile or account details to any outside AI provider.",
+      "Only if you turn on the optional Menu helper, the text of a menu's dish and meat lists is sent to Google Gemini to pair them.",
       "This data is used only to understand menus and recommend dishes — never for advertising, resale or profiling.",
-      "Allergies and doctor-advised restrictions are sensitive health data. You can edit or delete them at any time.",
-      "Deleting your account removes your profile, menu photos and results.",
+      "Allergies and doctor-advised restrictions are sensitive health data. We store them only with your separate Health information consent, which you can withdraw at any time in Privacy & consents.",
+      "You can delete your account at any time in My Profile. This permanently removes your account, food profile, menu photos, results and agreement history.",
       "Where Thai law requires it, access logs (account ID, IP address, time) are kept separately for at least 90 days.",
     ],
   },
@@ -65,15 +67,30 @@ export const CONSENT_DOCUMENTS: Record<ConsentDocumentId, ConsentDocument> = {
       "Always confirm allergies and medical restrictions with restaurant staff before ordering.",
     ],
   },
+  "health-data": {
+    id: "health-data",
+    title: "Health information (allergies & doctor advice)",
+    version: "0.1-draft",
+    withdrawable: true,
+    summary: [
+      "Saying that you avoid a food because of an allergy or a doctor's advice is sensitive health data under Thai law (PDPA). We store it only with this separate consent.",
+      "We use it only to warn you about dishes on the menus you scan. It is never used for advertising, never sold and never sent to an outside AI provider.",
+      "You can edit or remove any item at any time in My Taste.",
+      "If you withdraw this consent, we delete every allergy and doctor-advice reason you saved. The foods stay on your Avoid list without a reason.",
+      "You can still use the app without it — just mark foods as \"Just don't like it\" or skip the reason.",
+    ],
+  },
   "ai-transfer": {
     id: "ai-transfer",
-    title: "Send data to AI providers (no longer used)",
-    version: "0.2-draft",
-    withdrawable: false,
-    retired: true,
+    title: "Menu helper (Google Gemini)",
+    version: "0.4-draft",
+    withdrawable: true,
     summary: [
-      "Earlier versions of YummyNaKha! sent menu photos and the Favs and Avoid items needed for matching to external AI providers (Hugging Face and the Google Gemini API).",
-      "Since version 0.3 menus are read on our own server and nothing is sent to an outside AI provider, so this consent is no longer needed.",
+      "Optional. Some menus list dishes and meats separately (ข้าวผัด + หมู 50 / กุ้ง 60). With this helper, Google Gemini pairs them so each combination gets its own card and price.",
+      "Only the text read from that part of the menu is sent to Google. Never your photo, name, email, Favs, Avoid list or allergies.",
+      "Gemini only pairs lines. Every price comes from the menu and every ingredient from our Thai dish guide, checked by our own rules.",
+      "Google processes the text under its Gemini API terms. We use it only to understand the menu.",
+      "Without this helper you still get the same menu, with a \"choose your meat\" list instead of separate cards. You can turn it off at any time in Privacy & consents.",
     ],
   },
 };
@@ -82,6 +99,15 @@ export const CONSENT_DOCUMENTS: Record<ConsentDocumentId, ConsentDocument> = {
 export const TERMS_BUNDLE: ConsentDocumentId[] = ["terms", "privacy", "ai-disclaimer"];
 
 export const REQUIRED_DOCUMENTS: ConsentDocumentId[] = TERMS_BUNDLE;
+
+/** Separate, optional opt-in: needed only to save an allergy or doctor-advised reason (PDPA sensitive data). */
+export const HEALTH_CONSENT: ConsentDocumentId = "health-data";
+
+/** Separate, optional opt-in for the Gemini menu helper (rule.md: consent before menu data goes to a third-party AI). */
+export const AI_HELPER_CONSENT: ConsentDocumentId = "ai-transfer";
+
+/** Avoid reasons that are health data and need HEALTH_CONSENT. */
+export const HEALTH_REASONS = ["allergy", "doctor"] as const;
 
 export type ConsentStatus = "accepted" | "withdrawn" | "outdated" | "none";
 

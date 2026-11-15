@@ -1,7 +1,15 @@
-import type { AvoidItem, AvoidReason } from "./types";
+import type { AvoidItem, AvoidReason, SpiceLevel } from "./types";
 
-export function formatPrice(price: number | null) {
-  return price === null ? "Price not listed" : `฿${price.toLocaleString("en-US")}`;
+export const SPICE_LABELS: Record<SpiceLevel, string> = {
+  0: "Not spicy",
+  1: "Mild",
+  2: "Medium spicy",
+  3: "Very spicy",
+};
+
+export function formatPrice(price: number | null, from = false) {
+  if (price === null) return "Price not listed";
+  return `${from ? "from " : ""}฿${price.toLocaleString("en-US")}`;
 }
 
 export function pluralizeDishes(count: number) {

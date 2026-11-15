@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Ban, Check, Heart, X } from "lucide-react";
+import { Ban, Check, Flame, Heart, X } from "lucide-react";
 import { FixedBottom } from "@/components/layout/fixed-bottom";
 import { useNavVisible } from "@/components/layout/bottom-nav";
 import { ReasonBadge } from "@/components/menu/status";
@@ -10,14 +10,61 @@ import { Button } from "@/components/ui/button";
 import { FavChip, SuggestionChip } from "@/components/ui/chip";
 import { PageHeader } from "@/components/ui/page-header";
 import { SegmentedTabs } from "@/components/ui/segmented-tabs";
+import { useConsentRecords } from "@/components/consent/use-consent-records";
+import { acceptDocuments } from "@/lib/api/consent";
+import { ApiError } from "@/lib/api/client";
 import { cn } from "@/lib/cn";
+import { getConsentStatus, HEALTH_CONSENT } from "@/lib/consent";
+import { SPICE_LABELS } from "@/lib/format";
 import { FAV_SUGGESTIONS } from "@/lib/mock-data";
 import { appActions, useAppState } from "@/lib/store/app-store";
-import type { AvoidReason } from "@/lib/types";
+import type { AvoidReason, SpiceLevel } from "@/lib/types";
 import { AddItemInput } from "./add-item-input";
 import { AvoidReasonSheet } from "./avoid-reason-sheet";
 
 type Tab = "favs" | "avoid";
+
+const SPICE_LEVELS: SpiceLevel[] = [0, 1, 2, 3];
+
+/** How spicy the diner can eat. Tapping the chosen level again clears it. */
+function SpicePicker({ value }: { value?: SpiceLevel }) {
+  return (
+    <section aria-labelledby="spice-heading" className="mb-6 px-5 md:px-8">
+      <h2 id="spice-heading" className="mb-1 flex items-center gap-1.5 text-sm font-bold text-ink">
+        <Flame size={14} className="text-brand" aria-hidden />
+        How spicy can you eat?
+      </h2>
+      <p className="mb-3 text-xs text-subtle">Dishes hotter than this are marked Check First, with a way to ask for it milder.</p>
+      <div role="radiogroup" aria-labelledby="spice-heading" className="grid grid-cols-4 gap-1 rounded-2xl bg-sand p-1">
+        {SPICE_LEVELS.map((level) => {
+          const active = value === level;
+          return (
+            <button
+              key={level}
+              type="button"
+              role="radio"
+              aria-checked={active}
+              onClick={() => appActions.setSpice(active ? null : level)}
+              className={cn(
+                "flex min-h-11 flex-col items-center justify-center gap-0.5 rounded-xl px-1 py-2 text-xs font-bold transition-all",
+                active ? "bg-white text-brand shadow-sm" : "text-muted hover:text-ink",
+              )}
+            >
+              <span className="flex" aria-hidden>
+                {level === 0 ? (
+                  <Flame size={12} className="text-line" />
+                ) : (
+                  Array.from({ length: level }, (_, i) => <Flame key={i} size={12} className={active ? "text-brand" : "text-faint"} />)
+                )}
+              </span>
+              {SPICE_LABELS[level]}
+            </button>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
 
 export function TasteEditor() {
   const router = useRouter();
@@ -25,6 +72,17 @@ export function TasteEditor() {
   const navVisible = useNavVisible();
   const [tab, setTab] = useState<Tab>("favs");
   const [pendingAvoid, setPendingAvoid] = useState<string | null>(null);
+  const { records, reload: reloadConsents } = useConsentRecords();
+  const healthConsent = records ? getConsentStatus(records, HEALTH_CONSENT).status === "accepted" : false;
+
+  async function giveHealthConsent() {
+    try {
+      await acceptDocuments([HEALTH_CONSENT]);
+    } catch (e) {
+      throw new Error(e instanceof ApiError ? e.message : "Couldn't save your choice. Please try again.");
+    }
+    reloadConsents();
+  }
 
   const suggestions = FAV_SUGGESTIONS.filter((s) => !profile.favs.some((f) => f.toLowerCase() === s.toLowerCase()));
 
@@ -34,8 +92,7 @@ export function TasteEditor() {
   }
 
   function handleSave() {
-    // TODO(api): PUT /profile. Allergy / doctor-advised items are sensitive
-    // health data under PDPA and need an explicit opt-in record server-side.
+    // Each change is already saved as it's made; this only finishes onboarding.
     appActions.completeOnboarding();
     router.push("/home");
   }
@@ -43,6 +100,8 @@ export function TasteEditor() {
   return (
     <main className={cn("flex flex-1 flex-col", navVisible ? "pb-40" : "pb-28")}>
       <PageHeader title="My Taste" subtitle="Tell us what you love and what you'd rather avoid." />
+
+      <SpicePicker value={profile.spice} />
 
       <div className="mb-4 px-5 md:px-8 lg:hidden">
         <SegmentedTabs
@@ -150,7 +209,13 @@ export function TasteEditor() {
         </Button>
       </FixedBottom>
 
-      <AvoidReasonSheet item={pendingAvoid} onChoose={saveAvoid} onClose={() => setPendingAvoid(null)} />
+      <AvoidReasonSheet
+        item={pendingAvoid}
+        healthConsent={healthConsent}
+        onGiveHealthConsent={giveHealthConsent}
+        onChoose={saveAvoid}
+        onClose={() => setPendingAvoid(null)}
+      />
     </main>
   );
 }

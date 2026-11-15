@@ -6,9 +6,14 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/feedback";
 import { BackHeader } from "@/components/ui/page-header";
 import { cn } from "@/lib/cn";
+import { acceptDocuments, withdrawConsent } from "@/lib/api/consent";
+import { ApiError } from "@/lib/api/client";
+import { appActions } from "@/lib/store/app-store";
 import {
+  AI_HELPER_CONSENT,
   CONSENT_DOCUMENTS,
   getConsentStatus,
+  HEALTH_CONSENT,
   REQUIRED_DOCUMENTS,
   type ConsentDocumentId,
   type ConsentStatus,
@@ -23,6 +28,99 @@ const STATUS_LABEL: Record<ConsentStatus, { text: string; className: string }> =
   outdated: { text: "New version", className: "bg-check-badge text-check-ink" },
   none: { text: "Not given", className: "bg-stone-soft text-muted" },
 };
+
+/** What happens on withdrawal, and how the consent is usually given, per optional consent. */
+const OPTIONAL_CONSENTS: { id: ConsentDocumentId; withdrawNote: string; giveHint: string }[] = [
+  {
+    id: HEALTH_CONSENT,
+    withdrawNote: "This deletes every allergy and doctor-advice reason you saved. The foods stay on your Avoid list without a reason.",
+    giveHint: "Given when you first mark a food as an allergy or doctor-advised in My Taste.",
+  },
+  {
+    id: AI_HELPER_CONSENT,
+    withdrawNote: "From your next scan, no menu text is sent to Google. Menus that list meats separately show a \"choose your meat\" list instead.",
+    giveHint: "Pairs dishes with a menu's meat list using Google Gemini. Only menu text is sent.",
+  },
+];
+
+/** An optional, withdrawable opt-in (PDPA): health data, or the Gemini menu helper. */
+function OptionalConsentRow({ id, withdrawNote, giveHint, status, since, onRead, onChanged }: {
+  id: ConsentDocumentId;
+  withdrawNote: string;
+  giveHint: string;
+  status: ConsentStatus;
+  since?: string;
+  onRead: () => void;
+  onChanged: () => void;
+}) {
+  const [confirming, setConfirming] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const doc = CONSENT_DOCUMENTS[id];
+  const label = STATUS_LABEL[status];
+
+  async function change(action: "give" | "withdraw") {
+    setBusy(true);
+    try {
+      if (action === "give") await acceptDocuments([id]);
+      else await withdrawConsent(id);
+      setConfirming(false);
+      setError("");
+      onChanged();
+    } catch (e) {
+      setError(e instanceof ApiError ? e.message : "Couldn't save your choice. Please try again.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="rounded-2xl border border-line bg-white px-4 py-3.5 shadow-sm">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-sm font-bold text-ink">{doc.title}</p>
+          <p className="mt-0.5 text-xs text-muted">
+            Optional · version {doc.version}
+            {since && ` · ${status === "withdrawn" ? "withdrawn" : "given"} ${formatDate(since)}`}
+          </p>
+        </div>
+        <span className={cn("shrink-0 rounded-full px-2.5 py-0.5 text-xs font-bold", label.className)}>{label.text}</span>
+      </div>
+      {confirming ? (
+        <div className="mt-3 rounded-xl bg-danger-soft px-3 py-3">
+          <p className="mb-2.5 text-xs leading-relaxed text-ink">{withdrawNote}</p>
+          {error && <p className="mb-2 text-xs font-bold text-danger">{error}</p>}
+          <div className="flex gap-2">
+            <Button size="xs" variant="danger" className="flex-1 shadow-none" onClick={() => change("withdraw")} disabled={busy}>
+              {busy && <Loader2 size={13} className="animate-spin" aria-hidden />}
+              Withdraw
+            </Button>
+            <Button size="xs" variant="outline" className="flex-1" onClick={() => setConfirming(false)} disabled={busy}>
+              Cancel
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
+          <button type="button" onClick={onRead} className="min-h-8 text-xs font-bold text-brand hover:underline">
+            Read
+          </button>
+          {status === "accepted" ? (
+            <button type="button" onClick={() => setConfirming(true)} className="min-h-8 text-xs font-bold text-danger hover:underline">
+              Withdraw
+            </button>
+          ) : (
+            <button type="button" onClick={() => change("give")} disabled={busy} className="min-h-8 text-xs font-bold text-success hover:underline">
+              Allow
+            </button>
+          )}
+        </div>
+      )}
+      {error && !confirming && <p className="mt-1 text-xs font-bold text-danger">{error}</p>}
+      {status !== "accepted" && <p className="mt-1 text-xs text-subtle">{giveHint}</p>}
+    </div>
+  );
+}
 
 export function PrivacySettings() {
   const { records, error: loadError, reload } = useConsentRecords();
@@ -86,8 +184,34 @@ export function PrivacySettings() {
               })}
             </ul>
             <p className="mt-2 text-xs leading-relaxed text-subtle">
-              The Terms, Privacy Notice and AI &amp; Accuracy Disclaimer stay in place while you have an account. Your menus are read on our own server — nothing is sent to an outside AI provider, so there is no separate data-sharing consent.
+              The Terms, Privacy Notice and AI &amp; Accuracy Disclaimer stay in place while you have an account. Your menus are read on our own server. Menu text goes to Google Gemini only if you turn on the optional Menu helper below.
             </p>
+          </section>
+
+          <section aria-labelledby="health-heading">
+            <h2 id="health-heading" className="mb-2 text-xs font-black tracking-wider text-subtle uppercase">
+              Optional
+            </h2>
+            <div className="flex flex-col gap-3">
+              {OPTIONAL_CONSENTS.map(({ id, withdrawNote, giveHint }) => {
+                const { status, record } = getConsentStatus(records, id);
+                return (
+                  <OptionalConsentRow
+                    key={id}
+                    id={id}
+                    withdrawNote={withdrawNote}
+                    giveHint={giveHint}
+                    status={status}
+                    since={record?.timestamp}
+                    onRead={() => setReading(id)}
+                    onChanged={() => {
+                      reload();
+                      appActions.reloadProfile();
+                    }}
+                  />
+                );
+              })}
+            </div>
           </section>
 
           <section aria-labelledby="history-heading">

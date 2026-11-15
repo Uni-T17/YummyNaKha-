@@ -6,14 +6,24 @@ import { ChevronRight, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/ui/feedback";
 import { PasswordField, TextField } from "@/components/ui/text-field";
-import { signIn, signInWithGoogle } from "@/lib/api/auth";
+import { signIn } from "@/lib/api/auth";
 import { GoogleIcon, OrDivider } from "./auth-shell";
 import { useAuthSubmit } from "./use-auth-submit";
 
-export function SignInForm() {
+/** Why a Google sign-in came back to this screen (/api/auth/google?…). */
+const GOOGLE_MESSAGES: Record<string, string> = {
+  cancelled: "Google sign-in was cancelled.",
+  failed: "We couldn't sign you in with Google. Please try again.",
+  unverified: "Your Google account's email isn't verified. Verify it with Google, or sign up with email and password.",
+  unavailable: "Google sign-in isn't available right now. Please use your email and password.",
+  busy: "Too many attempts. Please wait a few minutes and try again.",
+};
+
+export function SignInForm({ googleError }: { googleError?: string }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { pending, error, setError, run } = useAuthSubmit();
+  const { pending, error, setError, run, google } = useAuthSubmit();
+  const shownError = error || (googleError ? (GOOGLE_MESSAGES[googleError] ?? GOOGLE_MESSAGES.failed) : "");
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -51,7 +61,7 @@ export function SignInForm() {
         </Link>
       </div>
 
-      <FormError>{error}</FormError>
+      <FormError>{shownError}</FormError>
 
       <Button type="submit" fullWidth loading={pending === "form"} disabled={pending !== null} loadingLabel="Signing in…">
         Sign In
@@ -64,7 +74,7 @@ export function SignInForm() {
         variant="google"
         size="md"
         fullWidth
-        onClick={() => run("google", signInWithGoogle)}
+        onClick={google}
         loading={pending === "google"}
         disabled={pending !== null}
       >

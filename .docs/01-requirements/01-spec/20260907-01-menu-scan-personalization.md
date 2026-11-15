@@ -173,6 +173,10 @@ MoSCoW. Every **Must** stays inside the one core workflow of §5.
 | F26 | As a diner, I want the menu photo I just uploaded kept on screen during the scan so that I can review it, crop it, or retry when extraction fails, instead of taking the photo again. | Must | solves P5, P4; LR5. *Added 2026-09-07 with the temporary-image-retention decision; numbered after F25 so existing traces stay valid* |
 | F27 | As a diner, I want each dish on the menu matched to a reviewed Thai dish guide — the dish, its usual Thai spellings, the protein or style named on the menu, and its ingredients — so that the English name and ingredients I see are consistent and checked by a person, not guessed per scan. | Must | solves P1, P3, P4 (U1, U2 accuracy). *Team decision 2026-10-27 (teacher feedback).* The guide records, per dish: canonical Thai name and spelling variants; English name; protein/style variants (e.g. ผัดกะเพรา + หมูสับ); ingredients each marked **listed** (standard recipe) or **common** (often added), each with its **allergen groups** (e.g. shrimp paste → shellfish). Matching ignores tone marks and tolerates small OCR slips; an approximate match is 🟡. A dish not in the guide is 🟡 (F10). The guide must be **reviewed by a Thai-literate team member before user testing**, and its version is recorded with every result (LR10) |
 | F28 | As a diner, I want to open a dish and see its ingredients in detail — main ingredients and often-added ones, each with its Thai name and any note — together with a short description and spice level, so that I understand what the dish is before I order. | Must | solves P1, P3 (U3, U5 allergen highlighting). *Team decision 2026-10-27 (teacher feedback).* The view states the ingredients come from the guide's usual recipe and that each restaurant cooks its own way; it never says a dish is safe (LR12) |
+| F29 | As a diner, I want to report a problem with a dish — wrong name, wrong ingredients, wrong price — so that the team can correct the Thai dish guide. | Should | solves P4 (U1, U2 accuracy); supports F27. *Team decision 2026-10-31.* Stores the dish as shown, the problem, an optional short note, and the guide version; removed with the account (LR5) |
+| F30 | As a diner, I want ready-made Thai sentences on the Order in Thai page — "I'm allergic to …, does my order contain it?", "no …", "not spicy" — built from my profile, so that I can do the confirm-with-staff step without speaking Thai. | Should | solves P2 (U1, U2, U6 depend on staff); supports F11, LR12. *Team decision 2026-10-31.* Thai words come from the dish-guide ingredient list; DRAFT until the Thai-literate review |
+| F31 | As the team, we want an anonymous count of menu dishes that are not in the Thai dish guide, so that we add the most common ones first. | Should | supports F27, NFR10; relieves P1 indirectly. *Team decision 2026-10-31.* Dish text only — no user, scan, or image is linked (LR3, LR4) |
+| F32 | As a diner, I want to set how spicy I can eat, so that dishes hotter than that are labelled 🟡 with a way to ask for them milder. | Should | solves P3 (preferences). *Team decision 2026-10-31.* Ordinary preference, not health data (LR1); a spice mismatch is never 🔴 |
 
 ---
 
@@ -404,7 +408,8 @@ assumption.
   that is down or too slow (F18), with the uploaded image kept on screen for review, crop, or retry for
   the length of the scan session (F26, LR5).
 - The legal duties LR1–LR12.
-- Should-have: multiple menu images per session (F19).
+- Should-have: multiple menu images per session (F19); report a problem (F29);
+  staff phrase cards (F30); unlisted-dish counter (F31); spice level (F32).
 
 ### Out of scope this phase
 

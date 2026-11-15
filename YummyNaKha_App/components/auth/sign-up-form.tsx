@@ -6,7 +6,7 @@ import { ChevronRight, CircleUser, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/ui/feedback";
 import { PasswordField, TextField } from "@/components/ui/text-field";
-import { signInWithGoogle, signUp } from "@/lib/api/auth";
+import { signUp } from "@/lib/api/auth";
 import { GoogleIcon, OrDivider } from "./auth-shell";
 import { useAuthSubmit } from "./use-auth-submit";
 
@@ -14,7 +14,7 @@ export function SignUpForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { pending, error, setError, run } = useAuthSubmit();
+  const { pending, error, setError, run, google } = useAuthSubmit();
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -68,7 +68,7 @@ export function SignUpForm() {
         variant="google"
         size="md"
         fullWidth
-        onClick={() => run("google", signInWithGoogle)}
+        onClick={google}
         loading={pending === "google"}
         disabled={pending !== null}
       >

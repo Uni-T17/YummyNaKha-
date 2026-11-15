@@ -69,6 +69,15 @@ export const WORDS: MenuWord[] = [
   { th: ["พริกแกง"], en: "red curry paste", kind: "flavor", ingredients: ["red curry paste", "shrimp paste"], tags: ["spicy"] },
   { th: ["พริก"], en: "chili", kind: "flavor", ingredients: ["chili"], tags: ["spicy"] },
   { th: ["ขิง"], en: "ginger", kind: "flavor", ingredients: ["ginger"] },
+  // Tom yum as a flavour of another dish (ข้าวผัดต้มยำ, มาม่าต้มยำ): its herbs, often with chili paste and milk.
+  {
+    th: ["ต้มยำ"],
+    en: "tom yum",
+    kind: "flavor",
+    ingredients: ["lemongrass", "galangal", "kaffir lime leaves", "chili", "lime"],
+    mayContain: ["roasted chili paste", "evaporated milk", "fish sauce"],
+    tags: ["spicy", "sour"],
+  },
   { th: ["ตะไคร้"], en: "lemongrass", kind: "flavor", ingredients: ["lemongrass"] },
   { th: ["มะนาว"], en: "lime", kind: "flavor", ingredients: ["lime"], tags: ["sour"] },
   { th: ["น้ำปลา"], en: "fish sauce", kind: "flavor", ingredients: ["fish sauce"] },

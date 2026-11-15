@@ -1,5 +1,6 @@
 import "server-only";
 import { DISHES, type GuideDish } from "./dishes";
+import { englishTokens, matchEnglishLine, readEnglishWords } from "./english";
 import { VARIANTS } from "./variants";
 import { WORDS, type MenuWord } from "./words";
 
@@ -117,6 +118,11 @@ export interface DishMatch {
   quality: "exact" | "fuzzy" | "decoded" | "none";
   /** Share of the line explained by known words (decoded lines only). */
   coverage: number;
+  /**
+   * A guide dish was found, but the rest of the name has words we can't read
+   * ("สปาเก็ตตี้ขี้เมา" — spaghetti, not rice noodles): it may be a different version.
+   */
+  partlyRead?: boolean;
 }
 
 interface Candidate {
@@ -142,6 +148,18 @@ function findExact(line: string, dishes = DISH_ALIASES, vocabulary = WORD_ALIASE
   return exact.find((c) => startsTheDish(line, c, vocabulary)) ?? null;
 }
 
+/** Most unknown letters a fuzzy match may leave outside the guide name. */
+const FUZZY_MAX_UNEXPLAINED = 2;
+
+/**
+ * The part of the line outside a fuzzy match must be short or mostly known
+ * words: "ขนมมันสำปะหลัง" is a different dessert, not a misread "ขนมชั้น".
+ */
+function restIsExplained(line: string, candidate: Candidate) {
+  const rest = `${line.slice(0, candidate.start)}${line.slice(candidate.end)}`;
+  return rest.length <= FUZZY_MAX_UNEXPLAINED || tokenize(rest).coverage >= 0.5;
+}
+
 function findFuzzy(line: string): Candidate | null {
   // About one OCR error per 7 characters, never more than 2.
   let fuzzy: (Candidate & { score: number }) | null = null;
@@ -151,7 +169,7 @@ function findFuzzy(line: string): Candidate | null {
     const { distance, end } = approximateFind(key, line);
     if (distance > allowed) continue;
     const candidate = { dish: item, start: Math.max(0, end - key.length), end, score: key.length - distance * 2 };
-    if ((!fuzzy || candidate.score > fuzzy.score) && startsTheDish(line, candidate)) fuzzy = candidate;
+    if ((!fuzzy || candidate.score > fuzzy.score) && startsTheDish(line, candidate) && restIsExplained(line, candidate)) fuzzy = candidate;
   }
   return fuzzy ? { dish: fuzzy.dish, start: fuzzy.start, end: fuzzy.end } : null;
 }
@@ -167,14 +185,30 @@ type Tokens = ReturnType<typeof tokenize>;
 
 const better = (a: Tokens, b: Tokens) => (b.coverage > a.coverage ? b : a);
 
+/** A menu line written in English or Thai in Latin letters ("Tom Yum Goong"), not in Thai script. */
+export function isEnglishLine(text: string): boolean {
+  return (text.match(/[ก-ฮ]/g) ?? []).length < 2 && (text.match(/[A-Za-z]/g) ?? []).length >= 3;
+}
+
+/** Unknown letters a guide match may leave in the name before it counts as only partly read. */
+const MAX_UNREAD_LETTERS = 2;
+
+/** Whether the text around a guide name has more unknown letters than OCR noise would leave. */
+function hasUnread(rest: string, tokens: Tokens) {
+  const letters = rest.replace(/\|/g, "").length;
+  return letters - Math.round(tokens.coverage * rest.length) > MAX_UNREAD_LETTERS;
+}
+
 /** Menu words in a piece of menu text, read as printed or with OCR look-alikes folded — whichever explains more. */
 export function readWords(thai: string): MenuWord[] {
+  if (isEnglishLine(thai)) return readEnglishWords(englishTokens(thai)).words;
   const line = normalizeThai(thai);
   return better(tokenize(line), tokenize(foldOcrConfusions(line), FOLDED_WORD_ALIASES)).words;
 }
 const decodable = (t: Tokens) => t.words.some((w) => w.kind !== "style");
 
 export function matchMenuLine(thai: string): DishMatch {
+  if (isEnglishLine(thai)) return matchEnglishLine(thai);
   const line = normalizeThai(thai);
   if (!line) return { dish: null, words: [], quality: "none", coverage: 0 };
   const folded = foldOcrConfusions(line);
@@ -188,8 +222,8 @@ export function matchMenuLine(thai: string): DishMatch {
     lookAlike && (!exact || lookAlike.start < exact.start || (lookAlike.start === exact.start && lookAlike.end - lookAlike.start > exact.end - exact.start + 1));
   if (exact && !useLookAlike) {
     const rest = `${line.slice(0, exact.start)}|${line.slice(exact.end)}`;
-    const words = better(tokenize(rest), tokenize(foldOcrConfusions(rest), FOLDED_WORD_ALIASES)).words;
-    return { dish: exact.dish, words, quality: "exact", coverage: 1 };
+    const read = better(tokenize(rest), tokenize(foldOcrConfusions(rest), FOLDED_WORD_ALIASES));
+    return { dish: exact.dish, words: read.words, quality: "exact", coverage: 1, partlyRead: hasUnread(rest, read) };
   }
   // Proteins named anywhere on the line, read as printed: never lost to a loose match.
   const named = tokenize(line).words.filter((w) => w.kind === "protein");
@@ -198,7 +232,8 @@ export function matchMenuLine(thai: string): DishMatch {
   const anyFish = generic !== line ? findExact(generic) : null;
   if (!useLookAlike && anyFish) {
     const rest = `${generic.slice(0, anyFish.start)}|${generic.slice(anyFish.end)}`;
-    return { dish: anyFish.dish, words: withNamed(tokenize(rest).words), quality: "exact", coverage: 1 };
+    const read = tokenize(rest);
+    return { dish: anyFish.dish, words: withNamed(read.words), quality: "exact", coverage: 1, partlyRead: hasUnread(rest, read) };
   }
   if (lookAlike) {
     const rest = `${folded.slice(0, lookAlike.start)}|${folded.slice(lookAlike.end)}`;

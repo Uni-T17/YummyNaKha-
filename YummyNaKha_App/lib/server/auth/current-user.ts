@@ -10,11 +10,13 @@ export interface PublicUser {
   id: string;
   name: string;
   email: string;
+  /** false for an account that only signs in with Google (no password to change or confirm with). */
+  hasPassword: boolean;
 }
 
 /** Strips every private field (passwordHash, timestamps) before sending a user to the client. */
-export function toPublicUser(user: Pick<User, "id" | "name" | "email">): PublicUser {
-  return { id: user.id, name: user.name, email: user.email };
+export function toPublicUser(user: Pick<User, "id" | "name" | "email" | "passwordHash">): PublicUser {
+  return { id: user.id, name: user.name, email: user.email, hasPassword: user.passwordHash !== null };
 }
 
 export async function getCurrentUser(): Promise<User | null> {

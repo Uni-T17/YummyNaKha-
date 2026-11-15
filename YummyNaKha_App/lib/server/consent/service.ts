@@ -1,8 +1,9 @@
 import "server-only";
-import { ConsentAction } from "@/lib/generated/prisma/client";
+import { AvoidReason, ConsentAction } from "@/lib/generated/prisma/client";
 import {
   CONSENT_DOCUMENTS,
   hasAccepted,
+  HEALTH_CONSENT,
   REQUIRED_DOCUMENTS,
   type ConsentDocumentId,
   type ConsentRecord,
@@ -41,10 +42,27 @@ export async function withdrawConsent(userId: string, document: ConsentDocumentI
   if (!CONSENT_DOCUMENTS[document].withdrawable) {
     throw errors.badRequest("This agreement can't be withdrawn on its own.");
   }
-  await prisma.consentRecord.create({
-    data: { userId, document, version: CONSENT_DOCUMENTS[document].version, action: ConsentAction.WITHDRAWN },
-  });
+  await prisma.$transaction([
+    prisma.consentRecord.create({
+      data: { userId, document, version: CONSENT_DOCUMENTS[document].version, action: ConsentAction.WITHDRAWN },
+    }),
+    // Withdrawing the health-data consent deletes the health data itself: the
+    // foods stay on the Avoid list, without their allergy / doctor reason.
+    ...(document === HEALTH_CONSENT
+      ? [
+          prisma.userPreference.updateMany({
+            where: { userId, reason: { in: [AvoidReason.ALLERGY, AvoidReason.DOCTOR] } },
+            data: { reason: null },
+          }),
+        ]
+      : []),
+  ]);
   return listConsentRecords(userId);
+}
+
+/** Whether the user currently allows us to store allergy / doctor-advice reasons. */
+export async function hasHealthConsent(userId: string) {
+  return hasAccepted(await listConsentRecords(userId), [HEALTH_CONSENT]);
 }
 
 /** Throws 403 CONSENT_REQUIRED unless every required document is accepted at its current version. */

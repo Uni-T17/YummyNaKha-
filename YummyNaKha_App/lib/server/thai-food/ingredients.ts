@@ -193,6 +193,11 @@ export const INGREDIENTS = {
   jackfruit: { th: "ขนุน", groups: ["jackfruit"] },
   longan: { th: "ลำไย", groups: ["longan"] },
   roselle: { th: "กระเจี๊ยบ", groups: ["roselle"] },
+  "senna leaves": { th: "ขี้เหล็ก", groups: ["vegetable"] },
+  "mung beans": { th: "ถั่วเขียว", groups: ["legume", "beans"] },
+  radish: { th: "หัวไชเท้า", groups: ["radish", "vegetable"] },
+  "toddy palm": { th: "ลูกตาล", groups: ["palm fruit"] },
+  "soy milk": { th: "น้ำเต้าหู้", groups: ["soy"] },
 
   // Drinks
   tea: { th: "ชา", groups: ["tea", "caffeine"] },

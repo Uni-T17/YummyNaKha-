@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ChevronRight, Info, ScanLine, SearchX } from "lucide-react";
+import { ChevronRight, Info, Loader2, ScanLine, SearchX, Sparkles } from "lucide-react";
 import { FixedBottom } from "@/components/layout/fixed-bottom";
 import { ButtonLink } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/feedback";
@@ -10,7 +10,7 @@ import { PageHeader } from "@/components/ui/page-header";
 import { cn } from "@/lib/cn";
 import { pluralizeDishes } from "@/lib/format";
 import { appActions, useAppState, useDishes } from "@/lib/store/app-store";
-import type { MenuFilter } from "@/lib/types";
+import type { Dish, MenuFilter } from "@/lib/types";
 import { DishCard } from "./dish-card";
 import { DishDetailSheet } from "./dish-detail-sheet";
 import { FoodWarningSheet } from "./food-warning-sheet";
@@ -22,9 +22,23 @@ const FILTERS: { value: MenuFilter; label: string }[] = [
   { value: "avoid", label: "Avoid" },
 ];
 
+/** What the "Not in our dish guide" section says while / after the Menu helper looks dishes up. */
+const LOOKUP_NOTE: Record<string, string> = {
+  pending: "Our AI menu helper is looking these up…",
+  done: "Names, descriptions and ingredients below are AI guesses, not from our dish guide. Always ask staff.",
+  off: "We don't know these dishes yet — ask staff what's in them. Turn on the optional Menu helper in Privacy & consents for AI guesses.",
+  unavailable: "We don't know these dishes yet — ask staff what's in them. (The AI menu helper didn't answer this time.)",
+  idle: "We don't know these dishes yet — ask staff what's in them.",
+};
+
 export function MenuResults() {
   const dishes = useDishes();
-  const { selectedIds } = useAppState();
+  const { selectedIds, aiLookup } = useAppState();
+
+  // Resume a lookup that was interrupted by a page reload.
+  useEffect(() => {
+    if (aiLookup === "idle") appActions.lookUpUnlisted();
+  }, [aiLookup]);
   const [filter, setFilter] = useState<MenuFilter>("all");
   const [openId, setOpenId] = useState<string | null>(null);
   const [showInfo, setShowInfo] = useState(false);
@@ -48,6 +62,22 @@ export function MenuResults() {
   }
 
   const visible = filter === "all" ? dishes : dishes.filter((d) => d.status === filter);
+  // Dishes from our guide first; the ones we don't know get their own section below.
+  const listed = visible.filter((d) => d.inGuide !== false);
+  const unlisted = visible.filter((d) => d.inGuide === false);
+  const cards = (list: Dish[]) => (
+    <div className="grid gap-3 px-5 md:grid-cols-2 md:gap-4 md:px-8 lg:grid-cols-3">
+      {list.map((dish) => (
+        <DishCard
+          key={dish.id}
+          dish={dish}
+          selected={selectedIds.includes(dish.id)}
+          onToggle={() => appActions.toggleDish(dish.id)}
+          onOpen={() => setOpenId(dish.id)}
+        />
+      ))}
+    </div>
+  );
   const openDish = dishes.find((d) => d.id === openId) ?? null;
   const hasSelection = selectedIds.length > 0;
 
@@ -97,17 +127,27 @@ export function MenuResults() {
           className="py-12"
         />
       ) : (
-        <div className="grid gap-3 px-5 md:grid-cols-2 md:gap-4 md:px-8 lg:grid-cols-3">
-          {visible.map((dish) => (
-            <DishCard
-              key={dish.id}
-              dish={dish}
-              selected={selectedIds.includes(dish.id)}
-              onToggle={() => appActions.toggleDish(dish.id)}
-              onOpen={() => setOpenId(dish.id)}
-            />
-          ))}
-        </div>
+        <>
+          {cards(listed)}
+          {unlisted.length > 0 && (
+            <section aria-labelledby="unlisted-heading" className={cn(listed.length > 0 && "mt-8")}>
+              <div className="mb-3 px-5 md:px-8">
+                <h2 id="unlisted-heading" className="text-sm font-black text-ink">
+                  Not in our dish guide · {pluralizeDishes(unlisted.length)}
+                </h2>
+                <p className="mt-0.5 flex items-start gap-1.5 text-xs leading-relaxed text-muted" aria-live="polite">
+                  {aiLookup === "pending" ? (
+                    <Loader2 size={13} className="mt-0.5 shrink-0 animate-spin text-brand" aria-hidden />
+                  ) : aiLookup === "done" ? (
+                    <Sparkles size={13} className="mt-0.5 shrink-0 text-brand" aria-hidden />
+                  ) : null}
+                  {LOOKUP_NOTE[aiLookup]}
+                </p>
+              </div>
+              {cards(unlisted)}
+            </section>
+          )}
+        </>
       )}
 
       {hasSelection && (

@@ -47,3 +47,11 @@ export const changePasswordSchema = z
     message: "New passwords don't match.",
     path: ["confirmPassword"],
   });
+
+/**
+ * Deleting the account asks again — the password, or the email for an account
+ * that only signs in with Google — so an unattended signed-in phone can't do it.
+ */
+export const deleteAccountSchema = z.object({
+  confirm: z.string({ error: "Please confirm to delete your account." }).min(1, "Please confirm to delete your account.").max(254),
+});

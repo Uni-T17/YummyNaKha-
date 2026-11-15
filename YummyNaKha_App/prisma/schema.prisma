@@ -18,9 +18,15 @@ model User {
   name         String
   email        String    @unique
   /// scrypt hash in the form `scrypt$N$r$p$salt$hash` — never a plaintext password.
-  passwordHash String
+  /// null for an account that only signs in with Google.
+  passwordHash String?
+  /// Google's stable account ID (the ID token's `sub`). No Google tokens are stored (rule.md).
+  googleSub    String?   @unique
   /// Set when the user first saves My Taste; drives the onboarding redirect.
   onboardedAt  DateTime?
+  /// Most spice the diner is happy with: 0 not spicy … 3 very spicy. null = not set.
+  /// An ordinary food preference, not health data.
+  spiceTolerance Int?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
@@ -29,6 +35,7 @@ model User {
   menuImages     MenuImage[]
   menuAnalyses   MenuAnalysis[]
   consentRecords ConsentRecord[]
+  dishReports    DishReport[]
 }
 
 model Session {
@@ -130,13 +137,13 @@ model MenuImage {
   @@index([status])
 }
 
-/// One Gemini analysis run over one or more menu images.
+/// One analysis run (OCR + Thai dish guide) over one or more menu images.
 model MenuAnalysis {
   id                  String           @id @default(cuid())
   userId              String
   status              ProcessingStatus @default(PROCESSING)
   model               String?
-  /// The minimal profile flags sent to Gemini (no name / email — LR3).
+  /// The profile flags the result was based on (no name / email — LR3, LR10).
   preferencesSnapshot Json?
   /// Validated structured result (dishes + notes).
   result              Json?
@@ -161,6 +168,51 @@ model MenuAnalysisImage {
   @@index([imageId])
 }
 
+// ─── Improving the Thai dish guide ──────────────────────────────────────────
+
+enum DishReportProblem {
+  NAME
+  INGREDIENTS
+  PRICE
+  OTHER
+}
+
+/// A diner's "this result is wrong" report on one dish. Holds the dish as shown
+/// (Thai text, English name) and the problem — no photo, no food profile.
+/// Removed with the account, like all user content.
+model DishReport {
+  id           String            @id @default(cuid())
+  userId       String
+  analysisId   String?
+  dishThai     String
+  dishEn       String
+  problem      DishReportProblem
+  /// Optional free text from the diner (short; the form asks for no personal details).
+  note         String?
+  guideVersion String
+  createdAt    DateTime          @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([createdAt])
+  @@index([userId, createdAt])
+}
+
+/// Menu lines that matched no guide dish, counted so the team adds the most
+/// common ones first. Dish text only: no user, scan or image is linked.
+model UnlistedDish {
+  id          String   @id @default(cuid())
+  /// normalizeThai() form, so spelling and tone-mark variants count together.
+  key         String   @unique
+  /// The Thai text as most recently read.
+  nameThai    String
+  timesSeen   Int      @default(1)
+  firstSeenAt DateTime @default(now())
+  lastSeenAt  DateTime @updatedAt
+
+  @@index([timesSeen])
+}
+
 // ─── Consent (FE2 / LR2, LR9) ────────────────────────────────────────────────
 
 enum ConsentAction {
@@ -172,7 +224,7 @@ enum ConsentAction {
 model ConsentRecord {
   id        String        @id @default(cuid())
   userId    String
-  /// Document id from lib/consent.ts ("terms", "privacy", "ai-disclaimer", "ai-transfer").
+  /// Document id from lib/consent.ts ("terms", "privacy", "ai-disclaimer", "health-data", "ai-transfer").
   document  String
   version   String
   action    ConsentAction
@@ -181,4 +233,24 @@ model ConsentRecord {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, document, createdAt])
+}
+
+// ─── Access logs (Computer Crime Act §26 — LR) ──────────────────────────────
+
+/// Who reached the service, from where and when — kept at least 90 days.
+/// Deliberately separate from user content: no foreign key (the log outlives a
+/// deleted account), no request bodies, no food profile or menu data.
+model AccessLog {
+  id        String   @id @default(cuid())
+  /// Account ID when the request was signed in; null for signed-out requests.
+  userId    String?
+  ip        String
+  method    String
+  /// API path only — never the query string or body.
+  path      String
+  status    Int
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([userId, createdAt])
 }

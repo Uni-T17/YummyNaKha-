@@ -29,5 +29,14 @@ export function useAuthSubmit() {
     }
   }
 
-  return { pending, error, setError, run };
+  /** Google sign-in is a full-page redirect to Google and back (/api/auth/google). */
+  function google() {
+    setError("");
+    setPending("google");
+    // A full page load on purpose: an API route that redirects to Google, not a page to route to.
+    // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+    window.location.assign("/api/auth/google");
+  }
+
+  return { pending, error, setError, run, google };
 }
