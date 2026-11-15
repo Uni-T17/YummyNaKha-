@@ -2,9 +2,9 @@ import { useMemo, useSyncExternalStore } from "react";
 import { fetchSession, markOnboarded, signOutRequest } from "../api/auth";
 import { createId } from "../api/client";
 import { deleteMenuImage, describeUnlisted, uploadMenuImage } from "../api/menu";
-import { addDislike, addFavorite, getTasteProfile, removeDislike, removeFavorite } from "../api/preferences";
+import { addDislike, addFavorite, getTasteProfile, removeDislike, removeFavorite, setSpiceLevel } from "../api/preferences";
 import { categorizeMenu } from "../matching";
-import type { AppUser, AvoidItem, Dish, ExtractedDish, MenuUpload, TasteProfile } from "../types";
+import type { AppUser, AvoidItem, Dish, ExtractedDish, MenuUpload, SpiceLevel, TasteProfile } from "../types";
 
 // Client-side view of the session. The server is the source of truth for the
 // user, onboarding and the taste profile; this store mirrors it (cached in
@@ -228,6 +228,14 @@ export const appActions = {
     );
   },
 
+  /** Tapping the chosen level again clears it (no spice check). */
+  setSpice(level: SpiceLevel | null) {
+    mutateProfile(
+      (p) => (level === null ? { favs: p.favs, avoid: p.avoid } : { ...p, spice: level }),
+      () => setSpiceLevel(level),
+    );
+  },
+
   /** Adds picked files and uploads each one to the server. */
   addFiles(files: File[]) {
     const pending = files.map((file) => ({
@@ -258,6 +266,26 @@ export const appActions = {
           })),
         );
     }
+  },
+
+  /** Swaps a photo for its cropped / rotated version, keeping its place in the list. */
+  replaceUpload(id: string, file: File) {
+    const target = state.uploads.find((u) => u.id === id);
+    if (!target) return;
+    if (target.status === "ready") deleteMenuImage(id).catch(() => {});
+    if (target.previewUrl) URL.revokeObjectURL(target.previewUrl);
+    const upload: MenuUpload = { id: createId("local"), fileName: file.name, status: "uploading", previewUrl: URL.createObjectURL(file) };
+    setState((s) => ({ ...s, uploads: s.uploads.map((u) => (u.id === id ? upload : u)) }));
+    uploadMenuImage(file)
+      .then((image) =>
+        setState((s) => ({ ...s, uploads: s.uploads.map((u) => (u.id === upload.id ? { ...u, id: image.id, status: "ready" } : u)) })),
+      )
+      .catch((error: Error) =>
+        setState((s) => ({
+          ...s,
+          uploads: s.uploads.map((u) => (u.id === upload.id ? { ...u, status: "error", error: error.message || "Upload failed." } : u)),
+        })),
+      );
   },
 
   removeUpload(id: string) {

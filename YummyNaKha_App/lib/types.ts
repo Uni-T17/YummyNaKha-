@@ -14,11 +14,18 @@ export type AvoidReason = "dislike" | "allergy" | "doctor";
 export interface AvoidItem {
   name: string;
   reason?: AvoidReason;
+  /** Thai word for the item, from the dish guide, for the staff cards on Order in Thai. */
+  nameThai?: string;
 }
+
+/** 0 = not spicy … 3 = very spicy — the same scale as the dish guide. */
+export type SpiceLevel = 0 | 1 | 2 | 3;
 
 export interface TasteProfile {
   favs: string[];
   avoid: AvoidItem[];
+  /** The most spice the diner is happy with; undefined = not set (no spice check). */
+  spice?: SpiceLevel;
 }
 
 /** The only three result categories the product may show (see rule.md). */
@@ -80,7 +87,7 @@ export interface ExtractedDish {
   romanized?: string;
   description?: string;
   /** 0 = not spicy … 3 = very spicy (standard recipe). */
-  spice?: 0 | 1 | 2 | 3;
+  spice?: SpiceLevel;
   /** false when the dish isn't in our Thai dish guide, so its ingredients are unknown. */
   inGuide?: boolean;
   /**

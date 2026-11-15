@@ -17,3 +17,10 @@ export const dislikeSchema = z.object({
 });
 
 export const removePreferenceSchema = z.object({ name: itemName });
+
+/** PUT /api/preferences/spice — 0 not spicy … 3 very spicy, or null to clear. */
+export const spiceSchema = z.object({
+  level: z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3), z.null()], {
+    error: "Choose a spice level from the list.",
+  }),
+});

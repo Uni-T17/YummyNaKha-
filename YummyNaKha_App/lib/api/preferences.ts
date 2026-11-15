@@ -1,4 +1,4 @@
-import type { AvoidReason, TasteProfile } from "../types";
+import type { AvoidReason, SpiceLevel, TasteProfile } from "../types";
 import { apiFetch } from "./client";
 
 // My Taste (Favs + Avoid list). Every call returns the full saved profile.
@@ -19,6 +19,10 @@ export async function removeFavorite(name: string) {
 
 export async function addDislike(name: string, reason?: AvoidReason) {
   return (await apiFetch<ProfileResponse>("/api/preferences/dislike", { body: { name, reason } })).profile;
+}
+
+export async function setSpiceLevel(level: SpiceLevel | null) {
+  return (await apiFetch<ProfileResponse>("/api/preferences/spice", { method: "PUT", body: { level } })).profile;
 }
 
 export async function removeDislike(name: string) {

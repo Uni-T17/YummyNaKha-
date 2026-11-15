@@ -6,13 +6,12 @@ import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { Button } from "@/components/ui/button";
 import { IconTile } from "@/components/ui/icon-tile";
 import { cn } from "@/lib/cn";
-import { formatPrice, reasonLabel } from "@/lib/format";
-import type { Dish, InferredIngredient } from "@/lib/types";
+import { formatPrice, reasonLabel, SPICE_LABELS } from "@/lib/format";
+import type { Dish, InferredIngredient, SpiceLevel as Spice } from "@/lib/types";
+import { ReportProblem } from "./report-problem";
 import { DISH_ICONS, ReasonIcon, StatusBadge } from "./status";
 
-const SPICE_LABELS = ["Not spicy", "Mild", "Medium spicy", "Very spicy"] as const;
-
-function SpiceLevel({ level }: { level: 0 | 1 | 2 | 3 }) {
+function SpiceLevel({ level }: { level: Spice }) {
   return (
     <span className="inline-flex items-center gap-1 text-xs font-bold text-muted">
       <span className="flex" aria-hidden>
@@ -229,6 +228,8 @@ export function DishDetailSheet({ dish, selected, onToggle, onClose }: DishDetai
               </p>
             </div>
           )}
+
+          <ReportProblem key={dish.id} dish={dish} />
 
           <Button
             fullWidth

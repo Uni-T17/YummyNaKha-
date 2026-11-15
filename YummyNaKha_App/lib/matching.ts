@@ -8,6 +8,7 @@ import type {
   InferredIngredient,
   TasteProfile,
 } from "./types";
+import { SPICE_LABELS } from "./format";
 
 // The recommendation step. Mirrors the rules in rule.md: three categories
 // only, no scores, an allergy / doctor-advised item that is part of the dish
@@ -98,11 +99,28 @@ function checkChoices(dish: ExtractedDish, profile: TasteProfile) {
   return { results, found };
 }
 
+/**
+ * A dish hotter than the diner's spice level is Check First, never Avoid:
+ * spice is a preference, and most kitchens can make a dish milder.
+ */
+function spiceConflict(dish: ExtractedDish, profile: TasteProfile): { conflict: DishConflict; severe: boolean } | null {
+  if (profile.spice === undefined || dish.spice === undefined || dish.spice <= profile.spice) return null;
+  return {
+    conflict: {
+      name: "Spice level",
+      note: `Usually ${SPICE_LABELS[dish.spice].toLowerCase()} — hotter than your “${SPICE_LABELS[profile.spice]}”. You can ask for it milder with the staff cards on Order in Thai. ${STAFF}`,
+    },
+    severe: false,
+  };
+}
+
 export function categorizeDish(dish: ExtractedDish, profile: TasteProfile): Dish {
   const choices = checkChoices(dish, profile);
+  const spice = spiceConflict(dish, profile);
   const found = [
     ...profile.avoid.map((item) => conflictFor(dish, item)).filter((c): c is NonNullable<typeof c> => c !== null),
     ...choices.found,
+    ...(spice ? [spice] : []),
   ];
 
   const uncertain = (dish.uncertainties?.length ?? 0) > 0 || dish.inGuide === false;

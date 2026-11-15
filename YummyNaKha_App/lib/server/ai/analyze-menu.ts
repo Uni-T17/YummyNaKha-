@@ -4,6 +4,7 @@ import type { ExtractedDish } from "@/lib/types";
 import { AI_HELPER_CONSENT, hasAccepted } from "@/lib/consent";
 import { assertProcessingConsent, listConsentRecords } from "../consent/service";
 import { prisma } from "../db";
+import { countUnlistedDishes } from "../guide-feedback/unlisted";
 import { errors, HttpError } from "../http";
 import { buildDishes, findMeatMenu } from "../menu/build-dishes";
 import { parseMenuLines } from "../menu/parse-ocr";
@@ -75,6 +76,7 @@ export async function analyzeMenu(userId: string, imageIds: string[]): Promise<M
       },
     });
 
+    await countUnlistedDishes(dishes);
     return { analysisId: analysis.id, dishes, summary };
   } catch (error) {
     const message = error instanceof HttpError ? error.message : "Menu analysis failed.";

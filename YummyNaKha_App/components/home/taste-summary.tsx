@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Ban, Heart } from "lucide-react";
-import { summarizeAvoid } from "@/lib/format";
+import { Ban, Flame, Heart } from "lucide-react";
+import { SPICE_LABELS, summarizeAvoid } from "@/lib/format";
 import { useAppState } from "@/lib/store/app-store";
 
 export function TasteSummary() {
@@ -29,6 +29,12 @@ export function TasteSummary() {
           {profile.avoid.length ? summarizeAvoid(profile.avoid) : <span className="text-subtle">Nothing to avoid</span>}
         </p>
       </div>
+      {profile.spice !== undefined && (
+        <div className="mt-1.5 flex items-start gap-2">
+          <Flame size={14} className="mt-0.5 shrink-0 text-brand" aria-label="Spice level" />
+          <p className="text-sm leading-snug font-semibold text-ink">{profile.spice === 0 ? "No spice" : `Up to ${SPICE_LABELS[profile.spice].toLowerCase()}`}</p>
+        </div>
+      )}
     </section>
   );
 }

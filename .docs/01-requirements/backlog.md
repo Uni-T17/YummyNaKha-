@@ -54,6 +54,10 @@ Pains (survey of 6 respondents, Sep 6–7 2026):
 | # | Item | Traces to |
 |---|------|-----------|
 | B31 | Upload more than one menu image in a single session | F19, P5 |
+| B41 | "Report a problem" on a dish (wrong name / ingredients / price), reviewed by the team to fix the guide | F29, P4 |
+| B42 | "Ask the staff" Thai phrase cards on Order in Thai, from the Avoid list and spice level | F30, P2 |
+| B43 | Anonymous counter of dishes not in the guide, listed by `npm run guide:coverage` | F31, P1 |
+| B44 | Spice level in My Taste; hotter dishes are 🟡 with the staff instruction | F32, P3 |
 
 ## Could
 

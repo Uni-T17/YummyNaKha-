@@ -24,6 +24,9 @@ model User {
   googleSub    String?   @unique
   /// Set when the user first saves My Taste; drives the onboarding redirect.
   onboardedAt  DateTime?
+  /// Most spice the diner is happy with: 0 not spicy … 3 very spicy. null = not set.
+  /// An ordinary food preference, not health data.
+  spiceTolerance Int?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
@@ -32,6 +35,7 @@ model User {
   menuImages     MenuImage[]
   menuAnalyses   MenuAnalysis[]
   consentRecords ConsentRecord[]
+  dishReports    DishReport[]
 }
 
 model Session {
@@ -162,6 +166,51 @@ model MenuAnalysisImage {
 
   @@id([analysisId, imageId])
   @@index([imageId])
+}
+
+// ─── Improving the Thai dish guide ──────────────────────────────────────────
+
+enum DishReportProblem {
+  NAME
+  INGREDIENTS
+  PRICE
+  OTHER
+}
+
+/// A diner's "this result is wrong" report on one dish. Holds the dish as shown
+/// (Thai text, English name) and the problem — no photo, no food profile.
+/// Removed with the account, like all user content.
+model DishReport {
+  id           String            @id @default(cuid())
+  userId       String
+  analysisId   String?
+  dishThai     String
+  dishEn       String
+  problem      DishReportProblem
+  /// Optional free text from the diner (short; the form asks for no personal details).
+  note         String?
+  guideVersion String
+  createdAt    DateTime          @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([createdAt])
+  @@index([userId, createdAt])
+}
+
+/// Menu lines that matched no guide dish, counted so the team adds the most
+/// common ones first. Dish text only: no user, scan or image is linked.
+model UnlistedDish {
+  id          String   @id @default(cuid())
+  /// normalizeThai() form, so spelling and tone-mark variants count together.
+  key         String   @unique
+  /// The Thai text as most recently read.
+  nameThai    String
+  timesSeen   Int      @default(1)
+  firstSeenAt DateTime @default(now())
+  lastSeenAt  DateTime @updatedAt
+
+  @@index([timesSeen])
 }
 
 // ─── Consent (FE2 / LR2, LR9) ────────────────────────────────────────────────

@@ -1,9 +1,10 @@
 import "server-only";
 import { AvoidReason, PreferenceType } from "@/lib/generated/prisma/client";
 import { normalizeTerm } from "@/lib/matching";
-import type { AvoidReason as ClientAvoidReason, TasteProfile } from "@/lib/types";
+import type { AvoidReason as ClientAvoidReason, SpiceLevel, TasteProfile } from "@/lib/types";
 import { HEALTH_REASONS } from "@/lib/consent";
 import { hasHealthConsent } from "../consent/service";
+import { thaiAvoidWord } from "../thai-food/avoid-words";
 import { prisma } from "../db";
 import { errors, HttpError } from "../http";
 
@@ -27,16 +28,24 @@ const toClientReason: Record<AvoidReason, ClientAvoidReason> = {
 
 /** The profile in the shape the frontend already uses (lib/types TasteProfile). */
 export async function getTasteProfile(userId: string): Promise<TasteProfile> {
-  const rows = await prisma.userPreference.findMany({
-    where: { userId },
-    orderBy: { createdAt: "asc" },
-    select: { type: true, reason: true, label: true },
-  });
+  const [rows, user] = await Promise.all([
+    prisma.userPreference.findMany({
+      where: { userId },
+      orderBy: { createdAt: "asc" },
+      select: { type: true, reason: true, label: true },
+    }),
+    prisma.user.findUnique({ where: { id: userId }, select: { spiceTolerance: true } }),
+  ]);
+  const spice = user?.spiceTolerance;
   return {
+    ...(spice !== null && spice !== undefined ? { spice: spice as SpiceLevel } : {}),
     favs: rows.filter((r) => r.type === PreferenceType.FAVORITE).map((r) => r.label),
     avoid: rows
       .filter((r) => r.type === PreferenceType.DISLIKE)
-      .map((r) => ({ name: r.label, ...(r.reason ? { reason: toClientReason[r.reason] } : {}) })),
+      .map((r) => {
+        const nameThai = thaiAvoidWord(r.label);
+        return { name: r.label, ...(r.reason ? { reason: toClientReason[r.reason] } : {}), ...(nameThai ? { nameThai } : {}) };
+      }),
   };
 }
 
@@ -95,6 +104,12 @@ export async function setPreference(
   return getTasteProfile(userId);
 }
 
+/** Sets (or clears, with null) the most spice the diner is happy with. */
+export async function setSpiceTolerance(userId: string, level: SpiceLevel | null): Promise<TasteProfile> {
+  await prisma.user.update({ where: { id: userId }, data: { spiceTolerance: level } });
+  return getTasteProfile(userId);
+}
+
 /** Removes a FAVORITE or DISLIKE. Idempotent: removing something absent is not an error. */
 export async function removePreference(userId: string, name: string, type: PreferenceType): Promise<TasteProfile> {
   await prisma.userPreference.deleteMany({
@@ -108,6 +123,7 @@ export async function getPreferenceFlags(userId: string) {
   const profile = await getTasteProfile(userId);
   return {
     favorites: profile.favs,
+    spice: profile.spice ?? null,
     avoid: profile.avoid.map((a) => ({ name: a.name, reason: a.reason ?? "unspecified" })),
   };
 }

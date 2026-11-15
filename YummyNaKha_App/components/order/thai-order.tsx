@@ -1,10 +1,46 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, ShoppingCart } from "lucide-react";
+import { ArrowLeft, MessageCircle, ShoppingCart } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/feedback";
+import { staffPhrases } from "@/lib/staff-phrases";
+import { useAppState } from "@/lib/store/app-store";
 import { useOrder } from "@/lib/store/use-order";
+
+/** Sentences to show staff, built from the diner's Avoid list and spice level. */
+function StaffCards() {
+  const { profile } = useAppState();
+  const phrases = staffPhrases(profile);
+  if (phrases.length === 0) return null;
+  return (
+    <section aria-labelledby="staff-cards" className="mx-auto w-full max-w-2xl px-5 pb-6">
+      <h2 id="staff-cards" className="mb-1 flex items-center gap-1.5 text-sm font-black text-ink">
+        <MessageCircle size={14} className="text-brand" aria-hidden />
+        <span lang="th" className="font-thai">
+          ถามพนักงาน
+        </span>
+        <span className="font-bold text-subtle">· Ask the staff</span>
+      </h2>
+      <p className="mb-3 text-xs text-muted">Show a card to your server. Recipes vary — only staff can tell you what goes into your dish.</p>
+      <ul className="flex flex-col gap-3">
+        {phrases.map((p) => (
+          <li key={p.id} className="rounded-2xl border-2 border-line p-4">
+            <p lang="th" className="font-thai text-xl leading-snug font-bold text-ink md:text-2xl">
+              {p.thai}
+            </p>
+            <p className="mt-1.5 text-xs text-subtle">{p.english}</p>
+            {p.missingThai && (
+              <p className="mt-1 text-xs font-semibold text-check-ink">
+                We don&apos;t have the Thai word for {p.missingThai} yet — point at the food or show a picture.
+              </p>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
 
 /** Large-type order in Thai, for showing restaurant staff at arm's length. */
 export function ThaiOrder() {
@@ -23,6 +59,7 @@ export function ThaiOrder() {
             </ButtonLink>
           }
         />
+        <StaffCards />
       </main>
     );
   }
@@ -51,6 +88,8 @@ export function ThaiOrder() {
           <p className="font-thai text-[1.75rem] font-black text-brand">รวม {total} บาท</p>
         </div>
       </div>
+
+      <StaffCards />
 
       <div className="px-5 pb-12 text-center">
         <Link
