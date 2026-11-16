@@ -111,7 +111,7 @@ export function AnalysisProgress() {
         <Logo
           width={104}
           priority
-          className="relative animate-[logo-bob_1.6s_ease-in-out_infinite]"
+          className="relative"
         />
       </div>
       <h1 className="mb-10 text-center text-2xl font-black text-ink">

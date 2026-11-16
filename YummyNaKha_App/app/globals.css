@@ -79,15 +79,6 @@
   --animate-fade-in: fade-in 200ms ease-out;
   --animate-fade-up: fade-up 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
 
-  @keyframes logo-bob {
-    0%,
-    100% {
-      transform: translateY(0) rotate(0deg);
-    }
-    50% {
-      transform: translateY(-6px) rotate(-3deg);
-    }
-  }
   @keyframes sheet-up {
     from {
       transform: translateY(100%);
