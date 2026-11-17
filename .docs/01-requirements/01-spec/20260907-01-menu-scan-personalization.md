@@ -5,6 +5,7 @@
 - Topic: menu-scan-personalization
 - Phase: DISCOVER (W1–W5) — no production code
 - Revised: 2026-10-27 — scan pipeline rebuilt (see *Team decisions 2026-10-27*)
+- Revised: 2026-11-17 — Product Owner sign-off decisions (see *Team decisions 2026-11-17* and [PO decisions 2026-11-17](../05-log/20261117-po-decisions.md))
 - Charter: [YummyNaKha! - Charter.md](../../../YummyNaKha!%20-%20Charter.md)
 - Brief: [YummyNaKha_Project_Brief.md](../../../YummyNaKha_Project_Brief.md)
 - Legal source: [rule.md](../../../rule.md) (5-Idiots legal & compliance rules)
@@ -38,9 +39,28 @@ pain is added.
 |---|---|---|
 | Scan pipeline | The Google Gemini API and Hugging Face pipeline is **removed**. Menu photos are read by the team's **own PaddleOCR service** (Thai model) running next to the app on our server; dish names, English names and ingredients come from a **team-curated Thai dish guide** (F27). No menu or profile data is sent to any third-party AI provider (LR2, LR3) | Where the OCR service is hosted for user testing |
 | Scope | Narrowed to **menus of Thai-cuisine restaurants**. Each dish shows a **detailed ingredient view** — main ingredients and often-added ones, with Thai names (F28) | — |
-| Dishes not in the guide | Shown with the Thai name and price but **no English name and no ingredients**, and always labelled **🟡 check before ordering** (F10, F27) | Guide coverage on real menus (NFR10) |
-| Transfer consent | The separate "send data to AI providers" consent is **retired** because nothing is sent. Records already given are **kept** so a user's history stays complete (LR9) | — |
+| Dishes not in the guide | ~~Shown with the Thai name and price but **no English name and no ingredients**~~ **Superseded 2026-11-17 (DEF-01)** — now a rough English name marked rough; always labelled **🟡 check before ordering** (F10, F27) | Guide coverage on real menus (NFR10) |
+| Transfer consent | The separate "send data to AI providers" consent is **retired** because nothing is sent (*2026-11-17: the free deployment's OCR.space reading has its own "Menu photo reading" consent — see Team decisions 2026-11-17*). Records already given are **kept** so a user's history stays complete (LR9) | — |
 | Guide review | The guide is **DRAFT** and must be reviewed by a Thai-literate team member **before user testing** (F27) | Reviewer name and review date |
+
+---
+
+## Team decisions 2026-11-17
+
+**Source: Product Owner (Tay Zar Tun) at sign-off**, after real-menu testing on
+16 Nov and the TC7/TC9 runs on 17 Nov. Reasons are in [PO decisions 2026-11-17](../05-log/20261117-po-decisions.md). These are
+team decisions, **not** user evidence; no new pain is added.
+
+| Decision | Settled | Still open |
+|---|---|---|
+| DEF-01 — dishes not in the guide | Shown with a **rough English name** built from the words the app recognises, marked *"Rough translation — not in our dish guide"*; when no word is recognised the Thai name is the title, marked *"Not translated yet — ask staff"*. Still always **🟡 check before ordering** (F7, F10). Replaces the 2026-10-27 "Thai only" rule | — |
+| Third-party OCR on the free deployment | The free deployment (Vercel) reads photos with **OCR.space**, **photo only**, after a separate *Menu photo reading* consent — LR2's "provider reintroduced" clause. Self-hosted deployments use our own PaddleOCR. The optional Gemini *Menu helper* keeps its own separate consent (LR2, LR3, LR9) | Teacher approval of OCR.space |
+| OAuth provider | **Google** (built and deployed) (F1) | — |
+| Temporary image retention | Photo bytes are **deleted as soon as OCR has read them**; a photo whose reading never succeeds stays until the user removes it or deletes the account (LR5) | Automatic clean-up of never-read photos |
+| NFR6 hosting cost | **0 THB/month** on Vercel Hobby + Neon free + OCR.space free (500 scans/day) | Cost if usage exceeds the free tiers |
+| NFR8 ease of use | **Deferred** — no real-user usability test has been run, so no target is set | First usability test |
+| Features added after Beta | F33–F40 added as Should / Could; F23 narrowed to "voice output of **results**" so reading a dish name aloud (F36) is in scope | — |
+| TC9 label set | The 60 dish/profile labels in `YummyNaKha_App/tests/unit/tc9-profile-matching.test.ts` are **approved** | — |
 
 ---
 
@@ -145,13 +165,13 @@ MoSCoW. Every **Must** stays inside the one core workflow of §5.
 
 | ID | User story | MoSCoW | Traces |
 |----|-----------|--------|--------|
-| F1 | As a diner, I want to create an account and sign in, so that my food profile is saved and available the next time I use the app. | Must | enables P3; LR1, LR6, LR9. Authentication is **OAuth + email/password**; only the **OAuth provider name is `TBD`** |
+| F1 | As a diner, I want to create an account and sign in, so that my food profile is saved and available the next time I use the app. | Must | enables P3; LR1, LR6, LR9. Authentication is **OAuth + email/password**; the OAuth provider is **Google** (*decided 2026-11-17*) |
 | F2 | As a diner, I want to save my favorite foods and ordinary food preferences, so that the app can recommend dishes that suit my taste. | Must | solves P3 (U2, U5) |
 | F3 | As a diner, I want to record my allergies and doctor-advised food restrictions under a separate, explicit opt-in, so that dishes that may conflict with them are flagged. | Must | solves P3 (U3, U5); LR1 |
 | F4 | As a diner, I want to view, edit, and delete any part of my food profile, including the allergy and medical-restriction section, so that I stay in control of my own data. | Must | LR1, LR5 |
 | F5 | As a diner, I want to upload a photo of a Thai-language menu, so that I do not have to look dishes up one by one. | Must | solves P5, P2 (U2, U5, U6) |
 | F6 | As a diner, I want each dish name and its price extracted from the uploaded menu photo, so that I can see what is offered and what it costs. | Must | solves P1 (U1, U2, U3, U5 requested prices) |
-| F7 | As a diner, I want each extracted dish shown with an English name, so that I can read the menu myself. | Must | solves P1, P2 (U1–U5). *Revised 2026-10-27:* the English name comes from the Thai dish guide (F27) plus any protein/style named on the menu. A dish **not in the guide gets no translation** — it is shown in Thai with its price and labelled 🟡 (F10) |
+| F7 | As a diner, I want each extracted dish shown with an English name, so that I can read the menu myself. | Must | solves P1, P2 (U1–U5). *Revised 2026-10-27:* the English name comes from the Thai dish guide (F27) plus any protein/style named on the menu. A dish **not in the guide gets no translation** — it is shown in Thai with its price and labelled 🟡 (F10) *Revised 2026-11-17 (DEF-01):* a dish not in the guide gets a **rough English name** from the words the app recognises, marked "Rough translation — not in our dish guide" (or its Thai name, marked "Not translated yet"), and stays 🟡 |
 | F8 | As a diner, I want the likely ingredients of each dish identified, so that dishes can be checked against my profile. | Must | solves P3. *Revised 2026-10-27:* ingredients come from **reviewed Thai dish guide data** (F27), not from AI inference per scan, so the same dish always gets the same ingredients |
 | F9 | As a diner, I want every dish checked against my saved profile and labelled 🟢 recommended / 🟡 check before ordering / 🔴 conflict, so that I can see at a glance which dishes suit me. | Must | solves P3 (U2, U3, U5) |
 | F10 | As a diner, I want a dish whose menu information is incomplete or uncertain to be labelled 🟡 rather than 🟢, so that a gap in the information is never shown to me as a recommendation. | Must | solves P4; LR12; NFR4. *2026-10-27:* "uncertain" includes a dish **not in the Thai dish guide**, a name matched only approximately (possible OCR misread), and a dish whose meat or seafood is not stated |
@@ -167,7 +187,7 @@ MoSCoW. Every **Must** stays inside the one core workflow of §5.
 | F20 | Scan history — keeping past scans so a menu can be reopened later. | Won't | Team decision 2026-09-07: **not part of the MVP this phase**. Menu images are never kept as permanent history (LR5) |
 | F21 | As a diner, I want to rate a recommendation, so that the team can improve accuracy. | Could | Brief §5; relates to P4 |
 | F22 | Live camera scanning of a menu. | Won't | Brief §8 — upload only |
-| F23 | Voice output of dishes or results. | Won't | Brief §8 |
+| F23 | Voice output of results (reading the categorized menu or warnings aloud). | Won't | Brief §8. *Narrowed 2026-11-17:* reading one Thai dish name aloud for ordering is F36 |
 | F24 | Any language pair other than Thai → English. | Won't | Brief §8 |
 | F25 | Restaurant-side registration, setup, or supplied menu data. | Won't | Brief §8 |
 | F26 | As a diner, I want the menu photo I just uploaded kept on screen during the scan so that I can review it, crop it, or retry when extraction fails, instead of taking the photo again. | Must | solves P5, P4; LR5. *Added 2026-09-07 with the temporary-image-retention decision; numbered after F25 so existing traces stay valid* |
@@ -177,6 +197,14 @@ MoSCoW. Every **Must** stays inside the one core workflow of §5.
 | F30 | As a diner, I want ready-made Thai sentences on the Order in Thai page — "I'm allergic to …, does my order contain it?", "no …", "not spicy" — built from my profile, so that I can do the confirm-with-staff step without speaking Thai. | Should | solves P2 (U1, U2, U6 depend on staff); supports F11, LR12. *Team decision 2026-10-31.* Thai words come from the dish-guide ingredient list; DRAFT until the Thai-literate review |
 | F31 | As the team, we want an anonymous count of menu dishes that are not in the Thai dish guide, so that we add the most common ones first. | Should | supports F27, NFR10; relieves P1 indirectly. *Team decision 2026-10-31.* Dish text only — no user, scan, or image is linked (LR3, LR4) |
 | F32 | As a diner, I want to set how spicy I can eat, so that dishes hotter than that are labelled 🟡 with a way to ask for them milder. | Should | solves P3 (preferences). *Team decision 2026-10-31.* Ordinary preference, not health data (LR1); a spice mismatch is never 🔴 |
+| F33 | As a diner, I want to set how many of each selected dish I order, so that the Thai order and total match what the table wants. | Should | solves P2. *Added 2026-11-17* |
+| F34 | As a diner, I want to add ready-made Thai requests to a dish ("not spicy", "no coriander", "allergic to shrimp"), so that staff get correct Thai without me typing it. | Should | solves P2, P3. *Added 2026-11-17.* Picked from a list, never translated free text; a request is not a guarantee — 🟡/🔴 still say confirm with staff (LR12) |
+| F35 | As a diner, I want a full-screen "Show to staff" view with very large Thai text that keeps the screen on, so that I can turn the phone to the server. | Should | solves P2. *Added 2026-11-17* |
+| F36 | As a diner, I want to hear a Thai dish name read aloud by my phone, so that I can say it or play it to staff. | Should | solves P2. *Added 2026-11-17.* Uses the device's own voice; nothing is sent to a server |
+| F37 | As a diner, I want to search the results and sort them by price, so that I find a dish quickly on a long menu. | Could | solves P1. *Added 2026-11-17* |
+| F38 | As a diner, I want to see the dishes in menu order with every line the scan read, and to see where a dish is on my photo, so that I can follow the paper menu and spot what the scan missed. | Should | solves P1, P5. *Added 2026-11-17.* The photo copy stays in the diner's own browser (LR5) |
+| F39 | As a diner, I want to choose the app's colour theme, so that the app is comfortable to use. | Could | *Added 2026-11-17.* No survey pain; ease of use (NFR8, U4 in P4). Result colours never change (LR12) |
+| F40 | As a diner, I want to add the app to my phone's home screen, so that I can open it in one tap at the table. | Could | solves P5; ease of use (P4, U4). *Added 2026-11-17* |
 
 ---
 
@@ -203,7 +231,9 @@ means the team proposed it for review; it is **not** a user-research result.
   Thai dish names judged acceptably translated into English on the defined
   evaluation set. *Revised 2026-10-27:* measured on dishes matched to the Thai
   dish guide (F27); dishes not in the guide get no translation and are counted
-  under NFR10 instead. *Traces: F7, F27, P1.*
+  under NFR10 instead. *Revised 2026-11-17 (DEF-01):* rough English names of
+  dishes not in the guide are **excluded** from NFR3 — they are labelled rough
+  in the UI — and still counted under NFR10. *Traces: F7, F27, P1.*
 
 - **NFR4 — matching fidelity.** `[engineering target]` On the controlled test
   set: **missed known conflicts ≤ 5%** and **false conflict warnings ≤ 10%**,
@@ -223,8 +253,9 @@ means the team proposed it for review; it is **not** a user-research result.
 
 - **NFR6 — usage / cost ceiling.** *Revised 2026-10-27:* there is **no
   third-party AI per-call cost or quota** any more — the OCR service runs on our
-  own server. The remaining cost is hosting that service, **`TBD`** until the
-  hosting choice for user testing is made. No scans-per-user cap is invented
+  own server. The remaining cost is hosting that service. *Decided 2026-11-17:* **0 THB per
+  month** on the free deployment (Vercel Hobby + Neon free + OCR.space free tier,
+  500 scans a day); a paid tier is needed only above those limits. No scans-per-user cap is invented
   here. *Traces: Charter §6 (AI cost & availability).*
 
 - **NFR7 — availability.** `[engineering target — MVP operational target, not a
@@ -235,7 +266,8 @@ means the team proposed it for review; it is **not** a user-research result.
 - **NFR8 — ease of use.** **`TBD`.** U4 named "difficult to use" as a reason to
   hesitate, so a usability target is warranted, but the survey collected no
   usability measurement. The target is set from the first usability test.
-  *Traces: P4 (U4).*
+  *2026-11-17: **deferred** — no real-user usability test has been run, so no
+  target is set.* *Traces: P4 (U4).*
 
 - **NFR9 — traffic-log retention.** Where the CCA §26 service-provider
   obligation applies, computer traffic data is retained **≥ 90 days** by explicit
@@ -254,11 +286,11 @@ means the team proposed it for review; it is **not** a user-research result.
 |---|---|---|
 | NFR1 baseline time and steps | `TBD` | Timed observation with real users |
 | NFR1 target improvement | `TBD` | The baseline above |
-| NFR6 hosting cost | `TBD` | Hosting choice for the OCR service |
+| NFR6 hosting cost | **0 THB/month — decided 2026-11-17** | — (free tiers) |
 | NFR10 guide coverage target | `TBD` | First coverage measurement on the menu test set |
-| NFR8 usability target | `TBD` | First usability test |
-| F1 OAuth provider name | `TBD` | Team decision — the auth **mechanism** (OAuth + email/password) is settled; only which OAuth provider is open |
-| LR5 temporary-image retention duration | `TBD` | Team decision on the temporary-retention rule |
+| NFR8 usability target | **Deferred 2026-11-17** | First usability test (none run) |
+| F1 OAuth provider name | **Google — decided 2026-11-17** | — |
+| LR5 temporary-image retention duration | **Decided 2026-11-17:** deleted as soon as OCR has read the photo | Automatic clean-up of photos that are never read |
 
 `/audit-backlog` flags an NFR with no number. NFR1, NFR6, NFR8, and NFR10 are
 expected hits and are deliberate — they are recorded above rather than filled by
@@ -290,6 +322,12 @@ assumption.
   send**. *Testable: during a full scan no request leaves our server for an
   external OCR/AI host; a new account cannot reach a categorized result without
   accepted Terms, privacy notice, and AI & Accuracy Disclaimer records.*
+  *Revised 2026-11-17:* the free deployment reintroduces a provider under the
+  clause above — photos are read by **OCR.space** (photo only, no identifier or
+  profile) after a separate **Menu photo reading** consent shown before the
+  first scan; the privacy notice version changes with it. Self-hosted
+  deployments keep our own PaddleOCR. The optional Gemini *Menu helper* sends
+  only menu text, under its own separate consent.
 
 - **LR3 (PDPA — data minimisation).** *Revised 2026-10-27.* The OCR service
   receives **only the image bytes** of the menu photo — no account email, real
@@ -311,7 +349,9 @@ assumption.
   the user can review it, crop it, or retry when extraction or processing fails
   (F26). It is **not** discarded immediately after the first processing attempt.
   The temporary copy is deleted when the scan session **completes or is
-  abandoned**, under a defined temporary-retention rule (**duration `TBD`**).
+  abandoned**, under a defined temporary-retention rule (*decided 2026-11-17:* the photo
+  bytes are **deleted as soon as OCR has read them**; a photo that is never read
+  stays until the user removes it or deletes the account).
   Menu images are **never** kept as permanent scan history — scan history is
   Won't this phase (F20). On account deletion the food profile, any temporary
   image, and extracted results are removed within the stated retention window.
@@ -390,7 +430,7 @@ assumption.
 ### In scope
 
 - Account and sign-in so a profile persists — **OAuth + email/password**;
-  OAuth provider name `TBD` (F1, LR6).
+  OAuth provider Google — decided 2026-11-17 (F1, LR6).
 - Food profile: favorite foods and ordinary preferences (F2); allergies and
   doctor-advised restrictions under a separate opt-in (F3); view/edit/delete
   (F4).
