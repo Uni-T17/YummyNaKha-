@@ -1,0 +1,12 @@
+{
+  "//": "Editor/type-check config only, so the evidence scripts here resolve Node types and the app's @/ alias. It does not change what the scripts do; they still run from YummyNaKha_App with tsx.",
+  "extends": "../../../../YummyNaKha_App/tsconfig.json",
+  "compilerOptions": {
+    "incremental": false,
+    "noEmit": true,
+    "typeRoots": ["../../../../YummyNaKha_App/node_modules/@types"],
+    "types": ["node"]
+  },
+  "include": ["*.ts"],
+  "exclude": []
+}

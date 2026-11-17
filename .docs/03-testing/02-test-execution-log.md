@@ -114,20 +114,20 @@ v2 scan times from `run.log` (OCR + parser + guide, per image):
 | **TC2** | Menu upload, including multiple pages | E2E | **Partly run** | [02-test-results.md](02-test-results.md): upload checks pass; multi-page analysis Not run (needs OCR) |
 | **TC3** | Separate sensitive-profile opt-in | Integration | **Pass** | [02-test-results.md](02-test-results.md) |
 | **TC4** | Terms, privacy and disclaimer gate | Integration | **Pass** | [02-test-results.md](02-test-results.md) |
-| TC5 | Own-server OCR and data minimisation | Integration | Not run | OCR service unavailable at `127.0.0.1:8765` on 17 Nov 2026; no rerun |
+| **TC5** | Own-server OCR and data minimisation | Integration | **Pass** | [02-test-results.md, Run 2 OCR run](02-test-results.md#run-2--17-nov-2026-ocr-run-tc5-tc10-tc12-tc13): OCR body = photo bytes only; no outside calls; no secrets in client build |
 | **TC6** | Consent withdrawal takes effect | Integration | **Pass** | [02-test-results.md](02-test-results.md) |
 | **TC7** | OCR parser and deterministic guide lookup | Unit | **Pass** | Run 1 |
 | **TC8** | Upload-to-result latency | Integration | **Partly run** | Run 2; requested rerun not possible because OCR service was unavailable at `127.0.0.1:8765` on 17 Nov 2026 |
 | **TC9** | Profile matching and uncertainty | Unit | **Pass** | Run 1 |
-| TC10 | Unreadable menu and OCR failure recovery | Integration | Not run | OCR service unavailable at `127.0.0.1:8765` on 17 Nov 2026; no rerun |
+| **TC10** | Unreadable menu and OCR failure recovery | Integration | **Fail** | [02-test-results.md, Run 2 OCR run](02-test-results.md#run-2--17-nov-2026-ocr-run-tc5-tc10-tc12-tc13): English-only menu → guide dish not on the menu shown as Top Pick (R2-01); blurred / OCR-down / retry pass; timeout, malformed, empty text and availability not run |
 | **TC11** | Explainable results and ingredient detail | E2E | **Partly run** | [02-test-results.md](02-test-results.md) |
-| TC12 | Select dishes and order in Thai | E2E | Not run | OCR service unavailable at `127.0.0.1:8765` on 17 Nov 2026; no rerun |
-| TC13 | Processing record reproduces displayed result | Integration | Not run | OCR service unavailable at `127.0.0.1:8765` on 17 Nov 2026; no rerun |
+| **TC12** | Select dishes and order in Thai | E2E | **Pass** | [02-test-results.md, Run 2 OCR run](02-test-results.md#run-2--17-nov-2026-ocr-run-tc5-tc10-tc12-tc13) |
+| **TC13** | Processing record reproduces displayed result | Integration | **Pass** | [02-test-results.md, Run 2 OCR run](02-test-results.md#run-2--17-nov-2026-ocr-run-tc5-tc10-tc12-tc13): 8/8 reproduced after a profile edit; category and rule version not stored (R2-02) |
 | **TC14** | Content deletion and separate traffic retention | Integration | **Pass** | [02-test-results.md](02-test-results.md) (session-end photo cleanup window still open: DEF-05) |
 | **TC15** | Real-menu extraction, English quality and coverage | Integration | **Partly run** | Run 2 |
 
-**Summary (combined, all runs):** passed **TC1, TC3, TC4, TC6, TC7, TC9, TC14** · partly run **TC2, TC8, TC11, TC15** · not run **TC5, TC10, TC12, TC13**.
-Runs 1–2 are above; the API and logic run of 17 Nov is in [02-test-results.md](02-test-results.md); the real-user test of 16 Nov (n = 16, self-ratings and SUS) is in [user-test/README.md](user-test/README.md).
+**Summary (combined, all runs):** Pass **10** (TC1, TC3, TC4, TC5, TC6, TC7, TC9, TC12, TC13, TC14) · Partial **4** (TC2, TC8, TC11, TC15) · Fail **1** (TC10) · Blocked **0** · Not run **0**. Same totals as the combined table in [02-test-results.md](02-test-results.md#combined-status--runs-12-17-nov-2026).
+Runs 1–2 are above; the API and logic run of 17 Nov and the OCR run of 17 Nov (TC5, TC10, TC12, TC13) are in [02-test-results.md](02-test-results.md); the real-user test of 16 Nov (n = 16, self-ratings and SUS) is in [user-test/README.md](user-test/README.md).
 
 ## Limits
 

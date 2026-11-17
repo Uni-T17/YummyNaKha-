@@ -1,0 +1,8 @@
+Browser network log for the TC5 scan (built-in browser, read_network_requests), 17 Nov 2026.
+- Requests whose URL contains "https://": none.
+- Requests whose URL contains "googleapis": none.
+- Requests to 127.0.0.1: only GET http://127.0.0.1:8767/menu1.jpg (×2). This is the TEST HARNESS loading
+  the fixture into the file input (a local static server started for this run), not the app.
+- Every other request went to http://localhost:3100 (the app): /api/auth/me, /api/preferences, /api/consents,
+  POST /api/consents, POST /api/images, POST /api/ai/analyze, page routes, /_next/static chunks, self-hosted
+  .woff2 fonts and /_next/image?url=/logo.png. Plus one blob:http://localhost:3100 (the photo preview).

@@ -1,0 +1,63 @@
+Text of the pages as rendered in the browser (copied with the browser's page-text tool).
+Test profile (synthetic): fav Chicken; avoid Peanut (allergy, after the health-data opt-in).
+Rendered page text is copied verbatim apart from blank lines and the button labels "View Details / Select", which are dropped.
+
+=== Scan 1 — menu1.jpg, /menu, 17 Nov 2026 14:55 UTC (MenuAnalysis cmwktdjre000xbnmjlnr8wndl) ===
+8 dishes found · 1 other line
+Top Pick    Holy Basil Stir-fry with minced pork · ผัดกะเพราหมูสับ · ฿60
+Top Pick    Fried Rice with shrimp · ข้าวผัดกุ้ง · ฿70
+Top Pick    Tom Yum Soup with shrimp · ต้มยำกุ้ง · ฿120
+Top Pick    Green Curry with chicken · แกงเขียวหวานไก่ · ฿90 · Chicken
+Top Pick    Cashew Nut Stir-fry with chicken · ไก่ผัดเม็ดมะม่วงหิมพานต์ · ฿95 · Chicken
+Top Pick    Hainanese Chicken Rice · ข้าวมันไก่ · ฿55 · Chicken
+Check First Pad Thai with shrimp · ผัดไทยกุ้งสด · ฿80 · Peanut in your Avoid list
+Avoid       Thai Papaya Salad · ส้มตำไทย · ฿50 · Peanut in your Avoid list
+Other text on the menu · 1
+
+=== TC12 — My Order after selecting Holy Basil + Green Curry, then removing Holy Basil ===
+My Order · Green Curry with chicken · แกงเขียวหวานไก่ · ฿90 · How many 1 · 1 dish · Total: ฿90 · Show in Thai
+
+=== TC12 — Order in Thai (/order/thai) ===
+SHOW THIS TO YOUR SERVER · รายการที่ต้องการสั่ง · Show to staff (full screen)
+แกงเขียวหวานไก่ · 90 บาท
+รวม 90 บาท
+ถามพนักงาน · Ask the staff
+ฉันแพ้ถั่วลิสง อาหารที่สั่งมีถั่วลิสงไหม ช่วยไม่ใส่ได้ไหม — I'm allergic to peanut. Does my order contain it? Can you leave it out?
+ฉันแพ้อาหาร ช่วยใช้กระทะและอุปกรณ์ที่ล้างสะอาดแล้วได้ไหม — I have a food allergy. Could you use a clean wok and utensils?
+ไม่เผ็ด — Not spicy, please. · เผ็ดน้อย — Only a little spicy, please.
+
+=== TC12 — /menu after adding Shrimp as an ordinary dislike on My Taste (no new scan) ===
+8 dishes found · 1 other line · 1 dish selected
+Top Pick    Holy Basil Stir-fry with minced pork · ฿60
+Top Pick    Hainanese Chicken Rice · ฿55 · Chicken
+Check First Fried Rice with shrimp · ฿70 · Shrimp in your Avoid list
+Check First Pad Thai with shrimp · ฿80 · Peanut in your Avoid list · Shrimp in your Avoid list
+Check First Tom Yum Soup with shrimp · ฿120 · Shrimp in your Avoid list
+Check First Green Curry with chicken · ฿90 · Chicken · Shrimp in your Avoid list · (Selected)
+Check First Cashew Nut Stir-fry with chicken · ฿95 · Chicken · Shrimp in your Avoid list
+Avoid       Thai Papaya Salad · ฿50 · Peanut in your Avoid list · Shrimp in your Avoid list
+
+=== TC12 — My Order after removing the last dish ===
+My Order · Check your picks · No dishes selected yet. · Browse Menu
+
+=== TC10 — blurred-menu1.jpg ===
+Couldn't read the menu · We couldn't find readable menu text in this photo. Try a clearer, well-lit photo taken straight on. · Try again · Back to Home
+(Back to Home: photo still listed, with "Crop or rotate blurred-menu1.jpg" and "Remove" buttons)
+
+=== TC10 — english-only-menu.jpg (Joe's Diner: Cheeseburger 120, French Fries 60, Caesar Salad 110, Club Sandwich 130, Chocolate Shake 90) ===
+5 dishes found · 1 other line
+Top Pick    Iced Cocoa · โกโก้เย็น · On the menu: Chocolate Shake · ฿90
+Not in our dish guide · 4 dishes — We don't know these dishes yet — ask staff what's in them.
+Check First Cheeseburger · ฿120 · Not in our dish guide yet — ask staff
+Check First French Fries · ฿60 · Not in our dish guide yet — ask staff
+Check First Caesar Salad · ฿110 · Not in our dish guide yet — ask staff
+Check First Club Sandwich · ฿130 · Not in our dish guide yet — ask staff
+
+=== TC10 — menu1.jpg, PaddleOCR stopped (capture proxy still up → HTTP 502) ===
+Couldn't read the menu · We couldn't read this photo. Please try again. · Try again · Back to Home
+
+=== TC10 — Try again, PaddleOCR and proxy both down (connection refused) ===
+Couldn't read the menu · The menu reader isn't available right now. Please try again in a moment. · Try again · Back to Home
+
+=== TC10 — Try again after restarting PaddleOCR + proxy (same photo, no new upload) ===
+8 dishes found · 1 other line — same 8 dishes as scan 1, categories for the current profile (Peanut allergy + Shrimp dislike)

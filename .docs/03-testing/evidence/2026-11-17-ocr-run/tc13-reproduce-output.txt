@@ -1,0 +1,15 @@
+record cmwktdjre000xbnmjlnr8wndl · guide thai-dish-guide@2026-10-27c-draft · created 2026-11-17T14:55:09.386
+snapshot {"avoid":[{"name":"Peanut","reason":"allergy"}],"spice":null,"favorites":["Chicken"]}
+dish | shown | rebuilt from snapshot | with current profile
+ผัดกะเพราหมูสับ (Holy Basil Stir-fry with minced pork) | top | top | top
+ข้าวผัดกุ้ง (Fried Rice with shrimp) | top | top | check
+ผัดไทยกุ้งสด (Pad Thai with shrimp) | check | check | check
+ต้มยำกุ้ง (Tom Yum Soup with shrimp) | top | top | check
+แกงเขียวหวานไก่ (Green Curry with chicken) | top | top | check
+ส้มตำไทย (Thai Papaya Salad) | avoid | avoid | avoid
+ไก่ผัดเม็ดมะม่วงหิมพานต์ (Cashew Nut Stir-fry with chicken) | top | top | check
+ข้าวมันไก่ (Hainanese Chicken Rice) | top | top | top
+
+rebuilt == shown: 8/8
+dishes whose category differs under the current profile: 4
+category stored in record: no

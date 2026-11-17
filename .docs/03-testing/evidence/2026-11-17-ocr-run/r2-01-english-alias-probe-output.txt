@@ -1,0 +1,5 @@
+Chocolate Shake → Iced Cocoa / โกโก้เย็น · inGuide=true · uncertainties=0 · category=top
+Chocolate Lava Cake → Iced Cocoa (special version) / โกโก้เย็น · inGuide=true · uncertainties=1 · category=check
+Chocolate Croissant → Iced Cocoa (special version) / โกโก้เย็น · inGuide=true · uncertainties=1 · category=check
+Iced Chocolate → Iced Cocoa / โกโก้เย็น · inGuide=true · uncertainties=0 · category=top
+โกโก้เย็น → Iced Cocoa / โกโก้เย็น · inGuide=true · uncertainties=0 · category=top

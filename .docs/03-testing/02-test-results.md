@@ -1,4 +1,6 @@
-# YummyNaKha! — Test Results (Run 1)
+# YummyNaKha! — Test Results (Runs 1–2)
+
+> **Run 2 (OCR run, 17 Nov 2026 evening)** covers TC5, TC10, TC12 and TC13 — see [Run 2](#run-2--17-nov-2026-ocr-run-tc5-tc10-tc12-tc13) below. Sections 1–5 are Run 1 and are left as they were run.
 
 **Run date:** 17 Nov 2026 · **Build:** `main` @ `befc0d0` (production build, `next start`) · **Plan:** [01-test-plan.md](01-test-plan.md) (TC1–TC15)
 **Environment:** macOS laptop, Node (project lockfile, `npm ci`), PostgreSQL 17 in a disposable Docker container (all migrations applied), disposable `@example.test` accounts. Google OAuth, Gemini and OCR.space keys were **not** set.
@@ -6,7 +8,33 @@
 
 > Status values follow the plan: **Pass / Fail / Blocked / Not run**. A case is marked Pass only when every assertion that was run passed. A case is marked **Partial** when some assertions are still Not run.
 
-## 1. Summary
+## 1. Summary — Run 1 (before the OCR run)
+
+### Combined status — Runs 1–2 (17 Nov 2026)
+
+One row per test case, latest result across all runs. The same totals are in the [execution log](02-test-execution-log.md#status-of-all-15-test-cases).
+
+| TC | Case | Status | Source |
+|---|---|---|---|
+| TC1 | Account and ordinary profile persistence | Pass | Run 1 (Google OAuth assertion Blocked: no credentials in the test env) |
+| TC2 | Menu upload, including multiple pages | Partial | Run 1: upload checks pass; multi-page analysis not run |
+| TC3 | Separate sensitive-profile opt-in | Pass | Run 1 |
+| TC4 | Terms, privacy and disclaimer gate | Pass | Run 1 |
+| TC5 | Own-server OCR and data minimisation | Pass | [Run 2](#r22-tc5--own-server-ocr-and-data-minimisation--pass) |
+| TC6 | Consent withdrawal takes effect | Pass | Run 1 |
+| TC7 | OCR parser and deterministic guide lookup | Pass | Vitest run, [execution log](02-test-execution-log.md) Run 1 (16/16). Run 1's R1-01 failure here was closed by PO decision D1 |
+| TC8 | Upload-to-result latency | Partial | [Execution log](02-test-execution-log.md) Run 2 (16 Nov): 7 scans per engine, server time only. **Not measured in this file's Run 2** |
+| TC9 | Profile matching and uncertainty | Pass | Run 1 + Vitest run |
+| TC10 | Unreadable menu and OCR failure recovery | **Fail** | [Run 2](#r23-tc10--unreadable-menu-and-ocr-failure-recovery--fail-1-assertion): English-only menu, R2-01 |
+| TC11 | Explainable results and safety wording | Partial | Run 1: browser walk-through not run |
+| TC12 | Select dishes and order in Thai | Pass | [Run 2](#r24-tc12--select-dishes-and-order-in-thai--pass) |
+| TC13 | Processing record reproduces displayed result | Pass | [Run 2](#r25-tc13--processing-record-reproduces-displayed-result--pass-defect-r2-02-logged) (defect R2-02 logged) |
+| TC14 | Content deletion and traffic retention | Pass | Run 1 (photo clean-up window part Blocked) |
+| TC15 | Real-menu extraction and English quality | Partial | [Execution log](02-test-execution-log.md) Run 2 (16 Nov): 1 real menu + 6 generated, not the 20-photo set |
+
+**Totals:** Pass **10** · Partial **4** · Fail **1** · Blocked **0** · Not run **0** (15 cases).
+
+### Run 1 only (as run, kept for the record)
 
 | Status | Cases |
 |---|---|
@@ -127,3 +155,88 @@ IDs here use `R1-` so they don't clash with the [issue log](03-issue-log.md), wh
 ## 5. Evidence
 Scripts, raw output and test images: [evidence/2026-11-17-api-and-sweep/](evidence/2026-11-17-api-and-sweep/README.md).
 The separate Vitest unit run of TC7/TC9 (23/23 pass) is in [02-test-execution-log.md](02-test-execution-log.md).
+
+---
+
+## Run 2 — 17 Nov 2026: OCR run (TC5, TC10, TC12, TC13)
+
+**Build:** `main` @ `4d7d737` (app code unchanged), `next dev` on port 3100 · **OCR:** our own PaddleOCR service (`npm run ocr`, PaddleOCR 3.7.0, `PP-OCRv5_mobile_det` + `th_PP-OCRv5_mobile_rec`), `NEXT_PUBLIC_OCR_PROVIDER=local` — **not** OCR.space; `GET http://127.0.0.1:8765/health` → `{"ok":true,…}`
+**Environment:** throwaway PostgreSQL cluster on `127.0.0.1:5544` (all migrations, deleted after the run), one disposable `@example.test` account, synthetic profile: fav Chicken; Peanut = allergy (after the health-data opt-in); Shrimp added later as an ordinary dislike. Photos are synthetic. Optional Gemini helper **not** accepted.
+**Executed by:** Claude Code, in the built-in browser plus database and traffic captures. No real users.
+**Evidence:** [evidence/2026-11-17-ocr-run/](evidence/2026-11-17-ocr-run/README.md) (README, captures, records, scripts, 11 screenshots).
+
+### R2.1 Summary
+
+| TC | Status | One line |
+|---|---|---|
+| TC5 | **Pass** | OCR received only the photo bytes; no outside calls from server or browser during the scan; no secrets in the client build |
+| TC10 | **Fail** (1 assertion) | Blurred / OCR-down / OCR-unreachable all handled cleanly and retry works with the same photo; but an English-only menu showed a guide dish that is not on the menu as Top Pick (R2-01) |
+| TC12 | **Pass** | Order and Order in Thai show exactly the selection; a preference change re-sorts the menu with no new scan; empty order is clear |
+| TC13 | **Pass**, defect logged | Record has every required field and reproduces the shown categories 8/8 after a profile edit; the category and rule version are not stored (R2-02, logged as the plan requires) |
+
+### R2.2 TC5 — Own-server OCR and data minimisation · **Pass**
+
+Capture: a logging proxy between the app and PaddleOCR ([`ocr-capture.jsonl`](evidence/2026-11-17-ocr-run/ocr-capture.jsonl)); every outbound socket and `fetch()` from the Next.js server ([`net-log.jsonl`](evidence/2026-11-17-ocr-run/net-log.jsonl)); the browser network log ([summary](evidence/2026-11-17-ocr-run/tc5-browser-requests.txt)).
+
+| Check (plan) | Actual result | Result |
+|---|---|---|
+| OCR receives only image bytes + protocol headers | `POST /ocr`, body 65 471 bytes, SHA-256 `880ed34a…` = the uploaded `menu1.jpg` byte for byte (JPEG `ffd8ffe0`). Headers: `host, connection, content-type: image/jpeg, accept, accept-language, sec-fetch-mode, user-agent: node, accept-encoding, content-length`. No `cookie`, no `authorization`, no email, name, profile or token field. All 6 OCR requests in the run matched their fixture's SHA-256 | Pass |
+| No other outside calls (server) | During the TC5 scan the server opened connections only to the test DB (`127.0.0.1:5544`) and the OCR proxy (`127.0.0.1:8766`). No Gemini, OCR.space or Google call. *(At start-up, `next dev` fetched `registry.npmjs.org/-/package/next/dist-tags`: its own version check, dev tooling, not app code.)* | Pass |
+| Browser calls only app APIs | No `https://` request at all; all requests to `http://localhost:3100` (APIs, pages, chunks, self-hosted fonts, `/_next/image`). The only other host was `127.0.0.1:8767`, the test harness loading the fixture | Pass |
+| No secrets / private OCR address in client assets | Production `next build` (real `.env` present): 54 files, 1.4 MB in `.next/static`. Absent: `DATABASE_URL`, `DIRECT_URL`, `AUTH_SECRET`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_CLIENT_ID`, `GEMINI_API_KEY`, `OCR_SPACE_API_KEY` values; `OCR_SERVICE_URL` and `127.0.0.1:8765`; the secret variable names. ([scan](evidence/2026-11-17-ocr-run/tc5-client-secret-scan.txt)) | Pass |
+
+Limits: `next dev`, not `next start`; `OCR_SERVICE_TOKEN` was empty, so the `Authorization: Bearer` header for a public OCR host was not exercised. The OCR.space mode (D4) was not part of this case.
+
+### R2.3 TC10 — Unreadable menu and OCR failure recovery · **Fail** (1 assertion)
+
+| Check | Actual result | Evidence | Result |
+|---|---|---|---|
+| Blurred photo (`blurred-menu1.jpg`) | "Couldn't read the menu — We couldn't find readable menu text in this photo. Try a clearer, well-lit photo taken straight on." + **Try again** / **Back to Home**. No dishes, no raw error | screenshot 07 | Pass |
+| Non-Thai photo (`english-only-menu.jpg`: Cheeseburger, French Fries, Caesar Salad, Club Sandwich, Chocolate Shake) | Read as a menu: 4 items "Not in our dish guide yet — ask staff" (Check First). **"Chocolate Shake" was shown as Top Pick "Iced Cocoa / โกโก้เย็น"** with "On the menu: Chocolate Shake": a guide dish that is not on this menu, with no uncertainty. No message that this is not a Thai menu | screenshot 08, [probe](evidence/2026-11-17-ocr-run/r2-01-english-alias-probe-output.txt) | **Fail → R2-01** |
+| OCR stopped (PaddleOCR killed, proxy up → HTTP 502) | "We couldn't read this photo. Please try again." No raw error (server log only: `[ocr] HTTP 502`). No dishes | screenshot 09 | Pass |
+| OCR unreachable (PaddleOCR and proxy down → connection refused) | "The menu reader isn't available right now. Please try again in a moment." No raw error | screenshot 10 | Pass |
+| Retry with the same photo after restarting OCR | **Try again** → 8 dishes. Same `MenuImage` row (status FAILED → PROCESSED), no new `POST /api/images`; the photo bytes were kept on failure and deleted after the successful read | screenshot 11, [`server-api-log.txt`](evidence/2026-11-17-ocr-run/server-api-log.txt) | Pass |
+| Photo reviewable / croppable through failure (DEF-04) | The **failure screen itself** offers only Try again / Back to Home. **Back to Home** still lists the photo with **Crop or rotate** and **Remove** buttons, so it can be reviewed and cropped without a new photograph (one extra tap) | rendered-pages.txt | Partly (see DEF-04) |
+| OCR timeout, malformed response, empty text | — | — | Not run |
+| Scheduled availability ≥ 95 % | — | — | Not run |
+
+Note: the 502 case says "We couldn't read **this photo**", which points at the photo although the service was down. Users may retake a good photo needlessly. Not counted as a failure.
+
+### R2.4 TC12 — Select dishes and order in Thai · **Pass**
+
+| Check | Actual result | Evidence | Result |
+|---|---|---|---|
+| Select two, deselect one | Selected Holy Basil + Green Curry ("2 dishes selected"), removed Holy Basil → "1 dish selected" | screenshot 02 | Pass |
+| My Order = exactly the selection | Green Curry with chicken · แกงเขียวหวานไก่ · ฿90 · Total ฿90 | screenshot 03 | Pass |
+| Order in Thai = exactly the selection, in Thai | "รายการที่ต้องการสั่ง" · **แกงเขียวหวานไก่ · 90 บาท** · รวม 90 บาท, plus staff cards for the peanut allergy | screenshot 04 | Pass |
+| Edit an ordinary preference, return, categories update with no OCR rerun | Added Shrimp ("Just don't like it") on My Taste → back to the menu: Fried Rice, Pad Thai, Tom Yum, Green Curry and Cashew Nut now Check First with "Shrimp in your Avoid list"; Som Tam stays Avoid. The selection was kept. **No** `POST /api/ai/analyze`, `POST /api/images` or OCR request after the change (counts 1 / 1 / unchanged) | screenshot 05, server-api-log.txt | Pass |
+| Empty selection | Removed the last dish → "No dishes selected yet." + **Browse Menu** | screenshot 06 | Pass |
+
+### R2.5 TC13 — Processing record reproduces displayed result · **Pass** (defect R2-02 logged)
+
+Scan 1 (`MenuAnalysis cmwktdjre000xbnmjlnr8wndl`, `menu1.jpg`).
+
+| Check | Actual result | Result |
+|---|---|---|
+| Timestamp | `createdAt 2026-11-17 14:55:09.386` (analysis), `processedAt` on the image | Pass |
+| OCR model and OCR text | `MenuImage.ocrModel = paddleocr/PP-OCRv5_mobile_det+th_PP-OCRv5_mobile_rec`; `extractedText` (all 17 lines) and OCR boxes in `metadata.ocr`; image bytes deleted (`data` null) | Pass |
+| Guide version | `MenuAnalysis.model = thai-dish-guide@2026-10-27c-draft` | Pass |
+| English output | `result.dishes[*].nameEn` (8 dishes) + `result.items` / `otherLines` | Pass |
+| Profile snapshot | `{"avoid":[{"name":"Peanut","reason":"allergy"}],"spice":null,"favorites":["Chicken"]}`, with no name or email | Pass |
+| Record unchanged after a profile edit | Re-read after adding Shrimp: byte-identical (SHA-256 `44885df4…` both times) | Pass |
+| Original shown result reproduced from the record | [`tc13-reproduce.ts`](evidence/2026-11-17-ocr-run/tc13-reproduce.ts): `categorizeDish(stored dish, stored snapshot)` → **8/8 equal** to the categories the browser showed (6 Top Pick, Pad Thai Check First, Som Tam Avoid). With the current profile, 4 dishes would differ, which confirms the snapshot, not the live profile, is what reproduces the original | Pass |
+| Category / rule-version evidence | **Not stored**: no per-dish category in `result`, no version of the matching rules. Reproduction depends on today's `lib/matching.ts`. Also, the OCR model name lives only on `MenuImage`; when the user removes the photo from Home, that row is deleted and the analysis keeps its result, snapshot and guide version but not the OCR model name ([state after removal](evidence/2026-11-17-ocr-run/tc13-after-photo-removed.json)) | **Defect R2-02** (plan: "recorded as a defect") |
+
+### R2.6 Defects found in Run 2
+
+| ID | Sev (1–4) | TC | Description | Requirement |
+|---|---|---|---|---|
+| R2-01 | 3 major | TC10 | English menu lines containing "chocolate" are matched to the guide dish **Iced Cocoa (โกโก้เย็น)**. "Chocolate Shake" and "Iced Chocolate" match as exact, with no uncertainty, so they are shown as **Top Pick**, and the Thai name shown to staff is a different drink. "Chocolate Lava Cake" and "Chocolate Croissant" also become Iced Cocoa, but marked uncertain (Check First). | F7, F10, F27 (approximate match must be 🟡), LR12 |
+| R2-02 | 2 minor | TC13 | The processing record does not store the category shown or the matching-rule version, and the OCR model name is lost when the photo is removed. The result can only be reproduced with the same matching code. | F27, LR10 |
+
+Both are added to the [issue log](03-issue-log.md).
+
+### R2.7 Also seen (not part of the four cases)
+
+- The second scan sent both photos in the Home list (the first `menu1.jpg` was still there), so it analysed 2 pages and still showed 8 dishes. Both pages were the same image, so this is **not** TC2 multi-page evidence.
+- On the menu page, Green Curry and Cashew Nut Stir-fry get "Shrimp in your Avoid list" (via shrimp paste / oyster sauce in the guide). This is consistent with the guide's allergen groups.

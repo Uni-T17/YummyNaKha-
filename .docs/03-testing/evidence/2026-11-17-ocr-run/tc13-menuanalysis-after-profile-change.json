@@ -1,0 +1,1298 @@
+{
+    "id": "cmwktdjre000xbnmjlnr8wndl",
+    "model": "thai-dish-guide@2026-10-27c-draft",
+    "result": {
+        "items": [
+            {
+                "box": [
+                    253,
+                    28,
+                    726,
+                    103
+                ],
+                "name": "ร้านป้าแดง อาหารตามสั่ง",
+                "spot": {
+                    "h": 0.09146341463414634,
+                    "w": 0.4826530612244898,
+                    "x": 0.25816326530612244,
+                    "y": 0.03414634146341464,
+                    "page": 0
+                },
+                "price": null
+            },
+            {
+                "box": [
+                    40,
+                    147,
+                    274,
+                    189
+                ],
+                "name": "ผัดกะเพราหมูสับ",
+                "spot": {
+                    "h": 0.05121951219512195,
+                    "w": 0.23877551020408164,
+                    "x": 0.04081632653061224,
+                    "y": 0.17926829268292682,
+                    "page": 0
+                },
+                "price": 60
+            },
+            {
+                "box": [
+                    36,
+                    211,
+                    180,
+                    265
+                ],
+                "name": "ข้าวผัดกุ้ง",
+                "spot": {
+                    "h": 0.06585365853658537,
+                    "w": 0.1469387755102041,
+                    "x": 0.036734693877551024,
+                    "y": 0.2573170731707317,
+                    "page": 0
+                },
+                "price": 70
+            },
+            {
+                "box": [
+                    38,
+                    284,
+                    224,
+                    335
+                ],
+                "name": "ผัดไทยกุ้งสด",
+                "spot": {
+                    "h": 0.06219512195121951,
+                    "w": 0.18979591836734694,
+                    "x": 0.03877551020408163,
+                    "y": 0.3463414634146341,
+                    "page": 0
+                },
+                "price": 80
+            },
+            {
+                "box": [
+                    37,
+                    355,
+                    166,
+                    409
+                ],
+                "name": "ต้มยำกุ้ง",
+                "spot": {
+                    "h": 0.06585365853658537,
+                    "w": 0.13163265306122449,
+                    "x": 0.03775510204081633,
+                    "y": 0.4329268292682927,
+                    "page": 0
+                },
+                "price": 120
+            },
+            {
+                "box": [
+                    38,
+                    428,
+                    284,
+                    477
+                ],
+                "name": "แกงเขียวหวานไก่",
+                "spot": {
+                    "h": 0.05975609756097561,
+                    "w": 0.2510204081632653,
+                    "x": 0.03877551020408163,
+                    "y": 0.5219512195121951,
+                    "page": 0
+                },
+                "price": 90
+            },
+            {
+                "box": [
+                    37,
+                    500,
+                    186,
+                    549
+                ],
+                "name": "ส้มตำไทย",
+                "spot": {
+                    "h": 0.05975609756097561,
+                    "w": 0.1520408163265306,
+                    "x": 0.03775510204081633,
+                    "y": 0.6097560975609756,
+                    "page": 0
+                },
+                "price": 50
+            },
+            {
+                "box": [
+                    36,
+                    571,
+                    396,
+                    621
+                ],
+                "name": "ไก่ผัดเม็ดมะม่วงหิมพานต์",
+                "spot": {
+                    "h": 0.06097560975609756,
+                    "w": 0.3673469387755102,
+                    "x": 0.036734693877551024,
+                    "y": 0.6963414634146341,
+                    "page": 0
+                },
+                "price": 95
+            },
+            {
+                "box": [
+                    38,
+                    644,
+                    179,
+                    693
+                ],
+                "name": "ข้าวมันไก่",
+                "spot": {
+                    "h": 0.05975609756097561,
+                    "w": 0.14387755102040817,
+                    "x": 0.03877551020408163,
+                    "y": 0.7853658536585366,
+                    "page": 0
+                },
+                "price": 55
+            }
+        ],
+        "dishes": [
+            {
+                "id": "cmwktdjre000xbnmjlnr8wndl-1",
+                "icon": "flame",
+                "spot": {
+                    "h": 0.05121951219512195,
+                    "w": 0.23877551020408164,
+                    "x": 0.04081632653061224,
+                    "y": 0.17926829268292682,
+                    "page": 0
+                },
+                "tags": [
+                    "spicy",
+                    "stir-fry",
+                    "pork",
+                    "meat",
+                    "minced pork",
+                    "holy basil",
+                    "chili",
+                    "garlic",
+                    "fish sauce"
+                ],
+                "price": 60,
+                "spice": 3,
+                "iconBg": "#FFF7ED",
+                "nameEn": "Holy Basil Stir-fry with minced pork",
+                "inGuide": true,
+                "nameThai": "ผัดกะเพราหมูสับ",
+                "iconColor": "#EA580C",
+                "romanized": "Pad Kra Pao",
+                "description": "Meat or seafood stir-fried with holy basil, chili and garlic, usually served over rice.",
+                "ingredients": [
+                    {
+                        "key": "minced pork",
+                        "label": "minced pork",
+                        "groups": [
+                            "pork",
+                            "meat"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "หมูสับ"
+                    },
+                    {
+                        "key": "holy basil",
+                        "label": "holy basil",
+                        "groups": [
+                            "basil",
+                            "herb"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "กะเพรา"
+                    },
+                    {
+                        "key": "chili",
+                        "label": "chili",
+                        "groups": [
+                            "chili",
+                            "spicy"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "พริก"
+                    },
+                    {
+                        "key": "garlic",
+                        "label": "garlic",
+                        "groups": [
+                            "garlic"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "กระเทียม"
+                    },
+                    {
+                        "key": "fish sauce",
+                        "label": "fish sauce",
+                        "groups": [
+                            "fish",
+                            "seafood"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "น้ำปลา"
+                    },
+                    {
+                        "key": "oyster sauce",
+                        "label": "oyster sauce",
+                        "groups": [
+                            "oyster",
+                            "shellfish",
+                            "mollusc",
+                            "seafood",
+                            "soy",
+                            "wheat",
+                            "gluten"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "น้ำมันหอย"
+                    },
+                    {
+                        "key": "soy sauce",
+                        "label": "soy sauce",
+                        "groups": [
+                            "soy",
+                            "wheat",
+                            "gluten"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "ซีอิ๊ว"
+                    },
+                    {
+                        "key": "sugar",
+                        "label": "sugar",
+                        "groups": [
+                            "sugar"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "น้ำตาล"
+                    },
+                    {
+                        "key": "fried egg",
+                        "note": "Often topped with a fried egg (ไข่ดาว).",
+                        "label": "fried egg",
+                        "groups": [
+                            "egg"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "ไข่ดาว"
+                    },
+                    {
+                        "key": "rice",
+                        "note": "Usually served over rice.",
+                        "label": "rice",
+                        "groups": [
+                            "rice"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "ข้าว"
+                    }
+                ]
+            },
+            {
+                "id": "cmwktdjre000xbnmjlnr8wndl-2",
+                "icon": "fish",
+                "spot": {
+                    "h": 0.06585365853658537,
+                    "w": 0.1469387755102041,
+                    "x": 0.036734693877551024,
+                    "y": 0.2573170731707317,
+                    "page": 0
+                },
+                "tags": [
+                    "rice",
+                    "shrimp",
+                    "prawn",
+                    "shellfish",
+                    "crustacean",
+                    "seafood",
+                    "egg",
+                    "garlic"
+                ],
+                "price": 70,
+                "spice": 0,
+                "iconBg": "#FDF4FF",
+                "nameEn": "Fried Rice with shrimp",
+                "inGuide": true,
+                "nameThai": "ข้าวผัดกุ้ง",
+                "iconColor": "#9333EA",
+                "romanized": "Khao Pad",
+                "description": "Rice stir-fried with egg, garlic and onion, served with cucumber and lime.",
+                "ingredients": [
+                    {
+                        "key": "shrimp",
+                        "label": "shrimp",
+                        "groups": [
+                            "shrimp",
+                            "prawn",
+                            "shellfish",
+                            "crustacean",
+                            "seafood"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "กุ้ง"
+                    },
+                    {
+                        "key": "rice",
+                        "label": "rice",
+                        "groups": [
+                            "rice"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "ข้าว"
+                    },
+                    {
+                        "key": "egg",
+                        "label": "egg",
+                        "groups": [
+                            "egg"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "ไข่"
+                    },
+                    {
+                        "key": "garlic",
+                        "label": "garlic",
+                        "groups": [
+                            "garlic"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "กระเทียม"
+                    },
+                    {
+                        "key": "onion",
+                        "label": "onion",
+                        "groups": [
+                            "onion"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "หอมใหญ่"
+                    },
+                    {
+                        "key": "tomato",
+                        "label": "tomato",
+                        "groups": [
+                            "tomato"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "มะเขือเทศ"
+                    },
+                    {
+                        "key": "soy sauce",
+                        "label": "soy sauce",
+                        "groups": [
+                            "soy",
+                            "wheat",
+                            "gluten"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "ซีอิ๊ว"
+                    },
+                    {
+                        "key": "fish sauce",
+                        "label": "fish sauce",
+                        "groups": [
+                            "fish",
+                            "seafood"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "น้ำปลา"
+                    },
+                    {
+                        "key": "spring onion",
+                        "label": "spring onion",
+                        "groups": [
+                            "spring onion",
+                            "onion"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "ต้นหอม"
+                    },
+                    {
+                        "key": "cucumber",
+                        "label": "cucumber",
+                        "groups": [
+                            "cucumber",
+                            "vegetable"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "แตงกวา"
+                    },
+                    {
+                        "key": "lime",
+                        "label": "lime",
+                        "groups": [
+                            "lime",
+                            "citrus"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "มะนาว"
+                    }
+                ]
+            },
+            {
+                "id": "cmwktdjre000xbnmjlnr8wndl-3",
+                "icon": "fish",
+                "spot": {
+                    "h": 0.06219512195121951,
+                    "w": 0.18979591836734694,
+                    "x": 0.03877551020408163,
+                    "y": 0.3463414634146341,
+                    "page": 0
+                },
+                "tags": [
+                    "noodle",
+                    "sweet",
+                    "noodles",
+                    "shrimp",
+                    "prawn",
+                    "shellfish",
+                    "crustacean",
+                    "seafood",
+                    "rice noodle",
+                    "tamarind",
+                    "palm sugar",
+                    "fish sauce",
+                    "egg",
+                    "bean sprout"
+                ],
+                "price": 80,
+                "spice": 1,
+                "iconBg": "#FDF4FF",
+                "nameEn": "Pad Thai with shrimp",
+                "inGuide": true,
+                "nameThai": "ผัดไทยกุ้งสด",
+                "iconColor": "#9333EA",
+                "romanized": "Pad Thai",
+                "description": "Stir-fried rice noodles with tamarind, egg, tofu and bean sprouts.",
+                "ingredients": [
+                    {
+                        "key": "shrimp",
+                        "label": "shrimp",
+                        "groups": [
+                            "shrimp",
+                            "prawn",
+                            "shellfish",
+                            "crustacean",
+                            "seafood"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "กุ้ง"
+                    },
+                    {
+                        "key": "rice noodle",
+                        "label": "rice noodles",
+                        "groups": [
+                            "rice",
+                            "noodle"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "เส้นก๋วยเตี๋ยว"
+                    },
+                    {
+                        "key": "tamarind",
+                        "label": "tamarind",
+                        "groups": [
+                            "tamarind"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "มะขาม"
+                    },
+                    {
+                        "key": "palm sugar",
+                        "label": "palm sugar",
+                        "groups": [
+                            "sugar"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "น้ำตาลปี๊บ"
+                    },
+                    {
+                        "key": "fish sauce",
+                        "label": "fish sauce",
+                        "groups": [
+                            "fish",
+                            "seafood"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "น้ำปลา"
+                    },
+                    {
+                        "key": "egg",
+                        "label": "egg",
+                        "groups": [
+                            "egg"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "ไข่"
+                    },
+                    {
+                        "key": "bean sprout",
+                        "label": "bean sprouts",
+                        "groups": [
+                            "bean sprouts",
+                            "vegetable"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "ถั่วงอก"
+                    },
+                    {
+                        "key": "tofu",
+                        "label": "tofu",
+                        "groups": [
+                            "soy",
+                            "tofu"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "เต้าหู้"
+                    },
+                    {
+                        "key": "dried shrimp",
+                        "label": "dried shrimp",
+                        "groups": [
+                            "shrimp",
+                            "prawn",
+                            "shellfish",
+                            "crustacean",
+                            "seafood"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "กุ้งแห้ง"
+                    },
+                    {
+                        "key": "shallot",
+                        "label": "shallot",
+                        "groups": [
+                            "shallot",
+                            "onion"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "หอมแดง"
+                    },
+                    {
+                        "key": "peanut",
+                        "note": "Crushed peanuts are usually served on top or on the side.",
+                        "label": "peanut",
+                        "groups": [
+                            "peanut",
+                            "nuts"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "ถั่วลิสง"
+                    },
+                    {
+                        "key": "chili",
+                        "note": "Chili flakes are usually on the side.",
+                        "label": "chili",
+                        "groups": [
+                            "chili",
+                            "spicy"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "พริก"
+                    },
+                    {
+                        "key": "lime",
+                        "label": "lime",
+                        "groups": [
+                            "lime",
+                            "citrus"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "มะนาว"
+                    }
+                ]
+            },
+            {
+                "id": "cmwktdjre000xbnmjlnr8wndl-4",
+                "icon": "soup",
+                "spot": {
+                    "h": 0.06585365853658537,
+                    "w": 0.13163265306122449,
+                    "x": 0.03775510204081633,
+                    "y": 0.4329268292682927,
+                    "page": 0
+                },
+                "tags": [
+                    "soup",
+                    "spicy",
+                    "sour",
+                    "shrimp",
+                    "prawn",
+                    "shellfish",
+                    "crustacean",
+                    "seafood",
+                    "lemongrass",
+                    "galangal",
+                    "kaffir lime leave",
+                    "lime",
+                    "chili",
+                    "fish sauce"
+                ],
+                "price": 120,
+                "spice": 3,
+                "iconBg": "#F0FDF4",
+                "nameEn": "Tom Yum Soup with shrimp",
+                "inGuide": true,
+                "nameThai": "ต้มยำกุ้ง",
+                "iconColor": "#16A34A",
+                "romanized": "Tom Yum",
+                "description": "Hot and sour soup with lemongrass, galangal, kaffir lime leaves and lime.",
+                "ingredients": [
+                    {
+                        "key": "shrimp",
+                        "label": "shrimp",
+                        "groups": [
+                            "shrimp",
+                            "prawn",
+                            "shellfish",
+                            "crustacean",
+                            "seafood"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "กุ้ง"
+                    },
+                    {
+                        "key": "lemongrass",
+                        "label": "lemongrass",
+                        "groups": [
+                            "lemongrass",
+                            "herb"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "ตะไคร้"
+                    },
+                    {
+                        "key": "galangal",
+                        "label": "galangal",
+                        "groups": [
+                            "galangal"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "ข่า"
+                    },
+                    {
+                        "key": "kaffir lime leave",
+                        "label": "kaffir lime leaves",
+                        "groups": [
+                            "lime leaf",
+                            "herb"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "ใบมะกรูด"
+                    },
+                    {
+                        "key": "lime",
+                        "label": "lime",
+                        "groups": [
+                            "lime",
+                            "citrus"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "มะนาว"
+                    },
+                    {
+                        "key": "chili",
+                        "label": "chili",
+                        "groups": [
+                            "chili",
+                            "spicy"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "พริก"
+                    },
+                    {
+                        "key": "fish sauce",
+                        "label": "fish sauce",
+                        "groups": [
+                            "fish",
+                            "seafood"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "น้ำปลา"
+                    },
+                    {
+                        "key": "mushroom",
+                        "label": "mushroom",
+                        "groups": [
+                            "mushroom"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "เห็ด"
+                    },
+                    {
+                        "key": "tomato",
+                        "label": "tomato",
+                        "groups": [
+                            "tomato"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "มะเขือเทศ"
+                    },
+                    {
+                        "key": "coriander",
+                        "label": "coriander",
+                        "groups": [
+                            "coriander",
+                            "cilantro",
+                            "herb"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "ผักชี"
+                    },
+                    {
+                        "key": "roasted chili paste",
+                        "note": "Often stirred in, especially in the creamy (น้ำข้น) version; it usually contains dried shrimp.",
+                        "label": "roasted chili paste",
+                        "groups": [
+                            "chili",
+                            "shrimp",
+                            "shellfish",
+                            "crustacean",
+                            "seafood"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "น้ำพริกเผา"
+                    }
+                ]
+            },
+            {
+                "id": "cmwktdjre000xbnmjlnr8wndl-5",
+                "icon": "soup",
+                "spot": {
+                    "h": 0.05975609756097561,
+                    "w": 0.2510204081632653,
+                    "x": 0.03877551020408163,
+                    "y": 0.5219512195121951,
+                    "page": 0
+                },
+                "tags": [
+                    "curry",
+                    "coconut",
+                    "spicy",
+                    "chicken",
+                    "poultry",
+                    "meat",
+                    "green curry paste",
+                    "shrimp paste",
+                    "coconut milk",
+                    "thai basil",
+                    "fish sauce"
+                ],
+                "price": 90,
+                "spice": 2,
+                "iconBg": "#F0FDF4",
+                "nameEn": "Green Curry with chicken",
+                "inGuide": true,
+                "nameThai": "แกงเขียวหวานไก่",
+                "iconColor": "#16A34A",
+                "romanized": "Gaeng Keow Wan",
+                "description": "Creamy coconut curry made with green curry paste, Thai eggplant and basil.",
+                "ingredients": [
+                    {
+                        "key": "chicken",
+                        "label": "chicken",
+                        "groups": [
+                            "chicken",
+                            "poultry",
+                            "meat"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "ไก่"
+                    },
+                    {
+                        "key": "green curry paste",
+                        "label": "green curry paste",
+                        "groups": [
+                            "chili",
+                            "curry paste"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "พริกแกงเขียวหวาน"
+                    },
+                    {
+                        "key": "shrimp paste",
+                        "note": "Thai curry pastes are usually made with shrimp paste.",
+                        "label": "shrimp paste",
+                        "groups": [
+                            "shrimp",
+                            "prawn",
+                            "shellfish",
+                            "crustacean",
+                            "seafood"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "กะปิ"
+                    },
+                    {
+                        "key": "coconut milk",
+                        "label": "coconut milk",
+                        "groups": [
+                            "coconut"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "กะทิ"
+                    },
+                    {
+                        "key": "thai basil",
+                        "label": "thai basil",
+                        "groups": [
+                            "basil",
+                            "herb"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "โหระพา"
+                    },
+                    {
+                        "key": "fish sauce",
+                        "label": "fish sauce",
+                        "groups": [
+                            "fish",
+                            "seafood"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "น้ำปลา"
+                    },
+                    {
+                        "key": "eggplant",
+                        "label": "eggplant",
+                        "groups": [
+                            "eggplant",
+                            "aubergine",
+                            "vegetable"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "มะเขือ"
+                    },
+                    {
+                        "key": "palm sugar",
+                        "label": "palm sugar",
+                        "groups": [
+                            "sugar"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "น้ำตาลปี๊บ"
+                    },
+                    {
+                        "key": "kaffir lime leave",
+                        "label": "kaffir lime leaves",
+                        "groups": [
+                            "lime leaf",
+                            "herb"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "ใบมะกรูด"
+                    }
+                ]
+            },
+            {
+                "id": "cmwktdjre000xbnmjlnr8wndl-6",
+                "icon": "flame",
+                "spot": {
+                    "h": 0.05975609756097561,
+                    "w": 0.1520408163265306,
+                    "x": 0.03775510204081633,
+                    "y": 0.6097560975609756,
+                    "page": 0
+                },
+                "tags": [
+                    "spicy",
+                    "sour",
+                    "salad",
+                    "green papaya",
+                    "chili",
+                    "garlic",
+                    "lime",
+                    "fish sauce",
+                    "palm sugar",
+                    "dried shrimp",
+                    "peanut",
+                    "tomato",
+                    "long bean"
+                ],
+                "price": 50,
+                "spice": 3,
+                "iconBg": "#FFF7ED",
+                "nameEn": "Thai Papaya Salad",
+                "inGuide": true,
+                "nameThai": "ส้มตำไทย",
+                "iconColor": "#EA580C",
+                "romanized": "Som Tam Thai",
+                "description": "Pounded green papaya with chili, lime, palm sugar, dried shrimp and peanuts.",
+                "ingredients": [
+                    {
+                        "key": "green papaya",
+                        "label": "green papaya",
+                        "groups": [
+                            "papaya"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "มะละกอ"
+                    },
+                    {
+                        "key": "chili",
+                        "label": "chili",
+                        "groups": [
+                            "chili",
+                            "spicy"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "พริก"
+                    },
+                    {
+                        "key": "garlic",
+                        "label": "garlic",
+                        "groups": [
+                            "garlic"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "กระเทียม"
+                    },
+                    {
+                        "key": "lime",
+                        "label": "lime",
+                        "groups": [
+                            "lime",
+                            "citrus"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "มะนาว"
+                    },
+                    {
+                        "key": "fish sauce",
+                        "label": "fish sauce",
+                        "groups": [
+                            "fish",
+                            "seafood"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "น้ำปลา"
+                    },
+                    {
+                        "key": "palm sugar",
+                        "label": "palm sugar",
+                        "groups": [
+                            "sugar"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "น้ำตาลปี๊บ"
+                    },
+                    {
+                        "key": "dried shrimp",
+                        "label": "dried shrimp",
+                        "groups": [
+                            "shrimp",
+                            "prawn",
+                            "shellfish",
+                            "crustacean",
+                            "seafood"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "กุ้งแห้ง"
+                    },
+                    {
+                        "key": "peanut",
+                        "label": "peanut",
+                        "groups": [
+                            "peanut",
+                            "nuts"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "ถั่วลิสง"
+                    },
+                    {
+                        "key": "tomato",
+                        "label": "tomato",
+                        "groups": [
+                            "tomato"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "มะเขือเทศ"
+                    },
+                    {
+                        "key": "long bean",
+                        "label": "long beans",
+                        "groups": [
+                            "beans",
+                            "vegetable"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "ถั่วฝักยาว"
+                    }
+                ]
+            },
+            {
+                "id": "cmwktdjre000xbnmjlnr8wndl-7",
+                "icon": "beef",
+                "spot": {
+                    "h": 0.06097560975609756,
+                    "w": 0.3673469387755102,
+                    "x": 0.036734693877551024,
+                    "y": 0.6963414634146341,
+                    "page": 0
+                },
+                "tags": [
+                    "stir-fry",
+                    "chicken",
+                    "poultry",
+                    "meat",
+                    "cashew nut",
+                    "onion",
+                    "chili",
+                    "oyster sauce"
+                ],
+                "price": 95,
+                "spice": 1,
+                "iconBg": "#FFF1F2",
+                "nameEn": "Cashew Nut Stir-fry with chicken",
+                "inGuide": true,
+                "nameThai": "ไก่ผัดเม็ดมะม่วงหิมพานต์",
+                "iconColor": "#E11D48",
+                "romanized": "Pad Med Mamuang",
+                "description": "Usually chicken stir-fried with roasted cashew nuts, onion and dried chili.",
+                "ingredients": [
+                    {
+                        "key": "chicken",
+                        "label": "chicken",
+                        "groups": [
+                            "chicken",
+                            "poultry",
+                            "meat"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "ไก่"
+                    },
+                    {
+                        "key": "cashew nut",
+                        "label": "cashew nut",
+                        "groups": [
+                            "cashew",
+                            "tree nut",
+                            "nuts"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "เม็ดมะม่วงหิมพานต์"
+                    },
+                    {
+                        "key": "onion",
+                        "label": "onion",
+                        "groups": [
+                            "onion"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "หอมใหญ่"
+                    },
+                    {
+                        "key": "chili",
+                        "label": "chili",
+                        "groups": [
+                            "chili",
+                            "spicy"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "พริก"
+                    },
+                    {
+                        "key": "oyster sauce",
+                        "label": "oyster sauce",
+                        "groups": [
+                            "oyster",
+                            "shellfish",
+                            "mollusc",
+                            "seafood",
+                            "soy",
+                            "wheat",
+                            "gluten"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "น้ำมันหอย"
+                    },
+                    {
+                        "key": "soy sauce",
+                        "label": "soy sauce",
+                        "groups": [
+                            "soy",
+                            "wheat",
+                            "gluten"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "ซีอิ๊ว"
+                    },
+                    {
+                        "key": "roasted chili paste",
+                        "label": "roasted chili paste",
+                        "groups": [
+                            "chili",
+                            "shrimp",
+                            "shellfish",
+                            "crustacean",
+                            "seafood"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "น้ำพริกเผา"
+                    },
+                    {
+                        "key": "spring onion",
+                        "label": "spring onion",
+                        "groups": [
+                            "spring onion",
+                            "onion"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "ต้นหอม"
+                    }
+                ]
+            },
+            {
+                "id": "cmwktdjre000xbnmjlnr8wndl-8",
+                "icon": "pot",
+                "spot": {
+                    "h": 0.05975609756097561,
+                    "w": 0.14387755102040817,
+                    "x": 0.03877551020408163,
+                    "y": 0.7853658536585366,
+                    "page": 0
+                },
+                "tags": [
+                    "rice",
+                    "chicken",
+                    "chicken broth",
+                    "garlic",
+                    "ginger",
+                    "fermented soybean paste"
+                ],
+                "price": 55,
+                "spice": 1,
+                "iconBg": "#FFFBEB",
+                "nameEn": "Hainanese Chicken Rice",
+                "inGuide": true,
+                "nameThai": "ข้าวมันไก่",
+                "iconColor": "#D97706",
+                "romanized": "Khao Man Gai",
+                "description": "Poached chicken on rice cooked in chicken broth, with a ginger-soybean sauce.",
+                "ingredients": [
+                    {
+                        "key": "chicken",
+                        "label": "chicken",
+                        "groups": [
+                            "chicken",
+                            "poultry",
+                            "meat"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "ไก่"
+                    },
+                    {
+                        "key": "rice",
+                        "label": "rice",
+                        "groups": [
+                            "rice"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "ข้าว"
+                    },
+                    {
+                        "key": "chicken broth",
+                        "label": "chicken broth",
+                        "groups": [
+                            "chicken",
+                            "poultry",
+                            "meat"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "น้ำซุปไก่"
+                    },
+                    {
+                        "key": "garlic",
+                        "label": "garlic",
+                        "groups": [
+                            "garlic"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "กระเทียม"
+                    },
+                    {
+                        "key": "ginger",
+                        "label": "ginger",
+                        "groups": [
+                            "ginger"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "ขิง"
+                    },
+                    {
+                        "key": "fermented soybean paste",
+                        "note": "In the dipping sauce.",
+                        "label": "fermented soybean paste",
+                        "groups": [
+                            "soy",
+                            "wheat",
+                            "gluten"
+                        ],
+                        "certainty": "listed",
+                        "labelThai": "เต้าเจี้ยว"
+                    },
+                    {
+                        "key": "soy sauce",
+                        "label": "soy sauce",
+                        "groups": [
+                            "soy",
+                            "wheat",
+                            "gluten"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "ซีอิ๊ว"
+                    },
+                    {
+                        "key": "chili",
+                        "label": "chili",
+                        "groups": [
+                            "chili",
+                            "spicy"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "พริก"
+                    },
+                    {
+                        "key": "cucumber",
+                        "label": "cucumber",
+                        "groups": [
+                            "cucumber",
+                            "vegetable"
+                        ],
+                        "certainty": "common",
+                        "labelThai": "แตงกวา"
+                    }
+                ]
+            }
+        ],
+        "summary": "Found 8 dishes — 8 are in our Thai dish guide.",
+        "otherLines": [
+            {
+                "text": "ร้านป้าแดงอาหารตามสั่ง",
+                "before": 0
+            }
+        ]
+    },
+    "status": "PROCESSED",
+    "createdAt": "2026-11-17T14:55:09.386",
+    "updatedAt": "2026-11-17T14:55:09.4",
+    "preferencesSnapshot": {
+        "avoid": [
+            {
+                "name": "Peanut",
+                "reason": "allergy"
+            }
+        ],
+        "spice": null,
+        "favorites": [
+            "Chicken"
+        ]
+    }
+}
