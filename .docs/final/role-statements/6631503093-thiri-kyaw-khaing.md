@@ -22,6 +22,6 @@ from the real schema and code.
 AI disclosure: the final-week items above — the branch report, README, seed
 script, secret scan, both diagrams and a first draft of this statement — were
 prepared with AI assistance (Claude Code) and checked against the repository and
-its git history. <!-- TODO(Thiri): add how AI was or was not used for the September commits above. -->
+its git history.
 
 ## Reflection
