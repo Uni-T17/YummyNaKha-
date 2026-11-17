@@ -111,22 +111,22 @@ v2 scan times from `run.log` (OCR + parser + guide, per image):
 | TC | Case | Level | Status | Evidence |
 |---|---|---|---|---|
 | TC1 | Account and ordinary profile persistence | Integration | Not run | — |
-| TC2 | Menu upload, including multiple pages | E2E | Not run | — |
+| TC2 | Menu upload, including multiple pages | E2E | Not run | OCR service unavailable at `127.0.0.1:8765` on 17 Nov 2026; no rerun |
 | TC3 | Separate sensitive-profile opt-in | Integration | Not run | — |
 | TC4 | Terms, privacy and disclaimer gate | Integration | Not run | — |
-| TC5 | Own-server OCR and data minimisation | Integration | Not run | — |
+| TC5 | Own-server OCR and data minimisation | Integration | Not run | OCR service unavailable at `127.0.0.1:8765` on 17 Nov 2026; no rerun |
 | TC6 | Consent withdrawal takes effect | Integration | Not run | — |
 | **TC7** | OCR parser and deterministic guide lookup | Unit | **Pass** | Run 1 |
-| **TC8** | Upload-to-result latency | Integration | **Partly run** | Run 2 |
+| **TC8** | Upload-to-result latency | Integration | **Partly run** | Run 2; requested rerun not possible because OCR service was unavailable at `127.0.0.1:8765` on 17 Nov 2026 |
 | **TC9** | Profile matching and uncertainty | Unit | **Pass** | Run 1 |
-| TC10 | Unreadable menu and OCR failure recovery | Integration | Not run | — |
+| TC10 | Unreadable menu and OCR failure recovery | Integration | Not run | OCR service unavailable at `127.0.0.1:8765` on 17 Nov 2026; no rerun |
 | TC11 | Explainable results and ingredient detail | E2E | Not run | — |
-| TC12 | Select dishes and order in Thai | E2E | Not run | — |
-| TC13 | Processing record reproduces displayed result | Integration | Not run | — |
+| TC12 | Select dishes and order in Thai | E2E | Not run | OCR service unavailable at `127.0.0.1:8765` on 17 Nov 2026; no rerun |
+| TC13 | Processing record reproduces displayed result | Integration | Not run | OCR service unavailable at `127.0.0.1:8765` on 17 Nov 2026; no rerun |
 | TC14 | Content deletion and separate traffic retention | Integration | Not run | — |
 | **TC15** | Real-menu extraction, English quality and coverage | Integration | **Partly run** | Run 2 |
 
-**Summary: Executed: TC7, TC9 passed · TC8, TC15 partly run · 11 not run.**
+**Summary: Executed: TC7, TC9 passed · TC8, TC15 partly run · 11 not run. Requested OCR-dependent reruns of TC2, TC5, TC8, TC10, TC12 and TC13 were not run because the local OCR health endpoint was unreachable on 17 Nov 2026.**
 
 ## Limits
 
