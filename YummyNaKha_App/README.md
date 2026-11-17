@@ -1,58 +1,104 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# YummyNaKha! — app
 
-## Getting Started
+Next.js 16 app (UI + API in `app/`, server code in `lib/server/`), PostgreSQL via
+Prisma 7, and our own OCR service (`ocr-service/`, PaddleOCR Thai model). Menu
+photos and food profiles are not sent to a third-party AI provider unless an
+optional provider is configured and the user consents (see `.env.example`).
 
-First, run the development server:
+## How to run (local)
+
+### 1. Prerequisites
+
+| Tool | Version | Check |
+| --- | --- | --- |
+| Node.js | 20.9 or newer (tested on 22) | `node -v` |
+| npm | comes with Node | `npm -v` |
+| PostgreSQL | 14 or newer (production uses 17) — local install or Docker | `psql --version` / `docker -v` |
+| uv (runs the Python OCR service, fetches Python 3.12 itself) | any recent | `uv --version` (`brew install uv`) |
+
+No PostgreSQL installed? Start one in Docker (local-only credentials):
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+docker run -d --name yummy-db -p 5432:5432 -e POSTGRES_USER=yummy -e POSTGRES_PASSWORD=yummy-local-dev -e POSTGRES_DB=yummynakha postgres:17-alpine
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Environment — `.env`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+cp .env.example .env
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Fill in at least:
 
-## Learn More
+| Variable | Value |
+| --- | --- |
+| `DATABASE_URL` | e.g. `postgresql://yummy:yummy-local-dev@localhost:5432/yummynakha?schema=public` for the Docker DB above |
+| `AUTH_SECRET` | output of `openssl rand -base64 48` |
+| `OCR_SERVICE_URL` | keep `http://127.0.0.1:8765` |
 
-To learn more about Next.js, take a look at the following resources:
+Everything else is optional (Google sign-in, OCR.space, Gemini Menu helper) and
+documented line by line in [`.env.example`](.env.example). `.env` is git-ignored —
+never commit it, and never put a real key in `.env.example`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 3. Install and migrate the database
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm install          # also runs `prisma generate`
+npm run db:migrate   # applies prisma/migrations to DATABASE_URL (dev); use `npm run db:deploy` on a server
+```
 
-## Deploy on Vercel
+### 4. Create the test account
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run db:seed
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[`scripts/seed-test-user.ts`](scripts/seed-test-user.ts) creates — or resets —
+one **test-only** account:
 
-## Backend setup
+- **Email:** `tester@yummynakha.test` (reserved `.test` domain, no real inbox)
+- **Password:** the test-only default in `scripts/seed-test-user.ts` (`PASSWORD`),
+  or your own `SEED_TEST_PASSWORD` from `.env`. It is not, and must never be, a real password.
+- **My Taste:** Fav *Chicken*, Avoid *Coriander* (reason: dislike), spice "mild" —
+  ordinary preferences only, no allergy or doctor-advised data.
+- **No consent records:** on first sign-in you accept the Terms / AI & Accuracy
+  Disclaimer in the app, as a real user would.
+
+The script refuses to run with `NODE_ENV=production` or a non-`.test` email.
+To use a different test account, set `SEED_TEST_EMAIL` / `SEED_TEST_PASSWORD`
+in `.env` and run it again. You can also just sign up in the app.
+
+### 5. Start the OCR service and the app (two terminals)
+
+```bash
+npm run ocr    # terminal 1 — OCR service on 127.0.0.1:8765; first run builds ocr-service/.venv and downloads the models
+```
+
+```bash
+npm run dev    # terminal 2 — the app on http://localhost:3000
+```
+
+Check the OCR service is up: `curl http://127.0.0.1:8765/health` → `{"ok": true, …}`.
+Then open http://localhost:3000, sign in with the test account, accept the
+terms, upload a Thai menu photo and press **Find My Food**.
+
+### Troubleshooting
+
+| Symptom | Fix |
+| --- | --- |
+| `Can't reach database server` | PostgreSQL not running, or `DATABASE_URL` wrong |
+| Analysis fails with "couldn't read this photo" right away | `npm run ocr` is not running, or `OCR_SERVICE_URL` differs |
+| First analysis is slow | the OCR models load on the first request (~6 s per photo afterwards on a laptop CPU) |
+| `CONSENT_REQUIRED` from `/api/ai/analyze` | accept the terms in the app first |
+
+Tests: `npx vitest@3.2.4 run` (unit tests in `tests/unit/`; vitest is not a project dependency). Deployment: [`DEPLOY.md`](DEPLOY.md)
+(VPS + Docker) and [`DEPLOY-FREE.md`](DEPLOY-FREE.md).
+
+## Backend overview
 
 The API lives in `app/api/*` (thin route handlers) with services in `lib/server/*`.
-PostgreSQL via Prisma 7. Menu photos are read by **our own OCR service**
-(`ocr-service/`, PaddleOCR with the Thai model) and each dish is looked up in
-the **Thai dish guide** (`lib/server/thai-food/`). No menu photo or food profile
-is sent to a third-party AI provider.
-
-```bash
-cp .env.example .env        # fill in DATABASE_URL and AUTH_SECRET
-npm install                 # also runs `prisma generate`
-npm run db:deploy           # apply migrations (use `npm run db:migrate` while developing)
-npm run ocr                 # terminal 1 — OCR service on :8765 (first run downloads the models)
-npm run dev                 # terminal 2 — the app on :3000
-```
-
-`npm run ocr` needs [uv](https://docs.astral.sh/uv/) (`brew install uv`); it
-creates the Python environment in `ocr-service/.venv` on first run.
+Menu photos are read by **our own OCR service** and each dish is looked up in
+the **Thai dish guide** (`lib/server/thai-food/`).
 
 ### How a menu is analysed
 

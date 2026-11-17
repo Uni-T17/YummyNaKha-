@@ -17,6 +17,7 @@
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:studio": "prisma studio",
+    "db:seed": "tsx --conditions=react-server --tsconfig tsconfig.json scripts/seed-test-user.ts",
     "guide:export": "tsx --conditions=react-server --tsconfig tsconfig.json scripts/guide-export.ts"
   },
   "dependencies": {
