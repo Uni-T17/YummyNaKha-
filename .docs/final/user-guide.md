@@ -2,7 +2,7 @@
 
 Read a Thai menu, see which dishes fit you, and order in Thai.
 
-**Open the app:** [URL]
+**Open the app:** https://yummy-na-kha.vercel.app
 
 > YummyNaKha! helps you spot **possible** food conflicts from menu information.
 > It cannot see how the kitchen cooks. **Always confirm serious allergies or

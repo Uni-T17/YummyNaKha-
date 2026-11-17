@@ -49,7 +49,8 @@ We switched because v1's ingredients changed from scan to scan, which is unsafe 
 | False Avoid warnings (target ≤ 10 %) | Not measured | **0/20 (0 %)** in both sets | same |
 | Uncertain dish shown as Top Pick | Not measured | **0** | same |
 | English name quality (Thai-literate review, TC15) | Not measured | **Not measured** | [test results](../03-testing/02-test-results.md) |
-| Time for a diner to choose dishes (the core metric) | Not measured | **Not measured with real users**; see [no-real-user-test.md](../../test/no-real-user-test.md) | — |
+| Real-user test, 16 Nov 2026 (n = 16): own method → YummyNaKha!, tester self-ratings 1–5, agree = 4–5 | Not tested | Choosing dishes was easy **8/16 → 13/16** · confident dishes fit the card **4/16 → 11/16** · understood the dishes **7/16 → 15/16** · SUS **72.5** · prefer the app **14/16** | [user-test README](../03-testing/user-test/README.md) |
+| Time for a diner to choose dishes (the core metric, NFR1) | Not measured | **Not in the repo.** The before/after above are self-ratings; decision time and steps were not exported | [user-test README](../03-testing/user-test/README.md) |
 
 **The trade-off:** v2 reads slightly worse than Gemini (94–98 % of dishes found against 100 %). In exchange it is consistent, 5–16× faster, and every ingredient can be traced to the guide. For an allergy app, consistency matters more.
 

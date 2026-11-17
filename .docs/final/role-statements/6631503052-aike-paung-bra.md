@@ -10,7 +10,7 @@ the planned corpus and browser-level measurements were incomplete. I also
 checked the local OCR service before the requested reruns; it was not reachable,
 so the OCR-dependent cases remain Not run with that reason recorded.
 
-My evidence files are the [no-real-user report](../../test/no-real-user-test.md),
+My evidence files are the [real-user test results](../../03-testing/user-test/README.md),
 [execution log](../../03-testing/02-test-execution-log.md),
 [issue log](../../03-testing/03-issue-log.md), and
 [comparison table](../comparison-table.md). The planned scenarios and metrics

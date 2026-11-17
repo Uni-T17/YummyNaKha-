@@ -22,9 +22,13 @@ Source of truth for vision, roles, and scope:
 
 ## Course phase
 
-**DISCOVER** (W1–W5). No production code yet — the work right now is
-requirements, backlog, design, and compliance, ending at the User Validation
-Gate.
+**DELIVER** (W13–W14, final hand-in 18 Nov 2026). DISCOVER, BUILD and TEST are
+done: the app is in `YummyNaKha_App/` (live at https://yummy-na-kha.vercel.app),
+test evidence is in `.docs/03-testing/` (including the real-user test of 16 Nov,
+n = 16), and the hand-in documents are indexed in
+[`.docs/final/README.md`](.docs/final/README.md). Work now is keeping the final
+documents accurate and in sync with the code and evidence; never invent results
+to fill a gap.
 
 ### Course milestones
 
@@ -100,15 +104,25 @@ separate file only.
 .docs/
   01-requirements/
     01-spec/{YYYYMMDD}-{no}-{topic}.md   # one requirement spec per topic
+    02-secondary-review.md               # SECONDARY review of the problem
+    03-lean-canvas.md                    # Lean Canvas
     backlog.md                           # prioritised backlog, MoSCoW
-    05-log/{YYYYMMDD}-log.md             # work log
+    05-log/{YYYYMMDD}-log.md             # work log, PO decisions
   02-design/                             # W4 design draft
     01-feature-list.md                   # FE1..FEn, acceptance criteria
     02-user-journey.md                   # the one core workflow, step by step
     03-prototype.md                      # low-fi wireframes (no code)
-    04-diagrams/                         # context, use case, architecture, activity
+    04-diagrams/                         # context, use case, architecture, activity, ER, sequence
   03-testing/
     01-test-plan.md                      # test plan, UAT, usability, SUS/TAM, RTM
+    02-test-execution-log.md             # status of TC1–TC15
+    02-test-results.md                   # API and logic run, 17 Nov
+    03-issue-log.md                      # DEF-n: severity, fix commit, retest
+    evidence/                            # eval scripts, raw outputs
+    user-test/                           # real-user test: sessions.csv (U01–U16), SUS
+  final/                                 # hand-in: README index, case study, ai-logic,
+                                         # comparison table, role statements, user guide
+YummyNaKha_App/                          # Next.js app + ocr-service/ (PaddleOCR); README = how to run
 CLAUDE.md
 rule.md                                  # legal / compliance rules
 YummyNaKha! - Charter.md                 # W1 project charter

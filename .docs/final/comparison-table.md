@@ -2,7 +2,8 @@
 
 Only values backed by repository evidence are shown. “Not measured” means the
 required test or user study was not completed, or the execution log says the
-underlying file does not exist.
+underlying file does not exist. The real-user rows are **self-ratings**:
+decision time and steps (NFR1) are not in the repo.
 
 | Item | Before | After | Change | Measured with | Evidence |
 |---|---|---|---|---|---|
@@ -41,3 +42,8 @@ underlying file does not exist.
 | B40 Detailed ingredient view | Not measured — TC11 not run | Not measured — TC11 not run | Not measured | TC11 | [execution log](../03-testing/02-test-execution-log.md) |
 | AI consistency: same photo × 3, identical ingredients | v1 Gemini: 6/16 (37.5%) | v2 OCR + dish guide: 16/16 (100%) | +62.5 points | v1 vs v2 eval harness | [evidence](../03-testing/evidence/2026-11-16-v1-vs-v2/README.md) · [ai-logic.md](ai-logic.md) |
 | AI / TC9 missed conflicts | Not measured before unit run | 0/20 missed conflicts (0%); false Avoid 0/20 (0%), in two separate 60-pair sets; 0 missed in a 741-result sweep of the whole guide | Measured unit result | TC9 | [execution log](../03-testing/02-test-execution-log.md) · [Run 1 results](../03-testing/02-test-results.md) |
+| Real-user test: choosing dishes was easy | Own method: 8/16 agree | YummyNaKha!: 13/16 agree | +5 | Tester survey self-ratings (1–5, agree = 4–5), n = 16, 16 Nov 2026 | [user-test README](../03-testing/user-test/README.md) |
+| Real-user test: confident dishes fit the card | Own method: 4/16 agree | YummyNaKha!: 11/16 agree | +7 | Tester survey self-ratings (1–5, agree = 4–5), n = 16 | [user-test README](../03-testing/user-test/README.md) |
+| Real-user test: understood the dishes | Own method: 7/16 agree | YummyNaKha!: 15/16 agree | +8 | Tester survey self-ratings (1–5, agree = 4–5), n = 16 | [user-test README](../03-testing/user-test/README.md) |
+| SUS (usability, 0–100) | Not measured (after only) | Mean 72.5 (median 72.5, range 50–87.5; 12/16 ≥ 68) | — | SUS questionnaire, n = 16 | [sus-results.md](../03-testing/user-test/sus-results.md) |
+| Would rather use in a real restaurant | — | YummyNaKha! 14/16 · usual method 1 · no preference 1 | — | Tester survey, n = 16 | [user-test README](../03-testing/user-test/README.md) |

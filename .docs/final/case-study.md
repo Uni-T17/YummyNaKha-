@@ -2,7 +2,7 @@
 
 *Team 5-Idiots · SE Case Studies 1305493 · semester 1/2569*
 
-**Live app:** [URL]
+**Live app:** https://yummy-na-kha.vercel.app
 **Prototype:** [Figma Make — "Execute action", Version 7](https://www.figma.com/make/NEV4YbRQ9WN1m3MDkAdZsp/Execute-action)
 **Source code:** [YummyNaKha_App/](../../YummyNaKha_App/README.md)
 
@@ -109,14 +109,28 @@ Source: [test execution log](../03-testing/02-test-execution-log.md) and
 | Real café menu, OCR.space | [**21 of 26** found, **19 of 26** prices](../03-testing/evidence/2026-11-16-v1-vs-v2/README.md#results) — missed the salad price column | evidence |
 | Average scan time, v1 Gemini → v2 OCR.space | [**33.6 s → 2.1 s**](../03-testing/evidence/2026-11-16-v1-vs-v2/README.md#results) | evidence |
 | Same photo × 3, identical ingredients | [**6 of 16** (v1) → **16 of 16** (v2)](../03-testing/evidence/2026-11-16-v1-vs-v2/README.md#results) | evidence |
-| Test cases run | [**2** passed, **2** partly run, **11** not run](../03-testing/02-test-execution-log.md#status-of-all-15-test-cases) | execution log |
+| Test cases run | [**7** passed, **4** partly run, **4** not run](../03-testing/02-test-execution-log.md#status-of-all-15-test-cases) | execution log |
 
-**Real users:** [no real-user test was run](../../test/no-real-user-test.md).
-The project metric — time and steps to choose dishes with the user's current
-method vs YummyNaKha!, over [**15+** users](../../YummyNaKha!%20-%20Charter.md)
-(NFR1) — has **no result**. The
-[before/after table](comparison-table.md) marks every user measure
-"Not measured".
+**Real users:** a [real-user test](../03-testing/user-test/README.md) ran on
+16 Nov 2026 with **16** people who struggle with Thai menus. Each chose two
+dishes with their own method, then with YummyNaKha!, using the same fictional
+preference card, and rated both methods 1–5 (agree = 4–5):
+
+| Statement (tester self-rating) | Own method | YummyNaKha! | Change |
+|---|---|---|---|
+| Choosing dishes was easy | 8/16 agree | 13/16 | +5 |
+| I was confident my two dishes fit the card | 4/16 | 11/16 | +7 |
+| I understood what was in the dishes I chose | 7/16 | 15/16 | +8 |
+
+[SUS](../03-testing/user-test/sus-results.md) mean **72.5** (n = 16, above the
+68 average), and **14/16** would rather use YummyNaKha! in a real restaurant.
+Only **7/16** read "Check First" as "ask staff before ordering" (DEF-06 in the
+[issue log](../03-testing/03-issue-log.md)).
+
+**Limit:** these before/after numbers are **self-ratings**. The project metric —
+time and steps to choose dishes over [**15+** users](../../YummyNaKha!%20-%20Charter.md)
+(NFR1) — is **not in the repo**: decision time and steps were not exported. The
+own method always came first, so a learning effect is possible.
 
 ---
 
@@ -136,8 +150,9 @@ What the repository shows:
 
 What is **not** shown yet:
 
-- Any real-user result (NFR1 time, steps, usability) —
-  [no-real-user report](../../test/no-real-user-test.md).
+- The NFR1 real-user result (decision time and steps) — the
+  [real-user test](../03-testing/user-test/README.md) has self-ratings and SUS
+  only.
 - Enough real menus: [**1** real photo, not the planned **20**](../03-testing/02-test-execution-log.md#tc15--real-menu-extraction--partly-run).
 - A Thai-literate review of the dish guide and Thai phrases
   ([PO follow-ups](../01-requirements/05-log/20261117-po-decisions.md#follow-ups-i-am-asking-for)).

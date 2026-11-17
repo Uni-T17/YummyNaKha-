@@ -52,17 +52,16 @@ Commit counts don't show all the work. Some members' work was committed through 
 |---|---|
 | Test Plan | [01-test-plan.md](../03-testing/01-test-plan.md) |
 | Test execution and results | [02-test-execution-log.md](../03-testing/02-test-execution-log.md) (Vitest TC7/TC9: 23/23) · [02-test-results.md](../03-testing/02-test-results.md) (API and logic run: TC1, TC3, TC4, TC6, TC9, TC14 pass) |
-| Real-user session logs (U01…) | **MISSING:** no real-user sessions. See [no-real-user-test.md](../../test/no-real-user-test.md). |
+| Real-user session logs (U01…) | [sessions.csv](../03-testing/user-test/sessions.csv): U01–U16, real-user test 16 Nov 2026 (n = 16) · summary [user-test/README.md](../03-testing/user-test/README.md) |
 | Before / After for every MUST task | [comparison-table.md](comparison-table.md): partly measured; unmeasured rows say "Not measured" |
-| SUS / TAM / UTAUT2 responses and results | Forms ready: [02-user-test-forms.md](../03-testing/02-user-test-forms.md). **MISSING:** no responses collected. |
+| SUS | [sus-results.md](../03-testing/user-test/sus-results.md): mean **72.5**, n = 16 · forms: [02-user-test-forms.md](../03-testing/02-user-test-forms.md) |
 | Issue log (severity, fix commit, retest) | [03-issue-log.md](../03-testing/03-issue-log.md) |
-| No real-user test | [test/no-real-user-test.md](../../test/no-real-user-test.md) |
 
 ## 4. Deliver
 
 | Item | Link |
 |---|---|
-| Case study (Problem, Process, Outcome, live URL) | [case-study.md](case-study.md). **Live URL: MISSING** (placeholder `[URL]`) |
+| Case study (Problem, Process, Outcome, live URL) | [case-study.md](case-study.md) · live app: https://yummy-na-kha.vercel.app |
 | AI logic (Where, How, Prove, Measure) | [ai-logic.md](ai-logic.md) |
 | Comparison table (incl. AI row) | [comparison-table.md](comparison-table.md) · AI before/after: [ai-logic.md §4](ai-logic.md#4-measure) |
 | Role statements | [role-statements/](role-statements): all 5 members |
@@ -73,6 +72,7 @@ Commit counts don't show all the work. Some members' work was committed through 
 |---|---|
 | AI in the system (data, pipeline, evaluation, limits, failure handling) | [ai-logic.md](ai-logic.md) · [v1 vs v2 evaluation](../03-testing/evidence/2026-11-16-v1-vs-v2/README.md) |
 | User guide | [user-guide.md](user-guide.md) |
+| Data sources and permissions | [data-sources.md](data-sources.md) (items marked **TO CONFIRM** still need a licence or permission check) |
 | Branch report | [branches.md](branches.md) |
 | Deployment notes | [DEPLOY.md](../../YummyNaKha_App/DEPLOY.md) · [DEPLOY-FREE.md](../../YummyNaKha_App/DEPLOY-FREE.md) |
 | Thai dish guide (data source, draft) | [lib/server/thai-food/](../../YummyNaKha_App/lib/server/thai-food) · checks: `npm run guide:check` |
