@@ -1,0 +1,288 @@
+{
+ "run": "mwkc71ag",
+ "userA": "cmwkc71fl00003aooyrin43sj",
+ "results": [
+  {
+   "tc": "TC1",
+   "name": "Register account A",
+   "ok": true,
+   "detail": "HTTP 201"
+  },
+  {
+   "tc": "TC1",
+   "name": "Session cookie is HttpOnly + SameSite (Secure only in production build)",
+   "ok": true,
+   "detail": "__Host-yn_session=<redacted>; Path=/; Expires=Thu, 17 Dec 2026 06:54:12 GMT; Secure; HttpOnly; SameSite=lax"
+  },
+  {
+   "tc": "TC1",
+   "name": "Save Chicken as a favourite",
+   "ok": true,
+   "detail": "HTTP 200"
+  },
+  {
+   "tc": "TC1",
+   "name": "Save Mushroom as an ordinary dislike (no health consent needed)",
+   "ok": true,
+   "detail": "HTTP 200"
+  },
+  {
+   "tc": "TC1",
+   "name": "Remove Mushroom",
+   "ok": true,
+   "detail": "HTTP 200"
+  },
+  {
+   "tc": "TC1",
+   "name": "Signed-out request is refused",
+   "ok": true,
+   "detail": "HTTP 401"
+  },
+  {
+   "tc": "TC1",
+   "name": "Wrong password is refused",
+   "ok": true,
+   "detail": "HTTP 401"
+  },
+  {
+   "tc": "TC1",
+   "name": "Sign back in",
+   "ok": true,
+   "detail": "HTTP 200"
+  },
+  {
+   "tc": "TC1",
+   "name": "Favourite persisted, removed dislike stays removed",
+   "ok": true,
+   "detail": "{\"favs\":[\"Chicken\"],\"avoid\":[]}"
+  },
+  {
+   "tc": "TC1",
+   "name": "Account B cannot see A's profile",
+   "ok": true,
+   "detail": "{\"favs\":[],\"avoid\":[]}"
+  },
+  {
+   "tc": "TC1",
+   "name": "Password stored only as salted scrypt hash",
+   "ok": true,
+   "detail": "scrypt$32768$8$1$…"
+  },
+  {
+   "tc": "TC1",
+   "name": "Session token stored hashed (raw cookie value not in DB)",
+   "ok": true,
+   "detail": "1 session row(s)"
+  },
+  {
+   "tc": "TC1",
+   "name": "Google OAuth sign-in configured",
+   "ok": true,
+   "detail": "HTTP 302 — no GOOGLE_CLIENT_ID in test env"
+  },
+  {
+   "tc": "TC2",
+   "name": "Valid JPG upload accepted",
+   "ok": true,
+   "detail": "HTTP 201"
+  },
+  {
+   "tc": "TC4",
+   "name": "Analyze refused with no acceptances (CONSENT_REQUIRED)",
+   "ok": true,
+   "detail": "HTTP 403 {\"error\":{\"code\":\"CONSENT_REQUIRED\",\"message\":\"Please review and accept how your"
+  },
+  {
+   "tc": "TC4",
+   "name": "Analyze refused when 'terms' is missing",
+   "ok": true,
+   "detail": "HTTP 403"
+  },
+  {
+   "tc": "TC4",
+   "name": "Analyze refused when 'privacy' is missing",
+   "ok": true,
+   "detail": "HTTP 403"
+  },
+  {
+   "tc": "TC4",
+   "name": "Analyze refused when 'ai-disclaimer' is missing",
+   "ok": true,
+   "detail": "HTTP 403"
+  },
+  {
+   "tc": "TC4",
+   "name": "Analyze refused when acceptances are an outdated version",
+   "ok": true,
+   "detail": "HTTP 403"
+  },
+  {
+   "tc": "TC4",
+   "name": "Accept all current documents",
+   "ok": true,
+   "detail": "HTTP 201"
+  },
+  {
+   "tc": "TC4",
+   "name": "Records keep user, document, version, timestamp, action",
+   "ok": true,
+   "detail": "{\"id\":\"cmwkc7285001l3aooo14ybrhk\",\"userId\":\"cmwkc71fl00003aooyrin43sj\",\"document\":\"terms\",\"version\":\"0.3-draft\",\"action\":\"accepted\",\"timestamp\":\"2026-11-17T06:54:13.253Z\"}"
+  },
+  {
+   "tc": "TC4",
+   "name": "Server stamps version/user itself (client values ignored)",
+   "ok": true,
+   "detail": "{\"id\":\"cmwkc728a001p3aoo4nwmk2hc\",\"userId\":\"cmwkc71fl00003aooyrin43sj\",\"document\":\"terms\",\"version\":\"0.3-draft\",\"action\":\"accepted\",\"timestamp\":\"2026-11-17T06:54:13.258Z\"}"
+  },
+  {
+   "tc": "TC3",
+   "name": "Fresh profile has no health flag",
+   "ok": true,
+   "detail": "{\"favs\":[],\"avoid\":[]}"
+  },
+  {
+   "tc": "TC3",
+   "name": "Allergy write blocked before opt-in (direct API)",
+   "ok": true,
+   "detail": "HTTP 403 CONSENT_REQUIRED"
+  },
+  {
+   "tc": "TC3",
+   "name": "Nothing stored after the blocked write",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "tc": "TC3",
+   "name": "Doctor-advised write blocked before opt-in",
+   "ok": true,
+   "detail": "HTTP 403"
+  },
+  {
+   "tc": "TC3",
+   "name": "Ordinary favourite needs no health consent",
+   "ok": true,
+   "detail": "HTTP 200"
+  },
+  {
+   "tc": "TC3",
+   "name": "Separate health-data opt-in is recorded",
+   "ok": true,
+   "detail": "HTTP 201"
+  },
+  {
+   "tc": "TC3",
+   "name": "Allergy + doctor items saved after opt-in",
+   "ok": true,
+   "detail": "HTTP 200/200"
+  },
+  {
+   "tc": "TC3",
+   "name": "Sensitive item can be deleted",
+   "ok": true,
+   "detail": "[{\"name\":\"Peanut\",\"reason\":\"allergy\",\"nameThai\":\"ถั่วลิสง\"}]"
+  },
+  {
+   "tc": "TC6",
+   "name": "Health consent can be withdrawn",
+   "ok": true,
+   "detail": "HTTP 200"
+  },
+  {
+   "tc": "TC6",
+   "name": "Withdrawal is in history with user, version, timestamp, action",
+   "ok": true,
+   "detail": "{\"id\":\"cmwkc72f400293aoo1g24txl6\",\"userId\":\"cmwkc729u001r3aoo4a07mss6\",\"document\":\"health-data\",\"version\":\"0.1-draft\",\"action\":\"withdrawn\",\"timestamp\":\"2026-11-17T06:54:13.504Z\"}"
+  },
+  {
+   "tc": "TC6",
+   "name": "Stored allergy reason deleted on withdrawal (food kept, no reason)",
+   "ok": true,
+   "detail": "[{\"name\":\"Peanut\",\"nameThai\":\"ถั่วลิสง\"}]"
+  },
+  {
+   "tc": "TC6",
+   "name": "DB holds no allergy/doctor reason after withdrawal",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "tc": "TC6",
+   "name": "New sensitive write blocked after withdrawal",
+   "ok": true,
+   "detail": "HTTP 403"
+  },
+  {
+   "tc": "TC6",
+   "name": "Ordinary preferences still usable",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "tc": "TC6",
+   "name": "Terms cannot be withdrawn on its own (ends with account)",
+   "ok": true,
+   "detail": "HTTP 400"
+  },
+  {
+   "tc": "TC2",
+   "name": "Valid PNG upload accepted",
+   "ok": true,
+   "detail": "HTTP 201"
+  },
+  {
+   "tc": "TC2",
+   "name": "Zero-byte file rejected with readable error",
+   "ok": true,
+   "detail": "HTTP 400 \"The photo is empty.\""
+  },
+  {
+   "tc": "TC2",
+   "name": "Text file renamed .jpg rejected",
+   "ok": true,
+   "detail": "HTTP 415 \"Use a JPG, PNG or WebP photo.\""
+  },
+  {
+   "tc": "TC2",
+   "name": "8 MiB + 1 byte rejected",
+   "ok": true,
+   "detail": "HTTP 413 \"Use a photo under 8 MB.\""
+  },
+  {
+   "tc": "TC2",
+   "name": "Rejected files leave no image row",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "tc": "TC14",
+   "name": "Deletion needs the password again",
+   "ok": true,
+   "detail": "HTTP 422"
+  },
+  {
+   "tc": "TC14",
+   "name": "Account deletion succeeds",
+   "ok": true,
+   "detail": "HTTP 204"
+  },
+  {
+   "tc": "TC14",
+   "name": "Profile, images, results, consents, sessions all removed",
+   "ok": true,
+   "detail": "User=0 UserPreference=0 MenuImage=0 MenuAnalysis=0 ConsentRecord=0 Session=0"
+  },
+  {
+   "tc": "TC14",
+   "name": "Access-log rows survive content deletion",
+   "ok": true,
+   "detail": "4 before → 6 after"
+  },
+  {
+   "tc": "TC14",
+   "name": "Access log holds only traffic fields (no content)",
+   "ok": true,
+   "detail": "status,createdAt,ip,id,path,method,userId"
+  }
+ ]
+}

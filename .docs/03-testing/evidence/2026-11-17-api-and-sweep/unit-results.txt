@@ -1,0 +1,30 @@
+PASS  TC9  Listed peanut + peanut allergy → Avoid  [got avoid]
+PASS  TC9  Common peanut + allergy → Check First  [got check]
+PASS  TC9  Ordinary dislike (mushroom) → Check First  [got check]
+PASS  TC9  Oyster sauce via Shellfish group (doctor) → Avoid  [got avoid]
+PASS  TC9  No conflict, complete info → Top Pick  [got top]
+PASS  TC9  Uncertain info, no conflict → Check First  [got check]
+PASS  TC9  Not in guide → Check First  [got check]
+PASS  TC9  Uncertain + listed allergy → Avoid  [got avoid]
+PASS  TC9  Hotter than spice level → Check First  [got check]
+PASS  TC9  A favourite never lifts an Avoid dish
+PASS  TC9  All-uncertain menu: Top Pick stays empty
+PASS  TC9  Every meat choice has listed allergen → Avoid
+PASS  TC9  Guide sweep: listed allergy/doctor conflicts missed (of 741 results)  [0 missed]
+PASS  TC9  Guide sweep: uncertain dish shown as Top Pick  [0]
+PASS  TC11  Every Check/Avoid conflict note says confirm with staff  [0 missing]
+PASS  TC11  No safe/certified/100% wording in generated results  [0 hits]
+PASS  TC11  No percentage/score in generated results  [0 hits]
+PASS  TC7  Names pair with their row prices  [[["ผัดกะเพราหมูสับ",60],["ข้าวผัดกุ้ง",70]]]
+PASS  TC7  Tilted rows still pair correctly  [[["ผัดกะเพราหมูสับ",60],["ข้าวผัดกุ้ง",70]]]
+PASS  TC7  Inline 'ผัดกะเพราหมูสับ 60' reads name + price  [[{"name":"ผัดกะเพราหมูสับ","price":60,"box":[10,10,300,40]}]]
+PASS  TC7  Missing price stays null; lone บาท is not a dish  [[{"name":"ต้มยำกุ้ง","price":null,"box":[10,10,200,40]}]]
+PASS  TC7  Same input → same guide match (deterministic)  [exact Holy Basil Stir-fry]
+PASS  TC7  Tone-mark OCR error still finds the dish  [Fried Rice with shrimp]
+PASS  TC7  Approximate (fuzzy) match carries an uncertainty note  [fuzzy → Crispy Sweet Noodles]
+PASS  TC7  Missing protein → uncertainty note  [["The menu doesn't say which meat or seafood is used. Ask restaurant staff."]]
+FAIL  TC7  Unlisted dish keeps Thai + price, no English/ingredients (spec fallback)  [nameEn="Grilled squid", 4 ingredients]
+TC7: 8/9 checks pass
+TC9: 14/14 checks pass
+TC11: 3/3 checks pass
+guide dishes built: 247/247

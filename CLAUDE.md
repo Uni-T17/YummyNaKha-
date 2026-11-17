@@ -133,6 +133,21 @@ Filename: `{YYYYMMDD}-{no}-{topic}.md`
 Every backlog row traces back to a requirement ID and a real interview pain
 (`Traces to: F1, P1`). No made-up requirements with no source.
 
+## How our team uses AI
+
+- **Tool:** Claude Code, with this file loaded automatically in every session so the legal and safety rules above apply to all AI output.
+- **Agents** (`.claude/agents/`):
+  - `requirement-writer` turns raw interview notes into a spec and backlog rows.
+  - `backlog-auditor` checks, read-only, that the spec and backlog stay in sync.
+  - `design-writer` turns the spec into the design draft.
+- **Skills:**
+  - `/capture-requirement`, `/audit-backlog` and `/audit-design` run those jobs the same way each time.
+  - Run the audits after editing specs or design.
+- **What AI may do:** draft and edit docs and code, write and run tests, and read the repository with read-only git commands.
+- **What AI may not do:** commit, push, or rewrite history (see *Git and documentation rules*). AI may not invent interview pains, user quotes or test results. Data not from real users is labelled SECONDARY or PROXY.
+- **Human review:** the member who owns a file reviews every AI change before committing it. The Product Owner signs off on scope and test labels.
+- **Disclosure:** each member's AI use is stated in their role statement (`.docs/final/role-statements/`). AI inside the product itself is described in `.docs/final/ai-logic.md`.
+
 ## Working rules
 
 - If anything is unclear, **ask and offer at least 3 options. Never guess.**
