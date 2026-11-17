@@ -1,0 +1,1104 @@
+{
+  "test": "TC9 — profile matching and uncertainty",
+  "date": "2026-11-17T07:01:46.307Z",
+  "summary": {
+    "A": {
+      "pairs": 20,
+      "avoid": 20,
+      "check": 0,
+      "top": 0,
+      "missedConflicts": 0,
+      "threshold": "≤ 1 (5%)"
+    },
+    "B": {
+      "pairs": 20,
+      "avoid": 0,
+      "check": 2,
+      "top": 18,
+      "falseAvoid": 0,
+      "threshold": "≤ 2 (10%)"
+    },
+    "C": {
+      "pairs": 20,
+      "avoid": 0,
+      "check": 20,
+      "top": 0,
+      "threshold": "0 Top Pick; dislikes never Avoid"
+    }
+  },
+  "pairs": [
+    {
+      "group": "A",
+      "dish": "ผัดไทยกุ้งสด",
+      "profile": {
+        "avoid": {
+          "name": "shrimp",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "avoid",
+      "actual": "avoid",
+      "why": "listed shrimp (allergy)",
+      "reasons": [
+        "shrimp: This dish usually contains shrimp, which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Pad Thai with shrimp"
+    },
+    {
+      "group": "A",
+      "dish": "ต้มยำกุ้ง",
+      "profile": {
+        "avoid": {
+          "name": "shrimp",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "avoid",
+      "actual": "avoid",
+      "why": "listed shrimp (allergy)",
+      "reasons": [
+        "shrimp: This dish usually contains shrimp, which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Tom Yum Soup with shrimp"
+    },
+    {
+      "group": "A",
+      "dish": "ข้าวผัดกุ้ง",
+      "profile": {
+        "avoid": {
+          "name": "shellfish",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "avoid",
+      "actual": "avoid",
+      "why": "listed shellfish (allergy)",
+      "reasons": [
+        "shellfish: This dish usually contains shrimp (shellfish), which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Fried Rice with shrimp"
+    },
+    {
+      "group": "A",
+      "dish": "ผัดกะเพราหมูสับ",
+      "profile": {
+        "avoid": {
+          "name": "pork",
+          "reason": "doctor"
+        },
+        "spice": null
+      },
+      "expected": "avoid",
+      "actual": "avoid",
+      "why": "listed pork (doctor)",
+      "reasons": [
+        "pork: This dish usually contains minced pork (pork), which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Holy Basil Stir-fry with minced pork"
+    },
+    {
+      "group": "A",
+      "dish": "ข้าวมันไก่",
+      "profile": {
+        "avoid": {
+          "name": "chicken",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "avoid",
+      "actual": "avoid",
+      "why": "listed chicken (allergy)",
+      "reasons": [
+        "chicken: This dish usually contains chicken, which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Hainanese Chicken Rice"
+    },
+    {
+      "group": "A",
+      "dish": "ไข่เจียว",
+      "profile": {
+        "avoid": {
+          "name": "egg",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "avoid",
+      "actual": "avoid",
+      "why": "listed egg (allergy)",
+      "reasons": [
+        "egg: This dish usually contains egg, which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Thai Omelette"
+    },
+    {
+      "group": "A",
+      "dish": "ข้าวผัดปู",
+      "profile": {
+        "avoid": {
+          "name": "crab",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "avoid",
+      "actual": "avoid",
+      "why": "listed crab (allergy)",
+      "reasons": [
+        "crab: This dish usually contains crab, which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Fried Rice with crab"
+    },
+    {
+      "group": "A",
+      "dish": "ปลาทอดกระเทียม",
+      "profile": {
+        "avoid": {
+          "name": "fish",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "avoid",
+      "actual": "avoid",
+      "why": "listed fish (allergy)",
+      "reasons": [
+        "fish: This dish usually contains fish, which is in your Avoid list. Please confirm with restaurant staff before ordering.",
+        "This dish isn't in our Thai dish guide. We worked out its name and ingredients from the words on the menu, so sauces and other ingredients may be missing. Ask restaurant staff."
+      ],
+      "inGuide": false,
+      "nameEn": "Deep-fried fish with garlic"
+    },
+    {
+      "group": "A",
+      "dish": "หมูกระเทียม",
+      "profile": {
+        "avoid": {
+          "name": "pork",
+          "reason": "doctor"
+        },
+        "spice": null
+      },
+      "expected": "avoid",
+      "actual": "avoid",
+      "why": "listed pork (doctor)",
+      "reasons": [
+        "pork: This dish usually contains pork, which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Garlic & Pepper Stir-fry with pork"
+    },
+    {
+      "group": "A",
+      "dish": "คอหมูย่าง",
+      "profile": {
+        "avoid": {
+          "name": "pork",
+          "reason": "doctor"
+        },
+        "spice": null
+      },
+      "expected": "avoid",
+      "actual": "avoid",
+      "why": "listed pork (doctor)",
+      "reasons": [
+        "pork: This dish usually contains pork, which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Grilled Pork Neck"
+    },
+    {
+      "group": "A",
+      "dish": "ไก่ผัดเม็ดมะม่วงหิมพานต์",
+      "profile": {
+        "avoid": {
+          "name": "chicken",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "avoid",
+      "actual": "avoid",
+      "why": "listed chicken (allergy)",
+      "reasons": [
+        "chicken: This dish usually contains chicken, which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Cashew Nut Stir-fry with chicken"
+    },
+    {
+      "group": "A",
+      "dish": "ปลาหมึกทอดกระเทียม",
+      "profile": {
+        "avoid": {
+          "name": "squid",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "avoid",
+      "actual": "avoid",
+      "why": "listed squid (allergy)",
+      "reasons": [
+        "squid: This dish usually contains squid, which is in your Avoid list. Please confirm with restaurant staff before ordering.",
+        "This dish isn't in our Thai dish guide. We worked out its name and ingredients from the words on the menu, so sauces and other ingredients may be missing. Ask restaurant staff."
+      ],
+      "inGuide": false,
+      "nameEn": "Deep-fried squid with garlic"
+    },
+    {
+      "group": "A",
+      "dish": "ต้มข่าไก่",
+      "profile": {
+        "avoid": {
+          "name": "chicken",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "avoid",
+      "actual": "avoid",
+      "why": "listed chicken (allergy)",
+      "reasons": [
+        "chicken: This dish usually contains chicken, which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Coconut Galangal Soup with chicken"
+    },
+    {
+      "group": "A",
+      "dish": "แกงเขียวหวานไก่",
+      "profile": {
+        "avoid": {
+          "name": "chicken",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "avoid",
+      "actual": "avoid",
+      "why": "listed chicken (allergy)",
+      "reasons": [
+        "chicken: This dish usually contains chicken, which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Green Curry with chicken"
+    },
+    {
+      "group": "A",
+      "dish": "ไข่ดาว",
+      "profile": {
+        "avoid": {
+          "name": "egg",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "avoid",
+      "actual": "avoid",
+      "why": "listed egg (allergy)",
+      "reasons": [
+        "egg: This dish usually contains egg, which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Fried Egg"
+    },
+    {
+      "group": "A",
+      "dish": "กุ้งอบวุ้นเส้น",
+      "profile": {
+        "avoid": {
+          "name": "shrimp",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "avoid",
+      "actual": "avoid",
+      "why": "listed shrimp (allergy)",
+      "reasons": [
+        "shrimp: This dish usually contains shrimp, which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Baked Shrimp with Glass Noodles"
+    },
+    {
+      "group": "A",
+      "dish": "ไก่ทอด",
+      "profile": {
+        "avoid": {
+          "name": "chicken",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "avoid",
+      "actual": "avoid",
+      "why": "listed chicken (allergy)",
+      "reasons": [
+        "chicken: This dish usually contains chicken, which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Fried Chicken"
+    },
+    {
+      "group": "A",
+      "dish": "ผัดซีอิ๊วหมู",
+      "profile": {
+        "avoid": {
+          "name": "pork",
+          "reason": "doctor"
+        },
+        "spice": null
+      },
+      "expected": "avoid",
+      "actual": "avoid",
+      "why": "listed pork (doctor)",
+      "reasons": [
+        "pork: This dish usually contains pork, which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Stir-fried Noodles with Soy Sauce (pork)"
+    },
+    {
+      "group": "A",
+      "dish": "ข้าวไข่เจียว",
+      "profile": {
+        "avoid": {
+          "name": "egg",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "avoid",
+      "actual": "avoid",
+      "why": "listed egg (allergy)",
+      "reasons": [
+        "egg: This dish usually contains egg, which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Thai Omelette on rice"
+    },
+    {
+      "group": "A",
+      "dish": "ผัดกะเพราไก่",
+      "profile": {
+        "avoid": {
+          "name": "chicken",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "avoid",
+      "actual": "avoid",
+      "why": "listed chicken (allergy)",
+      "reasons": [
+        "chicken: This dish usually contains chicken, which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Holy Basil Stir-fry with chicken"
+    },
+    {
+      "group": "B",
+      "dish": "ผัดไทยกุ้งสด",
+      "profile": {
+        "avoid": {
+          "name": "beef",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "not-avoid",
+      "actual": "top",
+      "why": "beef allergy, not in the dish",
+      "reasons": [],
+      "inGuide": true,
+      "nameEn": "Pad Thai with shrimp"
+    },
+    {
+      "group": "B",
+      "dish": "ต้มยำกุ้ง",
+      "profile": {
+        "avoid": {
+          "name": "pork",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "not-avoid",
+      "actual": "top",
+      "why": "pork allergy, not in the dish",
+      "reasons": [],
+      "inGuide": true,
+      "nameEn": "Tom Yum Soup with shrimp"
+    },
+    {
+      "group": "B",
+      "dish": "ข้าวผัดกุ้ง",
+      "profile": {
+        "avoid": {
+          "name": "peanut",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "not-avoid",
+      "actual": "top",
+      "why": "peanut allergy, not in the dish",
+      "reasons": [],
+      "inGuide": true,
+      "nameEn": "Fried Rice with shrimp"
+    },
+    {
+      "group": "B",
+      "dish": "ผัดกะเพราหมูสับ",
+      "profile": {
+        "avoid": {
+          "name": "shrimp",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "not-avoid",
+      "actual": "top",
+      "why": "shrimp allergy, not in the dish",
+      "reasons": [],
+      "inGuide": true,
+      "nameEn": "Holy Basil Stir-fry with minced pork"
+    },
+    {
+      "group": "B",
+      "dish": "ข้าวมันไก่",
+      "profile": {
+        "avoid": {
+          "name": "shrimp",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "not-avoid",
+      "actual": "top",
+      "why": "shrimp allergy, not in the dish",
+      "reasons": [],
+      "inGuide": true,
+      "nameEn": "Hainanese Chicken Rice"
+    },
+    {
+      "group": "B",
+      "dish": "ไข่เจียว",
+      "profile": {
+        "avoid": {
+          "name": "peanut",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "not-avoid",
+      "actual": "top",
+      "why": "peanut allergy, not in the dish",
+      "reasons": [],
+      "inGuide": true,
+      "nameEn": "Thai Omelette"
+    },
+    {
+      "group": "B",
+      "dish": "ข้าวผัดปู",
+      "profile": {
+        "avoid": {
+          "name": "pork",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "not-avoid",
+      "actual": "top",
+      "why": "pork allergy, not in the dish",
+      "reasons": [],
+      "inGuide": true,
+      "nameEn": "Fried Rice with crab"
+    },
+    {
+      "group": "B",
+      "dish": "ปลาทอดกระเทียม",
+      "profile": {
+        "avoid": {
+          "name": "peanut",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "not-avoid",
+      "actual": "check",
+      "why": "peanut allergy, not in the dish",
+      "reasons": [
+        "This dish isn't in our Thai dish guide. We worked out its name and ingredients from the words on the menu, so sauces and other ingredients may be missing. Ask restaurant staff."
+      ],
+      "inGuide": false,
+      "nameEn": "Deep-fried fish with garlic"
+    },
+    {
+      "group": "B",
+      "dish": "หมูกระเทียม",
+      "profile": {
+        "avoid": {
+          "name": "chicken",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "not-avoid",
+      "actual": "top",
+      "why": "chicken allergy, not in the dish",
+      "reasons": [],
+      "inGuide": true,
+      "nameEn": "Garlic & Pepper Stir-fry with pork"
+    },
+    {
+      "group": "B",
+      "dish": "คอหมูย่าง",
+      "profile": {
+        "avoid": {
+          "name": "shrimp",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "not-avoid",
+      "actual": "top",
+      "why": "shrimp allergy, not in the dish",
+      "reasons": [],
+      "inGuide": true,
+      "nameEn": "Grilled Pork Neck"
+    },
+    {
+      "group": "B",
+      "dish": "ไก่ผัดเม็ดมะม่วงหิมพานต์",
+      "profile": {
+        "avoid": {
+          "name": "pork",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "not-avoid",
+      "actual": "top",
+      "why": "pork allergy, not in the dish",
+      "reasons": [],
+      "inGuide": true,
+      "nameEn": "Cashew Nut Stir-fry with chicken"
+    },
+    {
+      "group": "B",
+      "dish": "ปลาหมึกทอดกระเทียม",
+      "profile": {
+        "avoid": {
+          "name": "chicken",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "not-avoid",
+      "actual": "check",
+      "why": "chicken allergy, not in the dish",
+      "reasons": [
+        "This dish isn't in our Thai dish guide. We worked out its name and ingredients from the words on the menu, so sauces and other ingredients may be missing. Ask restaurant staff."
+      ],
+      "inGuide": false,
+      "nameEn": "Deep-fried squid with garlic"
+    },
+    {
+      "group": "B",
+      "dish": "ต้มข่าไก่",
+      "profile": {
+        "avoid": {
+          "name": "pork",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "not-avoid",
+      "actual": "top",
+      "why": "pork allergy, not in the dish",
+      "reasons": [],
+      "inGuide": true,
+      "nameEn": "Coconut Galangal Soup with chicken"
+    },
+    {
+      "group": "B",
+      "dish": "แกงเขียวหวานไก่",
+      "profile": {
+        "avoid": {
+          "name": "beef",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "not-avoid",
+      "actual": "top",
+      "why": "beef allergy, not in the dish",
+      "reasons": [],
+      "inGuide": true,
+      "nameEn": "Green Curry with chicken"
+    },
+    {
+      "group": "B",
+      "dish": "ไข่ดาว",
+      "profile": {
+        "avoid": {
+          "name": "shrimp",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "not-avoid",
+      "actual": "top",
+      "why": "shrimp allergy, not in the dish",
+      "reasons": [],
+      "inGuide": true,
+      "nameEn": "Fried Egg"
+    },
+    {
+      "group": "B",
+      "dish": "กุ้งอบวุ้นเส้น",
+      "profile": {
+        "avoid": {
+          "name": "chicken",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "not-avoid",
+      "actual": "top",
+      "why": "chicken allergy, not in the dish",
+      "reasons": [],
+      "inGuide": true,
+      "nameEn": "Baked Shrimp with Glass Noodles"
+    },
+    {
+      "group": "B",
+      "dish": "ไก่ทอด",
+      "profile": {
+        "avoid": {
+          "name": "shrimp",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "not-avoid",
+      "actual": "top",
+      "why": "shrimp allergy, not in the dish",
+      "reasons": [],
+      "inGuide": true,
+      "nameEn": "Fried Chicken"
+    },
+    {
+      "group": "B",
+      "dish": "ผัดซีอิ๊วหมู",
+      "profile": {
+        "avoid": {
+          "name": "shrimp",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "not-avoid",
+      "actual": "top",
+      "why": "shrimp allergy, not in the dish",
+      "reasons": [],
+      "inGuide": true,
+      "nameEn": "Stir-fried Noodles with Soy Sauce (pork)"
+    },
+    {
+      "group": "B",
+      "dish": "ข้าวไข่เจียว",
+      "profile": {
+        "avoid": {
+          "name": "chicken",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "not-avoid",
+      "actual": "top",
+      "why": "chicken allergy, not in the dish",
+      "reasons": [],
+      "inGuide": true,
+      "nameEn": "Thai Omelette on rice"
+    },
+    {
+      "group": "B",
+      "dish": "ผัดกะเพราไก่",
+      "profile": {
+        "avoid": {
+          "name": "pork",
+          "reason": "allergy"
+        },
+        "spice": null
+      },
+      "expected": "not-avoid",
+      "actual": "top",
+      "why": "pork allergy, not in the dish",
+      "reasons": [],
+      "inGuide": true,
+      "nameEn": "Holy Basil Stir-fry with chicken"
+    },
+    {
+      "group": "C",
+      "dish": "ผัดไทยกุ้งสด",
+      "profile": {
+        "avoid": {
+          "name": "shrimp",
+          "reason": "dislike"
+        },
+        "spice": null
+      },
+      "expected": "check",
+      "actual": "check",
+      "why": "dislike: listed shrimp",
+      "reasons": [
+        "shrimp: This dish usually contains shrimp, which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Pad Thai with shrimp"
+    },
+    {
+      "group": "C",
+      "dish": "ข้าวมันไก่",
+      "profile": {
+        "avoid": {
+          "name": "chicken",
+          "reason": "dislike"
+        },
+        "spice": null
+      },
+      "expected": "check",
+      "actual": "check",
+      "why": "dislike: listed chicken",
+      "reasons": [
+        "chicken: This dish usually contains chicken, which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Hainanese Chicken Rice"
+    },
+    {
+      "group": "C",
+      "dish": "ไข่เจียว",
+      "profile": {
+        "avoid": {
+          "name": "egg",
+          "reason": "dislike"
+        },
+        "spice": null
+      },
+      "expected": "check",
+      "actual": "check",
+      "why": "dislike: listed egg",
+      "reasons": [
+        "egg: This dish usually contains egg, which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Thai Omelette"
+    },
+    {
+      "group": "C",
+      "dish": "ข้าวผัดปู",
+      "profile": {
+        "avoid": {
+          "name": "crab",
+          "reason": "dislike"
+        },
+        "spice": null
+      },
+      "expected": "check",
+      "actual": "check",
+      "why": "dislike: listed crab",
+      "reasons": [
+        "crab: This dish usually contains crab, which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Fried Rice with crab"
+    },
+    {
+      "group": "C",
+      "dish": "หมูกระเทียม",
+      "profile": {
+        "avoid": {
+          "name": "garlic",
+          "reason": "dislike"
+        },
+        "spice": null
+      },
+      "expected": "check",
+      "actual": "check",
+      "why": "dislike: listed garlic",
+      "reasons": [
+        "garlic: This dish usually contains garlic, which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Garlic & Pepper Stir-fry with pork"
+    },
+    {
+      "group": "C",
+      "dish": "ต้มข่าไก่",
+      "profile": {
+        "avoid": {
+          "name": "coconut milk",
+          "reason": "dislike"
+        },
+        "spice": null
+      },
+      "expected": "check",
+      "actual": "check",
+      "why": "dislike: listed coconut milk",
+      "reasons": [
+        "coconut milk: This dish usually contains coconut milk, which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Coconut Galangal Soup with chicken"
+    },
+    {
+      "group": "C",
+      "dish": "ผัดซีอิ๊วหมู",
+      "profile": {
+        "avoid": {
+          "name": "pork",
+          "reason": "dislike"
+        },
+        "spice": null
+      },
+      "expected": "check",
+      "actual": "check",
+      "why": "dislike: listed pork",
+      "reasons": [
+        "pork: This dish usually contains pork, which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Stir-fried Noodles with Soy Sauce (pork)"
+    },
+    {
+      "group": "C",
+      "dish": "กุ้งอบวุ้นเส้น",
+      "profile": {
+        "avoid": {
+          "name": "ginger",
+          "reason": "dislike"
+        },
+        "spice": null
+      },
+      "expected": "check",
+      "actual": "check",
+      "why": "dislike: listed ginger",
+      "reasons": [
+        "ginger: This dish usually contains ginger, which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Baked Shrimp with Glass Noodles"
+    },
+    {
+      "group": "C",
+      "dish": "ไก่ทอด",
+      "profile": {
+        "avoid": {
+          "name": "chicken"
+        },
+        "spice": null
+      },
+      "expected": "check",
+      "actual": "check",
+      "why": "avoid chicken, reason not given",
+      "reasons": [
+        "chicken: This dish usually contains chicken, which is in your Avoid list. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Fried Chicken"
+    },
+    {
+      "group": "C",
+      "dish": "ต้มยำกุ้ง",
+      "profile": {
+        "avoid": null,
+        "spice": 0
+      },
+      "expected": "check",
+      "actual": "check",
+      "why": "spice level 0 vs very spicy",
+      "reasons": [
+        "Spice level: Usually very spicy — hotter than your “Not spicy”. You can ask for it milder with the staff cards on Order in Thai. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Tom Yum Soup with shrimp"
+    },
+    {
+      "group": "C",
+      "dish": "ผัดกะเพราไก่",
+      "profile": {
+        "avoid": null,
+        "spice": 0
+      },
+      "expected": "check",
+      "actual": "check",
+      "why": "spice level 0 vs very spicy",
+      "reasons": [
+        "Spice level: Usually very spicy — hotter than your “Not spicy”. You can ask for it milder with the staff cards on Order in Thai. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Holy Basil Stir-fry with chicken"
+    },
+    {
+      "group": "C",
+      "dish": "แกงเขียวหวานไก่",
+      "profile": {
+        "avoid": null,
+        "spice": 0
+      },
+      "expected": "check",
+      "actual": "check",
+      "why": "spice level 0 vs medium spicy",
+      "reasons": [
+        "Spice level: Usually medium spicy — hotter than your “Not spicy”. You can ask for it milder with the staff cards on Order in Thai. Please confirm with restaurant staff before ordering."
+      ],
+      "inGuide": true,
+      "nameEn": "Green Curry with chicken"
+    },
+    {
+      "group": "C",
+      "dish": "ชนิทเซลหมู",
+      "profile": {
+        "avoid": null,
+        "spice": null
+      },
+      "expected": "check",
+      "actual": "check",
+      "why": "not in the dish guide",
+      "reasons": [
+        "This dish isn't in our Thai dish guide. We worked out its name and ingredients from the words on the menu, so sauces and other ingredients may be missing. Ask restaurant staff."
+      ],
+      "inGuide": false,
+      "nameEn": "Schnitzel pork"
+    },
+    {
+      "group": "C",
+      "dish": "ซีซาร์สลัด",
+      "profile": {
+        "avoid": null,
+        "spice": null
+      },
+      "expected": "check",
+      "actual": "check",
+      "why": "not in the dish guide",
+      "reasons": [
+        "This dish isn't in our Thai dish guide. We worked out its name and ingredients from the words on the menu, so sauces and other ingredients may be missing. Ask restaurant staff."
+      ],
+      "inGuide": false,
+      "nameEn": "Caesar salad"
+    },
+    {
+      "group": "C",
+      "dish": "คาโบนาร่า",
+      "profile": {
+        "avoid": null,
+        "spice": null
+      },
+      "expected": "check",
+      "actual": "check",
+      "why": "not in the dish guide",
+      "reasons": [
+        "This dish isn't in our Thai dish guide. We worked out its name and ingredients from the words on the menu, so sauces and other ingredients may be missing. Ask restaurant staff."
+      ],
+      "inGuide": false,
+      "nameEn": "Carbonara"
+    },
+    {
+      "group": "C",
+      "dish": "หมูนุ่มซอสเชฟ",
+      "profile": {
+        "avoid": null,
+        "spice": null
+      },
+      "expected": "check",
+      "actual": "check",
+      "why": "not in the dish guide",
+      "reasons": [
+        "This dish isn't in our Thai dish guide yet, so we can't list its ingredients. Ask restaurant staff what's in it."
+      ],
+      "inGuide": false,
+      "nameEn": "Pork"
+    },
+    {
+      "group": "C",
+      "dish": "ผัดกะเพรา",
+      "profile": {
+        "avoid": null,
+        "spice": null
+      },
+      "expected": "check",
+      "actual": "check",
+      "why": "meat not named",
+      "reasons": [
+        "The menu doesn't say which meat or seafood is used. Ask restaurant staff."
+      ],
+      "inGuide": true,
+      "nameEn": "Holy Basil Stir-fry"
+    },
+    {
+      "group": "C",
+      "dish": "ข้าวผัด",
+      "profile": {
+        "avoid": null,
+        "spice": null
+      },
+      "expected": "check",
+      "actual": "check",
+      "why": "meat not named",
+      "reasons": [
+        "The menu doesn't say which meat or seafood is used. Ask restaurant staff."
+      ],
+      "inGuide": true,
+      "nameEn": "Fried Rice"
+    },
+    {
+      "group": "C",
+      "dish": "ข้าวมันไท่",
+      "profile": {
+        "avoid": null,
+        "spice": null
+      },
+      "expected": "check",
+      "actual": "check",
+      "why": "real OCR misread (fuzzy match)",
+      "reasons": [
+        "We read this as “ข้าวมันไก่” but may have misread the name. Check it with restaurant staff."
+      ],
+      "inGuide": true,
+      "nameEn": "Hainanese Chicken Rice"
+    },
+    {
+      "group": "C",
+      "dish": "ต้มยำกุ้ม",
+      "profile": {
+        "avoid": null,
+        "spice": null
+      },
+      "expected": "check",
+      "actual": "check",
+      "why": "real OCR misread",
+      "reasons": [
+        "Part of this dish's name isn't in our guide, so it may be a special version of “Tom Yum Soup” with other ingredients. Ask restaurant staff.",
+        "The menu doesn't say which meat or seafood is used. Ask restaurant staff."
+      ],
+      "inGuide": true,
+      "nameEn": "Tom Yum Soup (special version)"
+    }
+  ]
+}
