@@ -1,0 +1,89 @@
+{
+  "date": "2026-11-16T16:33:08.858Z",
+  "results": [
+    {
+      "file": "menu0-clean-1mb.jpg",
+      "kind": "generated",
+      "version": "v2-paddleocr",
+      "ms": 7052,
+      "total": 16,
+      "found": 15,
+      "exactName": 10,
+      "price": 13,
+      "invented": 0,
+      "returned": 16
+    },
+    {
+      "file": "menu0-photo-1mb.jpg",
+      "kind": "generated",
+      "version": "v2-paddleocr",
+      "ms": 4982,
+      "total": 16,
+      "found": 15,
+      "exactName": 12,
+      "price": 15,
+      "invented": 0,
+      "returned": 16
+    },
+    {
+      "file": "menu1-clean-1mb.jpg",
+      "kind": "generated",
+      "version": "v2-paddleocr",
+      "ms": 5005,
+      "total": 16,
+      "found": 16,
+      "exactName": 15,
+      "price": 16,
+      "invented": 0,
+      "returned": 16
+    },
+    {
+      "file": "menu1-photo-1mb.jpg",
+      "kind": "generated",
+      "version": "v2-paddleocr",
+      "ms": 5027,
+      "total": 16,
+      "found": 16,
+      "exactName": 11,
+      "price": 16,
+      "invented": 0,
+      "returned": 16
+    },
+    {
+      "file": "menu2-clean-1mb.jpg",
+      "kind": "generated",
+      "version": "v2-paddleocr",
+      "ms": 5029,
+      "total": 16,
+      "found": 16,
+      "exactName": 15,
+      "price": 16,
+      "invented": 0,
+      "returned": 16
+    },
+    {
+      "file": "menu2-photo-1mb.jpg",
+      "kind": "generated",
+      "version": "v2-paddleocr",
+      "ms": 5004,
+      "total": 16,
+      "found": 16,
+      "exactName": 13,
+      "price": 16,
+      "invented": 0,
+      "returned": 16
+    },
+    {
+      "file": "real-cafe-menu.jpg",
+      "kind": "real",
+      "version": "v2-paddleocr",
+      "ms": 10955,
+      "total": 26,
+      "found": 26,
+      "exactName": 14,
+      "price": 26,
+      "invented": 0,
+      "returned": 26
+    }
+  ]
+}

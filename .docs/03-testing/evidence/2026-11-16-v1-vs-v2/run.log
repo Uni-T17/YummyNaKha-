@@ -1,0 +1,24 @@
+menu0-clean-1mb.jpg    v1-gemini     found 16/16 exact 15 price 16 invented 0 returned 16 12.5s
+menu0-clean-1mb.jpg    v2-ocr-guide  found 15/16 exact 14 price 15 invented 0 returned 16 2.1s
+menu0-photo-1mb.jpg    v1-gemini     found 16/16 exact 15 price 16 invented 0 returned 16 27.2s
+menu0-photo-1mb.jpg    v2-ocr-guide  found 15/16 exact 13 price 14 invented 0 returned 16 1.8s
+menu1-clean-1mb.jpg    v1-gemini     found 16/16 exact 15 price 16 invented 0 returned 16 27.6s
+menu1-clean-1mb.jpg    v2-ocr-guide  found 16/16 exact 14 price 16 invented 0 returned 16 2.0s
+menu1-photo-1mb.jpg    v1-gemini     found 16/16 exact 15 price 16 invented 0 returned 16 51.9s
+menu1-photo-1mb.jpg    v2-ocr-guide  found 16/16 exact 11 price 16 invented 0 returned 16 1.8s
+menu2-clean-1mb.jpg    v1-gemini     found 16/16 exact 16 price 16 invented 0 returned 16 16.1s
+menu2-clean-1mb.jpg    v2-ocr-guide  found 16/16 exact 13 price 16 invented 0 returned 16 2.1s
+menu2-photo-1mb.jpg    v1-gemini     found 16/16 exact 16 price 16 invented 0 returned 16 64.4s
+menu2-photo-1mb.jpg    v2-ocr-guide  found 16/16 exact 15 price 16 invented 0 returned 16 2.0s
+real-cafe-menu.jpg     v1-gemini     found 26/26 exact 24 price 26 invented 0 returned 26 35.4s
+real-cafe-menu.jpg     v2-ocr-guide  found 21/26 exact 20 price 19 invented 0 returned 21 3.0s
+consistency v1-gemini: 15/16 dishes in all 3 runs, 6 with identical ingredients
+consistency v2-ocr-guide: 16/16 dishes in all 3 runs, 16 with identical ingredients
+models used: gemini-3.5-flash-lite, gemini-3.1-flash-lite
+menu0-clean-1mb.jpg    v2-paddleocr  found 15/16 exact 10 price 13 invented 0 returned 16 7.1s
+menu0-photo-1mb.jpg    v2-paddleocr  found 15/16 exact 12 price 15 invented 0 returned 16 5.0s
+menu1-clean-1mb.jpg    v2-paddleocr  found 16/16 exact 15 price 16 invented 0 returned 16 5.0s
+menu1-photo-1mb.jpg    v2-paddleocr  found 16/16 exact 11 price 16 invented 0 returned 16 5.0s
+menu2-clean-1mb.jpg    v2-paddleocr  found 16/16 exact 15 price 16 invented 0 returned 16 5.0s
+menu2-photo-1mb.jpg    v2-paddleocr  found 16/16 exact 13 price 16 invented 0 returned 16 5.0s
+real-cafe-menu.jpg     v2-paddleocr  found 26/26 exact 14 price 26 invented 0 returned 26 11.0s

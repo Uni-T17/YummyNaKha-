@@ -1,0 +1,3059 @@
+{
+  "v1-gemini/menu0-clean-1mb.jpg": {
+    "dishes": [
+      {
+        "nameThai": "ลูกชุบ",
+        "nameEn": "Luk Chup",
+        "price": 40,
+        "ingredients": [
+          "coconut milk",
+          "mung bean",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "ต้มข่ากุ้ง",
+        "nameEn": "Tom Kha Goong",
+        "price": 120,
+        "ingredients": [
+          "coconut milk",
+          "galangal",
+          "lemongrass",
+          "mushroom",
+          "shrimp"
+        ]
+      },
+      {
+        "nameThai": "ผัดผักบุ้งไฟแดง",
+        "nameEn": "Stir-fried Morning Glory",
+        "price": 110,
+        "ingredients": [
+          "chili",
+          "garlic",
+          "morning glory",
+          "oyster sauce",
+          "soy sauce"
+        ]
+      },
+      {
+        "nameThai": "วุ้นกะทิ",
+        "nameEn": "Coconut Jelly",
+        "price": 70,
+        "ingredients": [
+          "agar jelly",
+          "coconut milk",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "ข้าวหมูกรอบ",
+        "nameEn": "Crispy Pork with Rice",
+        "price": 60,
+        "ingredients": [
+          "crispy pork belly",
+          "rice",
+          "soy sauce"
+        ]
+      },
+      {
+        "nameThai": "แฮ่กึ๊น",
+        "nameEn": "Hae Guen",
+        "price": 140,
+        "ingredients": [
+          "bean curd skin",
+          "pork fat",
+          "shrimp"
+        ]
+      },
+      {
+        "nameThai": "ข้าวมันไก่",
+        "nameEn": "Hainanese Chicken Rice",
+        "price": 130,
+        "ingredients": [
+          "chicken",
+          "garlic",
+          "ginger",
+          "rice cooked in chicken broth"
+        ]
+      },
+      {
+        "nameThai": "ข้าวผัดสับปะรด",
+        "nameEn": "Pineapple Fried Rice",
+        "price": 90,
+        "ingredients": [
+          "egg",
+          "onion",
+          "pineapple",
+          "rice"
+        ]
+      },
+      {
+        "nameThai": "ก๋วยจั๊บน้ำข้น",
+        "nameEn": "Chinese Roll Noodle Soup",
+        "price": 80,
+        "ingredients": [
+          "egg",
+          "five-spice broth",
+          "pork",
+          "rice noodle rolls"
+        ]
+      },
+      {
+        "nameThai": "กะละแม",
+        "nameEn": "Kalamae",
+        "price": 40,
+        "ingredients": [
+          "coconut milk",
+          "glutinous rice flour",
+          "palm sugar"
+        ]
+      },
+      {
+        "nameThai": "ถั่วเขียวต้มน้ำตาล",
+        "nameEn": "Boiled Mung Beans in Sugar Syrup",
+        "price": 150,
+        "ingredients": [
+          "ginger",
+          "mung bean",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "น้ำตกไก่",
+        "nameEn": "Nam Tok Gai",
+        "price": 110,
+        "ingredients": [
+          "chicken",
+          "chili",
+          "fish sauce",
+          "lime juice",
+          "mint",
+          "roasted rice powder"
+        ]
+      },
+      {
+        "nameThai": "ข้าวผัดอเมริกัน",
+        "nameEn": "American Fried Rice",
+        "price": 100,
+        "ingredients": [
+          "chicken",
+          "fried egg",
+          "ketchup",
+          "raisins",
+          "rice",
+          "sausage"
+        ]
+      },
+      {
+        "nameThai": "กะหรี่พั๊บ",
+        "nameEn": "Curry Puff",
+        "price": 60,
+        "ingredients": [
+          "chicken",
+          "curry powder",
+          "flour pastry",
+          "potato"
+        ]
+      },
+      {
+        "nameThai": "ข้าวมันส้มตำ",
+        "nameEn": "Coconut Rice with Papaya Salad",
+        "price": 50,
+        "ingredients": [
+          "chili",
+          "coconut rice",
+          "dried shrimp",
+          "fish sauce",
+          "green papaya",
+          "lime juice",
+          "peanut"
+        ]
+      },
+      {
+        "nameThai": "หมูมะนาว",
+        "nameEn": "Pork with Lime Salad",
+        "price": 130,
+        "ingredients": [
+          "chili",
+          "chinese kale",
+          "fish sauce",
+          "garlic",
+          "lime",
+          "pork"
+        ]
+      }
+    ],
+    "raw": {
+      "ocr": "เมนูอาหาร\nลูกชุบ\n40\nต้มข่ากุ้ง\n120\nผัดผักบุ้งไฟแดง\n110\nวุ้นกะทิ\n70\nข้าวหมูกรอบ\n60\nแฮ่กึ๊น\n140\nข้าวมันไก่\n130\nข้าวผัดสับปะรด\n90\nก๋วยจั๊บน้ำข้น\n80\nกะละแม\n40\nถั่วเขียวต้มน้ำตาล\n150\nน้ำตกไก่\n110\nข้าวผัดอเมริกัน\n100\nกะหรี่พั๊บ\n60\nข้าวมันส้มตำ\n50\nหมูมะนาว\n130",
+      "english": "Menu\nLuk Chup (Thai Marinated Mung Bean Fruit)\n40\nTom Kha Goong\n120\nStir-fried Morning Glory\n110\nCoconut Jelly\n70\nCrispy Pork with Rice\n60\nHae Guen (Fried Shrimp Rolls)\n140\nHainanese Chicken Rice\n130\nPineapple Fried Rice\n90\nChinese Roll Noodle Soup\n80\nKalamae (Thai Caramel Toffee)\n150\nBoiled Mung Beans in Sugar Syrup\n150\nNam Tok Gai (Spicy Grilled Chicken Salad)\n110\nAmerican Fried Rice\n100\nCurry Puff\n60\nCoconut Rice with Papaya Salad\n50\nPork with Lime Salad\n130"
+    }
+  },
+  "v2-ocr-guide/menu0-clean-1mb.jpg": {
+    "dishes": [
+      {
+        "nameThai": "ต้มข่ากุ้ง",
+        "nameEn": "Coconut Galangal Soup with shrimp",
+        "price": 120,
+        "ingredients": [
+          "chili",
+          "coconut milk",
+          "coriander",
+          "fish sauce",
+          "galangal",
+          "kaffir lime leave",
+          "lemongrass",
+          "lime",
+          "mushroom",
+          "shrimp"
+        ]
+      },
+      {
+        "nameThai": "ลูกชุบ",
+        "nameEn": "Mung Bean Fruit Sweets",
+        "price": 40,
+        "ingredients": [
+          "coconut milk",
+          "mung bean",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "วุ้นกะทิ",
+        "nameEn": "Coconut Jelly",
+        "price": 70,
+        "ingredients": [
+          "coconut milk",
+          "pandan",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "ผัดผักบุ้งไฟแดง",
+        "nameEn": "Stir-fried Morning Glory",
+        "price": 110,
+        "ingredients": [
+          "chili",
+          "fermented soybean paste",
+          "garlic",
+          "morning glory",
+          "oyster sauce",
+          "soy sauce"
+        ]
+      },
+      {
+        "nameThai": "แฮ่กิ้น",
+        "nameEn": "แฮ่กิ้น",
+        "price": 140,
+        "ingredients": []
+      },
+      {
+        "nameThai": "ข้าวหมูกรอบ",
+        "nameEn": "Crispy Pork Belly on Rice",
+        "price": 60,
+        "ingredients": [
+          "crispy pork belly",
+          "cucumber",
+          "egg",
+          "rice",
+          "soy sauce",
+          "sugar",
+          "wheat flour"
+        ]
+      },
+      {
+        "nameThai": "ข้าวมันไก่",
+        "nameEn": "Hainanese Chicken Rice",
+        "price": 130,
+        "ingredients": [
+          "chicken",
+          "chicken broth",
+          "chili",
+          "cucumber",
+          "fermented soybean paste",
+          "garlic",
+          "ginger",
+          "rice",
+          "soy sauce"
+        ]
+      },
+      {
+        "nameThai": "ข้าวผัดสับปะรด",
+        "nameEn": "Pineapple Fried Rice",
+        "price": 90,
+        "ingredients": [
+          "cashew nut",
+          "curry powder",
+          "egg",
+          "pineapple",
+          "raisin",
+          "rice",
+          "shrimp",
+          "soy sauce"
+        ]
+      },
+      {
+        "nameThai": "ก๋วยจั๊บน้ำข้น",
+        "nameEn": "Rolled Rice Noodle Soup",
+        "price": 80,
+        "ingredients": [
+          "crispy pork belly",
+          "egg",
+          "five-spice",
+          "pepper",
+          "pork",
+          "pork offal",
+          "rolled rice noodle",
+          "soy sauce"
+        ]
+      },
+      {
+        "nameThai": "กะละแม",
+        "nameEn": "Coconut Toffee",
+        "price": 40,
+        "ingredients": [
+          "coconut milk",
+          "glutinous rice flour",
+          "palm sugar",
+          "pandan"
+        ]
+      },
+      {
+        "nameThai": "ถั่วเขียวต้มน้ำตาล",
+        "nameEn": "Sweet Mung Bean Soup",
+        "price": 150,
+        "ingredients": [
+          "coconut milk",
+          "mung bean",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "น้ำตกไก่",
+        "nameEn": "Grilled Meat Salad with chicken",
+        "price": 110,
+        "ingredients": [
+          "chicken",
+          "chili",
+          "fish sauce",
+          "lime",
+          "mint",
+          "shallot",
+          "spring onion",
+          "sticky rice",
+          "toasted rice powder"
+        ]
+      },
+      {
+        "nameThai": "กะหรีปั๊บ",
+        "nameEn": "Curry Puffs",
+        "price": 60,
+        "ingredients": [
+          "butter",
+          "chicken",
+          "cooking oil",
+          "curry powder",
+          "egg",
+          "onion",
+          "pork fat",
+          "potato",
+          "taro",
+          "wheat flour"
+        ]
+      },
+      {
+        "nameThai": "ข้าวผัดอเมริกัน",
+        "nameEn": "American Fried Rice",
+        "price": 100,
+        "ingredients": [
+          "chicken",
+          "fried egg",
+          "raisin",
+          "rice",
+          "sausage",
+          "tomato sauce",
+          "wheat flour"
+        ]
+      },
+      {
+        "nameThai": "ข้าวมันส้มตำ",
+        "nameEn": "Coconut Rice with Papaya Salad",
+        "price": 50,
+        "ingredients": [
+          "beef",
+          "chili",
+          "coconut milk",
+          "dried shrimp",
+          "fish sauce",
+          "green papaya",
+          "lime",
+          "long bean",
+          "palm sugar",
+          "peanut",
+          "rice",
+          "tomato"
+        ]
+      },
+      {
+        "nameThai": "หมูมะนาว",
+        "nameEn": "Pork with Spicy Lime Dressing",
+        "price": 130,
+        "ingredients": [
+          "chili",
+          "chinese kale",
+          "coriander",
+          "fish sauce",
+          "garlic",
+          "lime",
+          "pork"
+        ]
+      }
+    ],
+    "raw": {
+      "lines": [
+        "เมนูอาหาร",
+        "ลูกชุบ",
+        "40",
+        "ต้มข่ากุ้ง",
+        "120",
+        "ผัดผักบุ้งไฟแดง",
+        "110",
+        "วุ้นกะทิ",
+        "70",
+        "ข้าวหมูกรอบ",
+        "60",
+        "แฮ่กิ้น",
+        "140",
+        "ข้าวมันไก่",
+        "130",
+        "ข้าวผัดสับปะรด",
+        "90",
+        "ก๋วยจั๊บน้ำข้น",
+        "80",
+        "กะละแม",
+        "40",
+        "ถั่วเขียวต้มน้ำตาล",
+        "150",
+        "น้ำตกไก่",
+        "110",
+        "ข้าวผัดอเมริกัน",
+        "100",
+        "กะหรีปั๊บ",
+        "60",
+        "ข้าวมันส้มตำ",
+        "50",
+        "หมูมะนาว",
+        "130"
+      ]
+    }
+  },
+  "v1-gemini/menu0-photo-1mb.jpg": {
+    "dishes": [
+      {
+        "nameThai": "ลูกชุบ",
+        "nameEn": "Look Choob (Mung Bean Marzipan)",
+        "price": 40,
+        "ingredients": [
+          "coconut milk",
+          "mung bean"
+        ]
+      },
+      {
+        "nameThai": "ต้มข่ากุ้ง",
+        "nameEn": "Tom Kha Goong (Coconut Galangal Soup with Shrimp)",
+        "price": 120,
+        "ingredients": [
+          "coconut milk",
+          "fish sauce",
+          "galangal",
+          "mushroom",
+          "shrimp"
+        ]
+      },
+      {
+        "nameThai": "ผัดผักบุ้งไฟแดง",
+        "nameEn": "Stir-Fried Morning Glory",
+        "price": 110,
+        "ingredients": [
+          "garlic",
+          "morning glory",
+          "oyster sauce"
+        ]
+      },
+      {
+        "nameThai": "วุ้นกะทิ",
+        "nameEn": "Coconut Jelly",
+        "price": 70,
+        "ingredients": [
+          "agar",
+          "coconut milk"
+        ]
+      },
+      {
+        "nameThai": "ข้าวหมูกรอบ",
+        "nameEn": "Crispy Pork Belly with Rice",
+        "price": 60,
+        "ingredients": [
+          "pork belly",
+          "rice"
+        ]
+      },
+      {
+        "nameThai": "แฮ่กึ๊น",
+        "nameEn": "Hae Guen (Fried Shrimp Rolls)",
+        "price": 140,
+        "ingredients": [
+          "shrimp",
+          "tofu skin"
+        ]
+      },
+      {
+        "nameThai": "ข้าวมันไก่",
+        "nameEn": "Hainanese Chicken Rice",
+        "price": 130,
+        "ingredients": [
+          "chicken",
+          "rice"
+        ]
+      },
+      {
+        "nameThai": "ข้าวผัดสับปะรด",
+        "nameEn": "Pineapple Fried Rice",
+        "price": 90,
+        "ingredients": [
+          "fish sauce",
+          "pineapple",
+          "rice"
+        ]
+      },
+      {
+        "nameThai": "ก๋วยจั๊บน้ำข้น",
+        "nameEn": "Chinese Roll Noodle Soup",
+        "price": 80,
+        "ingredients": [
+          "pork",
+          "rice noodles"
+        ]
+      },
+      {
+        "nameThai": "กะละแม",
+        "nameEn": "Karamae (Thai Caramelized Coconut Toffee)",
+        "price": 40,
+        "ingredients": [
+          "coconut milk",
+          "palm sugar"
+        ]
+      },
+      {
+        "nameThai": "ถั่วเขียวต้มน้ำตาล",
+        "nameEn": "Boiled Mung Beans in Syrup",
+        "price": 150,
+        "ingredients": [
+          "mung bean",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "น้ำตกไก่",
+        "nameEn": "Nam Tok Gai (Spicy Grilled Chicken Salad)",
+        "price": 110,
+        "ingredients": [
+          "chicken",
+          "fish sauce",
+          "lime"
+        ]
+      },
+      {
+        "nameThai": "ข้าวผัดอเมริกัน",
+        "nameEn": "American Fried Rice",
+        "price": 100,
+        "ingredients": [
+          "chicken",
+          "ketchup",
+          "rice"
+        ]
+      },
+      {
+        "nameThai": "กะหรี่พั๊บ",
+        "nameEn": "Curry Puff",
+        "price": 60,
+        "ingredients": [
+          "curry powder",
+          "potato"
+        ]
+      },
+      {
+        "nameThai": "ข้าวมันส้มตำ",
+        "nameEn": "Coconut Rice with Papaya Salad",
+        "price": 50,
+        "ingredients": [
+          "fish sauce",
+          "papaya",
+          "rice"
+        ]
+      },
+      {
+        "nameThai": "หมูมะนาว",
+        "nameEn": "Moo Manao (Pork with Lime and Chili Salad)",
+        "price": 130,
+        "ingredients": [
+          "fish sauce",
+          "lime",
+          "pork"
+        ]
+      }
+    ],
+    "raw": {
+      "ocr": "เมนูอาหาร\nลูกชุบ\n40\nต้มข่ากุ้ง\n120\nผัดผักบุ้งไฟแดง\n110\nวุ้นกะทิ\n70\nข้าวหมูกรอบ\n60\nแฮ่กึ๊น\n140\nข้าวมันไก่\n130\nข้าวผัดสับปะรด\n90\nก๋วยจั๊บน้ำข้น\n80\nกะละแม\n40\nถั่วเขียวต้มน้ำตาล\n150\nน้ำตกไก่\n110\nข้าวผัดอเมริกัน\n100\nกะหรี่พั๊บ\n60\nข้าวมันส้มตำ\n50\nหมูมะนาว\n130",
+      "english": "Menu\nLook Choob (Mung Bean Marzipan)\n40\nTom Kha Goong (Coconut Galangal Soup with Shrimp)\n120\nStir-Fried Morning Glory\n110\nCoconut Jelly\n70\nCrispy Pork Belly with Rice\n60\nHae Guen (Fried Shrimp Rolls)\n140\nHainanese Chicken Rice\n130\nPineapple Fried Rice\n90\nChinese Roll Noodle Soup\n80\nKaramae (Thai Caramelized Coconut Toffee)\n40\nBoiled Mung Beans in Syrup\n150\nNam Tok Gai (Spicy Grilled Chicken Salad)\n110\nAmerican Fried Rice\n100\nCurry Puff\n60\nCoconut Rice with Papaya Salad\n50\nMoo Manao (Pork with Lime and Chili Salad)\n130"
+    }
+  },
+  "v2-ocr-guide/menu0-photo-1mb.jpg": {
+    "dishes": [
+      {
+        "nameThai": "ตมขากุง",
+        "nameEn": "Coconut Galangal Soup with shrimp",
+        "price": 120,
+        "ingredients": [
+          "chili",
+          "coconut milk",
+          "coriander",
+          "fish sauce",
+          "galangal",
+          "kaffir lime leave",
+          "lemongrass",
+          "lime",
+          "mushroom",
+          "shrimp"
+        ]
+      },
+      {
+        "nameThai": "ลูกชุบ",
+        "nameEn": "Mung Bean Fruit Sweets",
+        "price": 40,
+        "ingredients": [
+          "coconut milk",
+          "mung bean",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "วุนกะทิ",
+        "nameEn": "Coconut Jelly",
+        "price": 70,
+        "ingredients": [
+          "coconut milk",
+          "pandan",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "ผัดผักบุ้งไฟแดง",
+        "nameEn": "Stir-fried Morning Glory",
+        "price": 110,
+        "ingredients": [
+          "chili",
+          "fermented soybean paste",
+          "garlic",
+          "morning glory",
+          "oyster sauce",
+          "soy sauce"
+        ]
+      },
+      {
+        "nameThai": "แฮกิน",
+        "nameEn": "แฮกิน",
+        "price": 140,
+        "ingredients": []
+      },
+      {
+        "nameThai": "ข้าวหมูกรอบ",
+        "nameEn": "Crispy Pork Belly on Rice",
+        "price": 68,
+        "ingredients": [
+          "crispy pork belly",
+          "cucumber",
+          "egg",
+          "rice",
+          "soy sauce",
+          "sugar",
+          "wheat flour"
+        ]
+      },
+      {
+        "nameThai": "ข้าวผัดสับปะรด",
+        "nameEn": "Pineapple Fried Rice",
+        "price": 90,
+        "ingredients": [
+          "cashew nut",
+          "curry powder",
+          "egg",
+          "pineapple",
+          "raisin",
+          "rice",
+          "shrimp",
+          "soy sauce"
+        ]
+      },
+      {
+        "nameThai": "ข้าวมันไก่",
+        "nameEn": "Hainanese Chicken Rice",
+        "price": 130,
+        "ingredients": [
+          "chicken",
+          "chicken broth",
+          "chili",
+          "cucumber",
+          "fermented soybean paste",
+          "garlic",
+          "ginger",
+          "rice",
+          "soy sauce"
+        ]
+      },
+      {
+        "nameThai": "กะละแม",
+        "nameEn": "Coconut Toffee",
+        "price": 40,
+        "ingredients": [
+          "coconut milk",
+          "glutinous rice flour",
+          "palm sugar",
+          "pandan"
+        ]
+      },
+      {
+        "nameThai": "ก๋วยจั๊บน้ำข้น",
+        "nameEn": "Rolled Rice Noodle Soup",
+        "price": 80,
+        "ingredients": [
+          "crispy pork belly",
+          "egg",
+          "five-spice",
+          "pepper",
+          "pork",
+          "pork offal",
+          "rolled rice noodle",
+          "soy sauce"
+        ]
+      },
+      {
+        "nameThai": "น้ำตกไก่",
+        "nameEn": "Grilled Meat Salad with chicken",
+        "price": 110,
+        "ingredients": [
+          "chicken",
+          "chili",
+          "fish sauce",
+          "lime",
+          "mint",
+          "shallot",
+          "spring onion",
+          "sticky rice",
+          "toasted rice powder"
+        ]
+      },
+      {
+        "nameThai": "ถั่วเขียวต้มน้ำตาล",
+        "nameEn": "Sweet Mung Bean Soup",
+        "price": 150,
+        "ingredients": [
+          "coconut milk",
+          "mung bean",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "กะหรี่ปั๊บ",
+        "nameEn": "Curry Puffs",
+        "price": 60,
+        "ingredients": [
+          "butter",
+          "chicken",
+          "cooking oil",
+          "curry powder",
+          "egg",
+          "onion",
+          "pork fat",
+          "potato",
+          "taro",
+          "wheat flour"
+        ]
+      },
+      {
+        "nameThai": "ข้าวผัดอเมริกัน",
+        "nameEn": "American Fried Rice",
+        "price": 100,
+        "ingredients": [
+          "chicken",
+          "fried egg",
+          "raisin",
+          "rice",
+          "sausage",
+          "tomato sauce",
+          "wheat flour"
+        ]
+      },
+      {
+        "nameThai": "หมูมะนาว",
+        "nameEn": "Pork with Spicy Lime Dressing",
+        "price": 130,
+        "ingredients": [
+          "chili",
+          "chinese kale",
+          "coriander",
+          "fish sauce",
+          "garlic",
+          "lime",
+          "pork"
+        ]
+      },
+      {
+        "nameThai": "ข้าวมันส้มตำ",
+        "nameEn": "Coconut Rice with Papaya Salad",
+        "price": 50,
+        "ingredients": [
+          "beef",
+          "chili",
+          "coconut milk",
+          "dried shrimp",
+          "fish sauce",
+          "green papaya",
+          "lime",
+          "long bean",
+          "palm sugar",
+          "peanut",
+          "rice",
+          "tomato"
+        ]
+      }
+    ],
+    "raw": {
+      "lines": [
+        "เมนอาหาร",
+        "ลูกชุบ",
+        "120",
+        "40",
+        "ตมขากุง",
+        "ผัดผักบุ้งไฟแดง",
+        "70",
+        "110",
+        "วุนกะทิ",
+        "ข้าวหมูกรอบ",
+        "140",
+        "68",
+        "แฮกิน",
+        "90",
+        "ข้าวมันไก่",
+        "130",
+        "ข้าวผัดสับปะรด",
+        "40",
+        "ก๋วยจั๊บน้ำข้น",
+        "80",
+        "กะละแม",
+        "ถั่วเขียวต้มน้ำตาล",
+        "110",
+        "150",
+        "น้ำตกไก่",
+        "ข้าวผัดอเมริกัน",
+        "100",
+        "60",
+        "กะหรี่ปั๊บ",
+        "ข้าวมันส้มตำ",
+        "130",
+        "50",
+        "หมูมะนาว"
+      ]
+    }
+  },
+  "v1-gemini/menu1-clean-1mb.jpg": {
+    "dishes": [
+      {
+        "nameThai": "สุกี้น้ำไก่",
+        "nameEn": "Chicken Suki Soup",
+        "price": 50,
+        "ingredients": [
+          "chicken",
+          "mushroom",
+          "noodle",
+          "vegetables"
+        ]
+      },
+      {
+        "nameThai": "น้ำมะนาว",
+        "nameEn": "Lime Juice",
+        "price": 130,
+        "ingredients": [
+          "lime",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "ตับหวาน",
+        "nameEn": "Spicy Pork Liver Salad",
+        "price": 120,
+        "ingredients": [
+          "fish sauce",
+          "herbs",
+          "pork liver"
+        ]
+      },
+      {
+        "nameThai": "ส้มตำปูปลาร้า",
+        "nameEn": "Papaya Salad with Salted Crab and Fermented Fish",
+        "price": 80,
+        "ingredients": [
+          "crab",
+          "fermented fish",
+          "papaya"
+        ]
+      },
+      {
+        "nameThai": "ปลากะพงนึ่งซีอิ๊ว",
+        "nameEn": "Steamed Seabass with Soy Sauce",
+        "price": 70,
+        "ingredients": [
+          "mushroom",
+          "seabass",
+          "soy sauce"
+        ]
+      },
+      {
+        "nameThai": "น้ำพริกปลาทู",
+        "nameEn": "Spicy Mackerel Relish",
+        "price": 150,
+        "ingredients": [
+          "chili",
+          "mackerel"
+        ]
+      },
+      {
+        "nameThai": "ข้าวต้มมัด",
+        "nameEn": "Sticky Rice with Banana",
+        "price": 140,
+        "ingredients": [
+          "banana",
+          "sticky rice"
+        ]
+      },
+      {
+        "nameThai": "ขนมเปี๊ยะ",
+        "nameEn": "Chinese Pastry",
+        "price": 100,
+        "ingredients": [
+          "bean paste",
+          "flour"
+        ]
+      },
+      {
+        "nameThai": "ซุปเปอร์ขาไก่",
+        "nameEn": "Spicy Chicken Feet Soup",
+        "price": 90,
+        "ingredients": [
+          "chicken feet",
+          "chili"
+        ]
+      },
+      {
+        "nameThai": "นมเย็น",
+        "nameEn": "Iced Sala Syrup with Milk",
+        "price": 50,
+        "ingredients": [
+          "milk",
+          "sala syrup"
+        ]
+      },
+      {
+        "nameThai": "น้ำเปล่า",
+        "nameEn": "Drinking Water",
+        "price": 40,
+        "ingredients": [
+          "water"
+        ]
+      },
+      {
+        "nameThai": "น้ำแข็งเปล่า",
+        "nameEn": "Ice",
+        "price": 120,
+        "ingredients": [
+          "ice"
+        ]
+      },
+      {
+        "nameThai": "ข้าวต้มไก่",
+        "nameEn": "Chicken Rice Soup",
+        "price": 110,
+        "ingredients": [
+          "chicken",
+          "rice"
+        ]
+      },
+      {
+        "nameThai": "บะหมี่น้ำ",
+        "nameEn": "Noodle Soup",
+        "price": 70,
+        "ingredients": [
+          "broth",
+          "noodle"
+        ]
+      },
+      {
+        "nameThai": "ก๋วยเตี๋ยวัต้มยำกุ้ง",
+        "nameEn": "Tom Yum Goong Noodles",
+        "price": 60,
+        "ingredients": [
+          "mushroom",
+          "noodle",
+          "shrimp"
+        ]
+      },
+      {
+        "nameThai": "ก๋วยเตี๋ยวคั่วไก่",
+        "nameEn": "Stir-fried Noodles with Chicken",
+        "price": 140,
+        "ingredients": [
+          "chicken",
+          "egg",
+          "noodle"
+        ]
+      }
+    ],
+    "raw": {
+      "ocr": "เมนูอาหาร\nสุกี้น้ำไก่\n50\nน้ำมะนาว\n130\nตับหวาน\n120\nส้มตำปูปลาร้า\n80\nปลากะพงนึ่งซีอิ๊ว\n70\nน้ำพริกปลาทู\n150\nข้าวต้มมัด\n140\nขนมเปี๊ยะ\n100\nซุปเปอร์ขาไก่\n90\nนมเย็น\n50\nน้ำเปล่า\n40\nน้ำแข็งเปล่า\n120\nข้าวต้มไก่\n110\nบะหมี่น้ำ\n70\nก๋วยเตี๋ยวัต้มยำกุ้ง\n60\nก๋วยเตี๋ยวคั่วไก่\n140",
+      "english": "Food Menu\nChicken Suki Soup\n50\nLime Juice\n130\nSpicy Pork Liver Salad (Tap Wan)\n120\nPapaya Salad with Salted Crab and Fermented Fish (Som Tum Poo Pla Ra)\n80\nSteamed Seabass with Soy Sauce\n70\nSpicy Mackerel Relish (Nam Phrik Pla Tu)\n150\nSticky Rice with Banana in Coconut Milk (Khao Tom Mat)\n140\nChinese Pastry (Khanom Pia)\n100\nSpicy Chicken Feet Soup (Super Kha Gai)\n90\nIced Sala Syrup with Milk (Nom Yen)\n50\nDrinking Water\n40\nIce\n120\nChicken Rice Soup\n110\nNoodle Soup\n70\nTom Yum Goong Noodles\n60\nStir-fried Noodles with Chicken (Kuay Teow Khua Gai)\n140"
+    }
+  },
+  "v2-ocr-guide/menu1-clean-1mb.jpg": {
+    "dishes": [
+      {
+        "nameThai": "สุกี้น้ำไก่",
+        "nameEn": "Thai Suki with chicken",
+        "price": 50,
+        "ingredients": [
+          "chicken",
+          "chili sauce",
+          "egg",
+          "fermented red bean curd",
+          "glass noodle",
+          "mixed vegetable",
+          "sesame"
+        ]
+      },
+      {
+        "nameThai": "นำมะนาว",
+        "nameEn": "Limeade",
+        "price": 130,
+        "ingredients": [
+          "lime",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "ส้มตำปูปลาร้า",
+        "nameEn": "Papaya Salad with Salted Crab & Fermented Fish",
+        "price": 80,
+        "ingredients": [
+          "chili",
+          "fermented fish sauce",
+          "fish sauce",
+          "garlic",
+          "green papaya",
+          "lime",
+          "long bean",
+          "palm sugar",
+          "salted crab",
+          "tomato"
+        ]
+      },
+      {
+        "nameThai": "ตับหวาน",
+        "nameEn": "Isan Liver Salad",
+        "price": 120,
+        "ingredients": [
+          "chili",
+          "fish sauce",
+          "lime",
+          "mint",
+          "pork offal",
+          "shallot",
+          "toasted rice powder"
+        ]
+      },
+      {
+        "nameThai": "น้ำพริกปลาทู",
+        "nameEn": "Mackerel with Chili Dip",
+        "price": 150,
+        "ingredients": [
+          "chili",
+          "fish sauce",
+          "garlic",
+          "lime",
+          "mackerel",
+          "mixed vegetable",
+          "shrimp paste"
+        ]
+      },
+      {
+        "nameThai": "ปลากะพงนึ่งซีอิว",
+        "nameEn": "Steamed Fish with Soy Sauce",
+        "price": 70,
+        "ingredients": [
+          "coriander",
+          "fish",
+          "ginger",
+          "mushroom",
+          "soy sauce",
+          "spring onion"
+        ]
+      },
+      {
+        "nameThai": "ขนมเปี๊ยะ",
+        "nameEn": "Chinese Flaky Pastry",
+        "price": 100,
+        "ingredients": [
+          "egg",
+          "mung bean",
+          "pork fat",
+          "sugar",
+          "taro",
+          "wheat flour"
+        ]
+      },
+      {
+        "nameThai": "ข้าวต้มมัด",
+        "nameEn": "Banana Sticky Rice in Banana Leaf",
+        "price": 140,
+        "ingredients": [
+          "banana",
+          "coconut milk",
+          "salt",
+          "sticky rice",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "ซุปเปอร์ขาไก่",
+        "nameEn": "Spicy Sour Chicken Feet Salad",
+        "price": 90,
+        "ingredients": [
+          "chicken",
+          "chili",
+          "fish sauce",
+          "galangal",
+          "kaffir lime leave",
+          "lemongrass",
+          "lime",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "นมเย็น",
+        "nameEn": "Pink Milk",
+        "price": 50,
+        "ingredients": [
+          "milk",
+          "sugar",
+          "sweetened condensed milk"
+        ]
+      },
+      {
+        "nameThai": "น้ำเปล่า",
+        "nameEn": "Drinking Water",
+        "price": 40,
+        "ingredients": []
+      },
+      {
+        "nameThai": "น้ำแข็งเปล่า",
+        "nameEn": "Ice",
+        "price": 120,
+        "ingredients": []
+      },
+      {
+        "nameThai": "ข้าวต้มไก่",
+        "nameEn": "Rice Soup with chicken",
+        "price": 110,
+        "ingredients": [
+          "chicken",
+          "coriander",
+          "fish sauce",
+          "garlic",
+          "pepper",
+          "pork broth",
+          "rice",
+          "spring onion"
+        ]
+      },
+      {
+        "nameThai": "บะหมี่น้ำ",
+        "nameEn": "Egg Noodles",
+        "price": 70,
+        "ingredients": [
+          "chinese kale",
+          "egg noodle",
+          "pork broth",
+          "red roast pork",
+          "wheat flour"
+        ]
+      },
+      {
+        "nameThai": "ก๋วยเตี๋ยวต้มยำกุ้ง",
+        "nameEn": "Tom Yum Noodle Soup with shrimp",
+        "price": 60,
+        "ingredients": [
+          "bean sprout",
+          "chili",
+          "fish ball",
+          "fish sauce",
+          "lime",
+          "minced pork",
+          "peanut",
+          "rice noodle",
+          "shrimp",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "ก๋วยเตี๋ยวคั่วไก่",
+        "nameEn": "Wok-charred Noodles with Chicken",
+        "price": 140,
+        "ingredients": [
+          "chicken",
+          "egg",
+          "oyster sauce",
+          "soy sauce",
+          "spring onion",
+          "squid",
+          "wide rice noodle"
+        ]
+      }
+    ],
+    "raw": {
+      "lines": [
+        "เมนูอาหาร",
+        "สุกี้น้ำไก่",
+        "50",
+        "นำมะนาว",
+        "130",
+        "ตับหวาน",
+        "120 ส้มตำปูปลาร้า",
+        "80",
+        "ปลากะพงนึ่งซีอิว",
+        "70 น้ำพริกปลาทู",
+        "150",
+        "ข้าวต้มมัด",
+        "140",
+        "ขนมเปี๊ยะ",
+        "100",
+        "ซุปเปอร์ขาไก่",
+        "90",
+        "นมเย็น",
+        "50",
+        "น้ำเปล่า",
+        "40",
+        "น้ำแข็งเปล่า",
+        "120",
+        "ข้าวต้มไก่",
+        "110",
+        "บะหมี่น้ำ",
+        "70",
+        "ก๋วยเตี๋ยวต้มยำกุ้ง",
+        "60 ก๋วยเตี๋ยวคั่วไก่",
+        "140"
+      ]
+    }
+  },
+  "v1-gemini/menu1-photo-1mb.jpg": {
+    "dishes": [
+      {
+        "nameThai": "สุกี้้น้ำไก่",
+        "nameEn": "Chicken Suki in Broth",
+        "price": 50,
+        "ingredients": [
+          "chicken",
+          "mushroom",
+          "noodle",
+          "vegetables"
+        ]
+      },
+      {
+        "nameThai": "น้ำมะนาว",
+        "nameEn": "Lime Juice",
+        "price": 130,
+        "ingredients": [
+          "lime",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "ตับหวาน",
+        "nameEn": "Sweet Pork Liver Salad",
+        "price": 120,
+        "ingredients": [
+          "fish sauce",
+          "lime",
+          "pork liver"
+        ]
+      },
+      {
+        "nameThai": "ส้มตำปูปลาร้า",
+        "nameEn": "Som Tum with Crab and Fermented Fish",
+        "price": 80,
+        "ingredients": [
+          "crab",
+          "fermented fish sauce",
+          "papaya"
+        ]
+      },
+      {
+        "nameThai": "ปลากะพงนึ่งซีอิ๊ว",
+        "nameEn": "Steamed Sea Bass with Soy Sauce",
+        "price": 70,
+        "ingredients": [
+          "mushroom",
+          "sea bass",
+          "soy sauce"
+        ]
+      },
+      {
+        "nameThai": "น้ำพริกปลาทู",
+        "nameEn": "Mackerel Chili Paste Relish",
+        "price": 150,
+        "ingredients": [
+          "chili",
+          "fish sauce",
+          "mackerel"
+        ]
+      },
+      {
+        "nameThai": "ข้าวต้มมัด",
+        "nameEn": "Sticky Rice in Banana Leaf",
+        "price": 140,
+        "ingredients": [
+          "banana",
+          "coconut milk",
+          "sticky rice"
+        ]
+      },
+      {
+        "nameThai": "ขนมเปี๊ยะ",
+        "nameEn": "Chinese Pastry (Pia)",
+        "price": 100,
+        "ingredients": [
+          "bean paste",
+          "flour"
+        ]
+      },
+      {
+        "nameThai": "ซุปเปอร์ขาไก่",
+        "nameEn": "Super Spicy Chicken Feet Soup",
+        "price": 90,
+        "ingredients": [
+          "chicken feet",
+          "chili",
+          "lime"
+        ]
+      },
+      {
+        "nameThai": "นมเย็น",
+        "nameEn": "Pink Milk",
+        "price": 50,
+        "ingredients": [
+          "milk",
+          "sala syrup"
+        ]
+      },
+      {
+        "nameThai": "น้ำเปล่า",
+        "nameEn": "Drinking Water",
+        "price": 40,
+        "ingredients": [
+          "water"
+        ]
+      },
+      {
+        "nameThai": "น้ำแข็งเปล่า",
+        "nameEn": "Ice",
+        "price": 120,
+        "ingredients": [
+          "ice"
+        ]
+      },
+      {
+        "nameThai": "ข้าวต้มไก่",
+        "nameEn": "Chicken Rice Soup",
+        "price": 110,
+        "ingredients": [
+          "chicken",
+          "ginger",
+          "rice"
+        ]
+      },
+      {
+        "nameThai": "บะหมี่น้ำ",
+        "nameEn": "Noodle Soup",
+        "price": 70,
+        "ingredients": [
+          "broth",
+          "noodle",
+          "vegetables"
+        ]
+      },
+      {
+        "nameThai": "ก๋วยเตี๋ยวต้มยำกุ้ง",
+        "nameEn": "Tom Yum Shrimp Noodle Soup",
+        "price": 60,
+        "ingredients": [
+          "chili",
+          "mushroom",
+          "noodle",
+          "shrimp"
+        ]
+      },
+      {
+        "nameThai": "ก๋วยเตี๋ยวคั่วไก่",
+        "nameEn": "Stir-fried Rice Noodles with Chicken",
+        "price": 140,
+        "ingredients": [
+          "chicken",
+          "egg",
+          "rice noodles"
+        ]
+      }
+    ],
+    "raw": {
+      "ocr": "เมนูอาหาร\nสุกี้้น้ำไก่\n50\nน้ำมะนาว\n130\nตับหวาน\n120\nส้มตำปูปลาร้า\n80\nปลากะพงนึ่งซีอิ๊ว\n70\nน้ำพริกปลาทู\n150\nข้าวต้มมัด\n140\nขนมเปี๊ยะ\n100\nซุปเปอร์ขาไก่\n90\nนมเย็น\n50\nน้ำเปล่า\n40\nน้ำแข็งเปล่า\n120\nข้าวต้มไก่\n110\nบะหมี่น้ำ\n70\nก๋วยเตี๋ยวต้มยำกุ้ง\n60\nก๋วยเตี๋ยวคั่วไก่\n140",
+      "english": "Menu\nChicken Suki in Broth\n50\nLime Juice\n130\nSweet Pork Liver Salad\n120\nSom Tum with Crab and Fermented Fish\n80\nSteamed Sea Bass with Soy Sauce\n70\nMackerel Chili Paste Relish\n150\nSticky Rice in Banana Leaf\n140\nChinese Pastry (Pia)\n100\nSuper Spicy Chicken Feet Soup\n90\nPink Milk\n50\nDrinking Water\n40\nIce\n120\nChicken Rice Soup\n110\nNoodle Soup\n70\nTom Yum Shrimp Noodle Soup\n60\nStir-fried Rice Noodles with Chicken\n140"
+    }
+  },
+  "v2-ocr-guide/menu1-photo-1mb.jpg": {
+    "dishes": [
+      {
+        "nameThai": "น้ำมะนาว",
+        "nameEn": "Limeade",
+        "price": 130,
+        "ingredients": [
+          "lime",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "สุกี้น้ำไก่",
+        "nameEn": "Thai Suki with chicken",
+        "price": 50,
+        "ingredients": [
+          "chicken",
+          "chili sauce",
+          "egg",
+          "fermented red bean curd",
+          "glass noodle",
+          "mixed vegetable",
+          "sesame"
+        ]
+      },
+      {
+        "nameThai": "สมตำปูปลาร้า",
+        "nameEn": "Papaya Salad with Salted Crab & Fermented Fish",
+        "price": 80,
+        "ingredients": [
+          "chili",
+          "fermented fish sauce",
+          "fish sauce",
+          "garlic",
+          "green papaya",
+          "lime",
+          "long bean",
+          "palm sugar",
+          "salted crab",
+          "tomato"
+        ]
+      },
+      {
+        "nameThai": "ตับหวาน",
+        "nameEn": "Isan Liver Salad",
+        "price": 120,
+        "ingredients": [
+          "chili",
+          "fish sauce",
+          "lime",
+          "mint",
+          "pork offal",
+          "shallot",
+          "toasted rice powder"
+        ]
+      },
+      {
+        "nameThai": "น้ำพริกปลาทู",
+        "nameEn": "Mackerel with Chili Dip",
+        "price": 150,
+        "ingredients": [
+          "chili",
+          "fish sauce",
+          "garlic",
+          "lime",
+          "mackerel",
+          "mixed vegetable",
+          "shrimp paste"
+        ]
+      },
+      {
+        "nameThai": "ปลากะพงนึ่งซือว",
+        "nameEn": "Steamed Fish with Soy Sauce (sea bass)",
+        "price": 70,
+        "ingredients": [
+          "coriander",
+          "fish",
+          "ginger",
+          "mushroom",
+          "sea bass",
+          "soy sauce",
+          "spring onion"
+        ]
+      },
+      {
+        "nameThai": "ขนมเปี๊ยะ",
+        "nameEn": "Chinese Flaky Pastry",
+        "price": 100,
+        "ingredients": [
+          "egg",
+          "mung bean",
+          "pork fat",
+          "sugar",
+          "taro",
+          "wheat flour"
+        ]
+      },
+      {
+        "nameThai": "ข้าวตมมัด",
+        "nameEn": "Banana Sticky Rice in Banana Leaf",
+        "price": 140,
+        "ingredients": [
+          "banana",
+          "coconut milk",
+          "salt",
+          "sticky rice",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "นมเย็น",
+        "nameEn": "Pink Milk",
+        "price": 50,
+        "ingredients": [
+          "milk",
+          "sugar",
+          "sweetened condensed milk"
+        ]
+      },
+      {
+        "nameThai": "ซุปเปอร์ขาไก่",
+        "nameEn": "Spicy Sour Chicken Feet Salad",
+        "price": 90,
+        "ingredients": [
+          "chicken",
+          "chili",
+          "fish sauce",
+          "galangal",
+          "kaffir lime leave",
+          "lemongrass",
+          "lime",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "น้ำแข็งเปล่า",
+        "nameEn": "Ice",
+        "price": 120,
+        "ingredients": []
+      },
+      {
+        "nameThai": "น้ำเปลา",
+        "nameEn": "Drinking Water",
+        "price": 40,
+        "ingredients": []
+      },
+      {
+        "nameThai": "บะหมี่น้ำ",
+        "nameEn": "Egg Noodles",
+        "price": 70,
+        "ingredients": [
+          "chinese kale",
+          "egg noodle",
+          "pork broth",
+          "red roast pork",
+          "wheat flour"
+        ]
+      },
+      {
+        "nameThai": "ข้าวต้มไก่",
+        "nameEn": "Rice Soup with chicken",
+        "price": 110,
+        "ingredients": [
+          "chicken",
+          "coriander",
+          "fish sauce",
+          "garlic",
+          "pepper",
+          "pork broth",
+          "rice",
+          "spring onion"
+        ]
+      },
+      {
+        "nameThai": "ก๋วยเตี๋ยวคั่วไก่",
+        "nameEn": "Wok-charred Noodles with Chicken",
+        "price": 140,
+        "ingredients": [
+          "chicken",
+          "egg",
+          "oyster sauce",
+          "soy sauce",
+          "spring onion",
+          "squid",
+          "wide rice noodle"
+        ]
+      },
+      {
+        "nameThai": "ก๋วยเตี๋ยวต้มยำกุง",
+        "nameEn": "Tom Yum Noodle Soup with shrimp",
+        "price": 60,
+        "ingredients": [
+          "bean sprout",
+          "chili",
+          "fish ball",
+          "fish sauce",
+          "lime",
+          "minced pork",
+          "peanut",
+          "rice noodle",
+          "shrimp",
+          "sugar"
+        ]
+      }
+    ],
+    "raw": {
+      "lines": [
+        "เมนูอาหาร",
+        "สุกี้น้ำไก่",
+        "130",
+        "50",
+        "น้ำมะนาว",
+        "ตับหวาน",
+        "120",
+        "สมตำปูปลาร้า",
+        "80",
+        "ปลากะพงนึ่งซือว",
+        "150",
+        "70",
+        "น้ำพริกปลาทู",
+        "ข้าวตมมัด",
+        "140",
+        "ขนมเปี๊ยะ",
+        "100",
+        "50",
+        "90",
+        "นมเย็น",
+        "ซุปเปอร์ขาไก่",
+        "น้ำเปลา",
+        "40",
+        "น้ำแข็งเปล่า",
+        "120",
+        "ข้าวต้มไก่",
+        "110",
+        "บะหมี่น้ำ",
+        "70",
+        "ก๋วยเตี๋ยวต้มยำกุง",
+        "60",
+        "ก๋วยเตี๋ยวคั่วไก่",
+        "140"
+      ]
+    }
+  },
+  "v1-gemini/menu2-clean-1mb.jpg": {
+    "dishes": [
+      {
+        "nameThai": "ไข่เจียว",
+        "nameEn": "Omelette",
+        "price": 60,
+        "ingredients": [
+          "egg",
+          "fish sauce",
+          "oil"
+        ]
+      },
+      {
+        "nameThai": "ปลาเผาเกลือ",
+        "nameEn": "Salt-crusted Grilled Fish",
+        "price": 140,
+        "ingredients": [
+          "fish",
+          "salt"
+        ]
+      },
+      {
+        "nameThai": "ยำมะม่วง",
+        "nameEn": "Mango Salad",
+        "price": 130,
+        "ingredients": [
+          "chili",
+          "fish sauce",
+          "mango"
+        ]
+      },
+      {
+        "nameThai": "ฝอยทอง",
+        "nameEn": "Foi Thong",
+        "price": 90,
+        "ingredients": [
+          "egg yolk",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "กล้วยบวชชี",
+        "nameEn": "Banana in Coconut Milk",
+        "price": 80,
+        "ingredients": [
+          "banana",
+          "coconut milk",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "ไอศกรีมกะทิ",
+        "nameEn": "Coconut Ice Cream",
+        "price": 40,
+        "ingredients": [
+          "coconut milk",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "กุ้งอบวุ้นเส้น",
+        "nameEn": "Baked Shrimp with Glass Noodles",
+        "price": 150,
+        "ingredients": [
+          "ginger",
+          "glass noodles",
+          "shrimp",
+          "soy sauce"
+        ]
+      },
+      {
+        "nameThai": "บัวลอย",
+        "nameEn": "Bua Loi",
+        "price": 110,
+        "ingredients": [
+          "coconut milk",
+          "rice flour"
+        ]
+      },
+      {
+        "nameThai": "โกโก้เย็น",
+        "nameEn": "Iced Cocoa",
+        "price": 100,
+        "ingredients": [
+          "cocoa",
+          "milk",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "ทองหยิบ",
+        "nameEn": "Thong Yip",
+        "price": 60,
+        "ingredients": [
+          "egg yolk",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "ผัดบรอกโคลี",
+        "nameEn": "Stir-fried Broccoli",
+        "price": 50,
+        "ingredients": [
+          "broccoli",
+          "garlic",
+          "oyster sauce"
+        ]
+      },
+      {
+        "nameThai": "เต้าฮวย",
+        "nameEn": "Tao Huai",
+        "price": 130,
+        "ingredients": [
+          "ginger syrup",
+          "tofu"
+        ]
+      },
+      {
+        "nameThai": "ยำมาม่า",
+        "nameEn": "Spicy Instant Noodle Salad",
+        "price": 120,
+        "ingredients": [
+          "chili",
+          "fish sauce",
+          "instant noodles",
+          "lime juice"
+        ]
+      },
+      {
+        "nameThai": "กระทงทอง",
+        "nameEn": "Krathong Thong",
+        "price": 80,
+        "ingredients": [
+          "chicken",
+          "corn",
+          "crispy pastry shell",
+          "peas"
+        ]
+      },
+      {
+        "nameThai": "ผัดเห็ด",
+        "nameEn": "Stir-fried Mushrooms",
+        "price": 70,
+        "ingredients": [
+          "garlic",
+          "mushroom",
+          "soy sauce"
+        ]
+      },
+      {
+        "nameThai": "แกงกะหรี่เนื้อ",
+        "nameEn": "Beef Yellow Curry",
+        "price": 150,
+        "ingredients": [
+          "beef",
+          "coconut milk",
+          "curry powder",
+          "potato"
+        ]
+      }
+    ],
+    "raw": {
+      "ocr": "เมนูอาหาร\nไข่เจียว\n60\nปลาเผาเกลือ\n140\nยำมะม่วง\n130\nฝอยทอง\n90\nกล้วยบวชชี\n80\nไอศกรีมกะทิ\n40\nกุ้งอบวุ้นเส้น\n150\nบัวลอย\n110\nโกโก้เย็น\n100\nทองหยิบ\n60\nผัดบรอกโคลี\n50\nเต้าฮวย\n130\nยำมาม่า\n120\nกระทงทอง\n80\nผัดเห็ด\n70\nแกงกะหรี่เนื้อ\n150",
+      "english": "Menu\nOmelette\n60\nSalt-crusted Grilled Fish\n140\nMango Salad\n130\nFoi Thong\n90\nBanana in Coconut Milk\n80\nCoconut Ice Cream\n40\nBaked Shrimp with Glass Noodles\n150\nBua Loi\n110\nIced Cocoa\n100\nThong Yip\n60\nStir-fried Broccoli\n50\nTao Huai\n130\nSpicy Instant Noodle Salad\n120\nKrathong Thong\n80\nStir-fried Mushrooms\n70\nBeef Yellow Curry\n150"
+    }
+  },
+  "v2-ocr-guide/menu2-clean-1mb.jpg": {
+    "dishes": [
+      {
+        "nameThai": "ไข่เจียว",
+        "nameEn": "Thai Omelette",
+        "price": 60,
+        "ingredients": [
+          "chili sauce",
+          "cooking oil",
+          "egg",
+          "fish sauce",
+          "rice"
+        ]
+      },
+      {
+        "nameThai": "ปลาเผาเกลือ",
+        "nameEn": "Salt-crusted Grilled Fish",
+        "price": 140,
+        "ingredients": [
+          "chili",
+          "fermented rice noodle",
+          "fish",
+          "fish sauce",
+          "lemongrass",
+          "lime",
+          "pandan",
+          "salt"
+        ]
+      },
+      {
+        "nameThai": "ยำมะม่วง",
+        "nameEn": "Green Mango Salad",
+        "price": 130,
+        "ingredients": [
+          "cashew nut",
+          "chili",
+          "dried shrimp",
+          "fish sauce",
+          "green mango",
+          "lime",
+          "palm sugar",
+          "peanut",
+          "shallot"
+        ]
+      },
+      {
+        "nameThai": "ฝอยทอง",
+        "nameEn": "Golden Egg Yolk Threads",
+        "price": 90,
+        "ingredients": [
+          "egg",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "ไอศกรีมกะทิ",
+        "nameEn": "Coconut Ice Cream",
+        "price": 40,
+        "ingredients": [
+          "bread",
+          "coconut milk",
+          "milk",
+          "peanut",
+          "sticky rice",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "กลวยบวชชี",
+        "nameEn": "Banana in Coconut Milk",
+        "price": 80,
+        "ingredients": [
+          "banana",
+          "coconut milk",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "กุ้งอบวุ้นเส้น",
+        "nameEn": "Baked Shrimp with Glass Noodles",
+        "price": 150,
+        "ingredients": [
+          "garlic",
+          "ginger",
+          "glass noodle",
+          "oyster sauce",
+          "pepper",
+          "pork fat",
+          "sesame",
+          "shrimp",
+          "soy sauce"
+        ]
+      },
+      {
+        "nameThai": "บัวลอย",
+        "nameEn": "Rice Balls in Coconut Milk",
+        "price": 110,
+        "ingredients": [
+          "coconut milk",
+          "egg",
+          "glutinous rice flour",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "โกโกเย็น",
+        "nameEn": "Iced Cocoa",
+        "price": 100,
+        "ingredients": [
+          "cocoa",
+          "milk",
+          "sugar",
+          "sweetened condensed milk"
+        ]
+      },
+      {
+        "nameThai": "ทองหยิบ",
+        "nameEn": "Golden Egg Yolk Flowers",
+        "price": 60,
+        "ingredients": [
+          "egg",
+          "rice flour",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "เต้าฮวย",
+        "nameEn": "Soft Tofu Pudding",
+        "price": 130,
+        "ingredients": [
+          "ginger",
+          "milk",
+          "soy milk",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "ผัดบรอกโคลี",
+        "nameEn": "Stir-fried Broccoli",
+        "price": 50,
+        "ingredients": [
+          "broccoli",
+          "carrot",
+          "garlic",
+          "oyster sauce",
+          "soy sauce"
+        ]
+      },
+      {
+        "nameThai": "ยำมามา",
+        "nameEn": "Instant Noodle Salad",
+        "price": 120,
+        "ingredients": [
+          "chili",
+          "fish sauce",
+          "instant noodle",
+          "lime",
+          "minced pork",
+          "onion",
+          "shrimp",
+          "squid",
+          "tomato"
+        ]
+      },
+      {
+        "nameThai": "กระทงทอง",
+        "nameEn": "Golden Cups",
+        "price": 80,
+        "ingredients": [
+          "carrot",
+          "chicken",
+          "cooking oil",
+          "corn",
+          "curry powder",
+          "egg",
+          "minced pork",
+          "onion",
+          "rice flour",
+          "wheat flour"
+        ]
+      },
+      {
+        "nameThai": "แกงกะหรี่เนื้อ",
+        "nameEn": "Yellow Curry with beef",
+        "price": 150,
+        "ingredients": [
+          "beef",
+          "coconut milk",
+          "cucumber",
+          "curry powder",
+          "fish sauce",
+          "onion",
+          "potato",
+          "shrimp paste",
+          "yellow curry paste"
+        ]
+      },
+      {
+        "nameThai": "ผัดเห็ด",
+        "nameEn": "Stir-fried Mushrooms",
+        "price": 70,
+        "ingredients": [
+          "garlic",
+          "mushroom",
+          "oyster sauce",
+          "soy sauce",
+          "spring onion"
+        ]
+      }
+    ],
+    "raw": {
+      "lines": [
+        "เมนอาหาร",
+        "ไข่เจียว",
+        "60",
+        "ปลาเผาเกลือ",
+        "140",
+        "ยำมะม่วง",
+        "130",
+        "ฝอยทอง",
+        "90",
+        "กลวยบวชชี",
+        "80",
+        "ไอศกรีมกะทิ",
+        "40",
+        "กุ้งอบวุ้นเส้น",
+        "150",
+        "บัวลอย",
+        "110",
+        "โกโกเย็น",
+        "100",
+        "ทองหยิบ",
+        "60",
+        "ผัดบรอกโคลี",
+        "50",
+        "เต้าฮวย",
+        "130",
+        "ยำมามา",
+        "120",
+        "กระทงทอง",
+        "80",
+        "ผัดเห็ด",
+        "70",
+        "แกงกะหรี่เนื้อ",
+        "150"
+      ]
+    }
+  },
+  "v1-gemini/menu2-photo-1mb.jpg": {
+    "dishes": [
+      {
+        "nameThai": "ไข่เจียว",
+        "nameEn": "Thai Omelette",
+        "price": 60,
+        "ingredients": [
+          "egg",
+          "fish sauce"
+        ]
+      },
+      {
+        "nameThai": "ปลาเผาเกลือ",
+        "nameEn": "Salt-Crusted Grilled Fish",
+        "price": 140,
+        "ingredients": [
+          "fish",
+          "salt"
+        ]
+      },
+      {
+        "nameThai": "ยำมะม่วง",
+        "nameEn": "Mango Salad",
+        "price": 130,
+        "ingredients": [
+          "fish sauce",
+          "mango",
+          "peanuts"
+        ]
+      },
+      {
+        "nameThai": "ฝอยทอง",
+        "nameEn": "Foi Thong",
+        "price": 90,
+        "ingredients": [
+          "egg yolk",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "กล้วยบวชชี",
+        "nameEn": "Bananas in Coconut Milk",
+        "price": 80,
+        "ingredients": [
+          "banana",
+          "coconut milk"
+        ]
+      },
+      {
+        "nameThai": "ไอศกรีมกะทิ",
+        "nameEn": "Coconut Ice Cream",
+        "price": 40,
+        "ingredients": [
+          "coconut milk"
+        ]
+      },
+      {
+        "nameThai": "กุ้งอบวุ้นเส้น",
+        "nameEn": "Baked Prawns with Glass Noodles",
+        "price": 150,
+        "ingredients": [
+          "glass noodles",
+          "oyster sauce",
+          "prawn"
+        ]
+      },
+      {
+        "nameThai": "บัวลอย",
+        "nameEn": "Bua Loi",
+        "price": 110,
+        "ingredients": [
+          "coconut milk",
+          "rice flour"
+        ]
+      },
+      {
+        "nameThai": "โกโก้เย็น",
+        "nameEn": "Iced Cocoa",
+        "price": 100,
+        "ingredients": [
+          "cocoa",
+          "milk"
+        ]
+      },
+      {
+        "nameThai": "ทองหยิบ",
+        "nameEn": "Thong Yip",
+        "price": 60,
+        "ingredients": [
+          "egg yolk",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "ผัดบรอกโคลี",
+        "nameEn": "Stir-Fried Broccoli",
+        "price": 50,
+        "ingredients": [
+          "broccoli",
+          "oyster sauce"
+        ]
+      },
+      {
+        "nameThai": "เต้าฮวย",
+        "nameEn": "Tofu Pudding",
+        "price": 130,
+        "ingredients": [
+          "tofu"
+        ]
+      },
+      {
+        "nameThai": "ยำมาม่า",
+        "nameEn": "Spicy MAMA Salad",
+        "price": 120,
+        "ingredients": [
+          "fish sauce",
+          "instant noodles"
+        ]
+      },
+      {
+        "nameThai": "กระทงทอง",
+        "nameEn": "Krathong Thong",
+        "price": 80,
+        "ingredients": [
+          "corn",
+          "pastry shell"
+        ]
+      },
+      {
+        "nameThai": "ผัดเห็ด",
+        "nameEn": "Stir-Fried Mushrooms",
+        "price": 70,
+        "ingredients": [
+          "mushroom",
+          "oyster sauce"
+        ]
+      },
+      {
+        "nameThai": "แกงกะหรี่เนื้อ",
+        "nameEn": "Beef Yellow Curry",
+        "price": 150,
+        "ingredients": [
+          "beef",
+          "coconut milk",
+          "curry paste",
+          "fish sauce"
+        ]
+      }
+    ],
+    "raw": {
+      "ocr": "เมนูอาหาร\nไข่เจียว\n60\nปลาเผาเกลือ\n140\nยำมะม่วง\n130\nฝอยทอง\n90\nกล้วยบวชชี\n80\nไอศกรีมกะทิ\n40\nกุ้งอบวุ้นเส้น\n150\nบัวลอย\n110\nโกโก้เย็น\n100\nทองหยิบ\n60\nผัดบรอกโคลี\n50\nเต้าฮวย\n130\nยำมาม่า\n120\nกระทงทอง\n80\nผัดเห็ด\n70\nแกงกะหรี่เนื้อ\n150",
+      "english": "Food Menu\nThai Omelette\n60\nSalt-Crusted Grilled Fish\n140\nMango Salad\n130\nFoi Thong\n90\nBananas in Coconut Milk\n80\nCoconut Ice Cream\n40\nBaked Prawns with Glass Noodles\n150\nBua Loi\n110\nIced Cocoa\n100\nThong Yip\n60\nStir-Fried Broccoli\n50\nTofu Pudding\n130\nSpicy MAMA Salad\n120\nKrathong Thong\n80\nStir-Fried Mushrooms\n70\nBeef Yellow Curry\n150"
+    }
+  },
+  "v2-ocr-guide/menu2-photo-1mb.jpg": {
+    "dishes": [
+      {
+        "nameThai": "ปลาเผาเกลือ",
+        "nameEn": "Salt-crusted Grilled Fish",
+        "price": 140,
+        "ingredients": [
+          "chili",
+          "fermented rice noodle",
+          "fish",
+          "fish sauce",
+          "lemongrass",
+          "lime",
+          "pandan",
+          "salt"
+        ]
+      },
+      {
+        "nameThai": "ไข่เจียว",
+        "nameEn": "Thai Omelette",
+        "price": 60,
+        "ingredients": [
+          "chili sauce",
+          "cooking oil",
+          "egg",
+          "fish sauce",
+          "rice"
+        ]
+      },
+      {
+        "nameThai": "ฝอยทอง",
+        "nameEn": "Golden Egg Yolk Threads",
+        "price": 90,
+        "ingredients": [
+          "egg",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "ยำมะม่วง",
+        "nameEn": "Green Mango Salad",
+        "price": 130,
+        "ingredients": [
+          "cashew nut",
+          "chili",
+          "dried shrimp",
+          "fish sauce",
+          "green mango",
+          "lime",
+          "palm sugar",
+          "peanut",
+          "shallot"
+        ]
+      },
+      {
+        "nameThai": "ไอศกรีมกะทิ",
+        "nameEn": "Coconut Ice Cream",
+        "price": 40,
+        "ingredients": [
+          "bread",
+          "coconut milk",
+          "milk",
+          "peanut",
+          "sticky rice",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "กลวยบวชชี",
+        "nameEn": "Banana in Coconut Milk",
+        "price": 80,
+        "ingredients": [
+          "banana",
+          "coconut milk",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "บัวลอย",
+        "nameEn": "Rice Balls in Coconut Milk",
+        "price": 110,
+        "ingredients": [
+          "coconut milk",
+          "egg",
+          "glutinous rice flour",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "กุ้งอบวุ้นเส้น",
+        "nameEn": "Baked Shrimp with Glass Noodles",
+        "price": 150,
+        "ingredients": [
+          "garlic",
+          "ginger",
+          "glass noodle",
+          "oyster sauce",
+          "pepper",
+          "pork fat",
+          "sesame",
+          "shrimp",
+          "soy sauce"
+        ]
+      },
+      {
+        "nameThai": "ทองหยิบ",
+        "nameEn": "Golden Egg Yolk Flowers",
+        "price": 60,
+        "ingredients": [
+          "egg",
+          "rice flour",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "โกโก้เย็น",
+        "nameEn": "Iced Cocoa",
+        "price": 100,
+        "ingredients": [
+          "cocoa",
+          "milk",
+          "sugar",
+          "sweetened condensed milk"
+        ]
+      },
+      {
+        "nameThai": "เต้าฮวย",
+        "nameEn": "Soft Tofu Pudding",
+        "price": 130,
+        "ingredients": [
+          "ginger",
+          "milk",
+          "soy milk",
+          "sugar"
+        ]
+      },
+      {
+        "nameThai": "ผัดบรอกโคลี",
+        "nameEn": "Stir-fried Broccoli",
+        "price": 50,
+        "ingredients": [
+          "broccoli",
+          "carrot",
+          "garlic",
+          "oyster sauce",
+          "soy sauce"
+        ]
+      },
+      {
+        "nameThai": "กระทงทอง",
+        "nameEn": "Golden Cups",
+        "price": 80,
+        "ingredients": [
+          "carrot",
+          "chicken",
+          "cooking oil",
+          "corn",
+          "curry powder",
+          "egg",
+          "minced pork",
+          "onion",
+          "rice flour",
+          "wheat flour"
+        ]
+      },
+      {
+        "nameThai": "ยำมาม่า",
+        "nameEn": "Instant Noodle Salad",
+        "price": 120,
+        "ingredients": [
+          "chili",
+          "fish sauce",
+          "instant noodle",
+          "lime",
+          "minced pork",
+          "onion",
+          "shrimp",
+          "squid",
+          "tomato"
+        ]
+      },
+      {
+        "nameThai": "แกงกะหรี่เนื้อ",
+        "nameEn": "Yellow Curry with beef",
+        "price": 150,
+        "ingredients": [
+          "beef",
+          "coconut milk",
+          "cucumber",
+          "curry powder",
+          "fish sauce",
+          "onion",
+          "potato",
+          "shrimp paste",
+          "yellow curry paste"
+        ]
+      },
+      {
+        "nameThai": "ผัดเห็ด",
+        "nameEn": "Stir-fried Mushrooms",
+        "price": 70,
+        "ingredients": [
+          "garlic",
+          "mushroom",
+          "oyster sauce",
+          "soy sauce",
+          "spring onion"
+        ]
+      }
+    ],
+    "raw": {
+      "lines": [
+        "เมนูอาหาร",
+        "ไข่เจียว",
+        "140",
+        "60",
+        "ปลาเผาเกลือ",
+        "ยำมะม่วง",
+        "90",
+        "130",
+        "ฝอยทอง",
+        "40",
+        "ไอศกรีมกะทิ",
+        "กลวยบวชชี",
+        "80",
+        "110",
+        "กุ้งอบวุ้นเส้น",
+        "150",
+        "บัวลอย",
+        "60",
+        "โกโก้เย็น",
+        "100",
+        "ทองหยิบ",
+        "ผัดบรอกโคลี",
+        "130",
+        "50",
+        "เต้าฮวย",
+        "ยำมาม่า",
+        "80",
+        "120",
+        "กระทงทอง",
+        "ผัดเห็ด",
+        "70",
+        "แกงกะหรี่เนื้อ",
+        "150"
+      ]
+    }
+  },
+  "v1-gemini/real-cafe-menu.jpg": {
+    "dishes": [
+      {
+        "nameThai": "เซ็ตสามชั้นย่าง ทานกับผักเบบี้คอส ออร์แกนิก",
+        "nameEn": "Grilled Pork Belly Set",
+        "price": 180,
+        "ingredients": [
+          "lettuce",
+          "pork belly"
+        ]
+      },
+      {
+        "nameThai": "เซ็ตแซลมอนสด แช่ซีอิ้ว ทานกับเบบี้คอสออร์แกนิก",
+        "nameEn": "Fresh Salmon in Soy Sauce Set",
+        "price": 250,
+        "ingredients": [
+          "lettuce",
+          "salmon",
+          "soy sauce"
+        ]
+      },
+      {
+        "nameThai": "เซ็ตกุ้งสด แช่ซีอิ้ว ทานกับเบบี้คอสออร์แกนิก",
+        "nameEn": "Fresh Prawns in Soy Sauce Set",
+        "price": 145,
+        "ingredients": [
+          "lettuce",
+          "shrimp",
+          "soy sauce"
+        ]
+      },
+      {
+        "nameThai": "สเต็กปลากระพง",
+        "nameEn": "Sea Bass Steak",
+        "price": 250,
+        "ingredients": [
+          "sea bass"
+        ]
+      },
+      {
+        "nameThai": "ชนิทเซล ซีซาร์ไก่",
+        "nameEn": "Chicken Caesar Schnitzel",
+        "price": 180,
+        "ingredients": [
+          "chicken",
+          "croutons",
+          "lettuce",
+          "parmesan cheese"
+        ]
+      },
+      {
+        "nameThai": "สเต็กสันคอหมูซอสเกรวี่",
+        "nameEn": "Pork Neck Steak with Gravy",
+        "price": 180,
+        "ingredients": [
+          "gravy",
+          "mushroom",
+          "pork neck"
+        ]
+      },
+      {
+        "nameThai": "สเต็กสะโพกไก่ย่าง",
+        "nameEn": "Grilled Chicken Thigh Steak",
+        "price": 160,
+        "ingredients": [
+          "chicken thigh"
+        ]
+      },
+      {
+        "nameThai": "สเต็กปลาแซลมอน",
+        "nameEn": "Salmon Steak",
+        "price": 280,
+        "ingredients": [
+          "salmon"
+        ]
+      },
+      {
+        "nameThai": "Carbonara",
+        "nameEn": "Carbonara",
+        "price": 125,
+        "ingredients": [
+          "bacon",
+          "cheese",
+          "egg"
+        ]
+      },
+      {
+        "nameThai": "พริกแห้งกระเทียมเบคอน",
+        "nameEn": "Dried Chili and Bacon Spaghetti",
+        "price": 125,
+        "ingredients": [
+          "bacon",
+          "dried chili",
+          "garlic"
+        ]
+      },
+      {
+        "nameThai": "ผัดขี้เมาทะเล",
+        "nameEn": "Spicy Seafood Spaghetti",
+        "price": 135,
+        "ingredients": [
+          "basil",
+          "chili",
+          "mushroom",
+          "seafood"
+        ]
+      },
+      {
+        "nameThai": "สปาเกตตีครีมไข่กุ้ง",
+        "nameEn": "Spaghetti with Creamy Shrimp Roe",
+        "price": 135,
+        "ingredients": [
+          "cream",
+          "shrimp roe"
+        ]
+      },
+      {
+        "nameThai": "ซีซาร์สลัด",
+        "nameEn": "Caesar Salad",
+        "price": 175,
+        "ingredients": [
+          "croutons",
+          "lettuce",
+          "parmesan cheese"
+        ]
+      },
+      {
+        "nameThai": "สลัดสะโพกไก่ย่าง",
+        "nameEn": "Grilled Chicken Thigh Salad",
+        "price": 130,
+        "ingredients": [
+          "chicken thigh",
+          "lettuce"
+        ]
+      },
+      {
+        "nameThai": "สลัดหมูย่าง",
+        "nameEn": "Grilled Pork Salad",
+        "price": 150,
+        "ingredients": [
+          "lettuce",
+          "pork"
+        ]
+      },
+      {
+        "nameThai": "สลัดแซลมอน",
+        "nameEn": "Salmon Salad",
+        "price": 240,
+        "ingredients": [
+          "lettuce",
+          "salmon"
+        ]
+      },
+      {
+        "nameThai": "สลัดเต้าหู้นิ่ม",
+        "nameEn": "Soft Tofu Salad",
+        "price": 120,
+        "ingredients": [
+          "lettuce",
+          "tofu"
+        ]
+      },
+      {
+        "nameThai": "สลัดปูอัดสาหร่ายไข่กุ้ง",
+        "nameEn": "Crab Stick, Seaweed and Shrimp Roe Salad",
+        "price": 120,
+        "ingredients": [
+          "crab stick",
+          "seaweed",
+          "shrimp roe"
+        ]
+      },
+      {
+        "nameThai": "สลัดทูน่ายำแซ่บ",
+        "nameEn": "Spicy Tuna Salad",
+        "price": 120,
+        "ingredients": [
+          "chili",
+          "tuna"
+        ]
+      },
+      {
+        "nameThai": "ตำไทย",
+        "nameEn": "Som Tum Thai",
+        "price": 70,
+        "ingredients": [
+          "fish sauce",
+          "papaya",
+          "peanuts"
+        ]
+      },
+      {
+        "nameThai": "ตำปูปลาร้า",
+        "nameEn": "Som Tum Poo Pla Ra",
+        "price": 70,
+        "ingredients": [
+          "crab",
+          "fermented fish",
+          "papaya"
+        ]
+      },
+      {
+        "nameThai": "ตำข้าวโพดไข่เค็ม",
+        "nameEn": "Corn Som Tum with Salted Egg",
+        "price": 80,
+        "ingredients": [
+          "corn",
+          "salted egg"
+        ]
+      },
+      {
+        "nameThai": "ตำกุ้งสด",
+        "nameEn": "Som Tum with Fresh Prawns",
+        "price": 120,
+        "ingredients": [
+          "papaya",
+          "shrimp"
+        ]
+      },
+      {
+        "nameThai": "ตำแซลมอน",
+        "nameEn": "Salmon Som Tum",
+        "price": 220,
+        "ingredients": [
+          "papaya",
+          "salmon"
+        ]
+      },
+      {
+        "nameThai": "ตำเส้นเล็กแคบหมู",
+        "nameEn": "Rice Noodle Som Tum with Pork Rinds",
+        "price": 75,
+        "ingredients": [
+          "pork rinds",
+          "rice noodles"
+        ]
+      },
+      {
+        "nameThai": "ยำแซลมอนแซ่บแบบไทยๆ",
+        "nameEn": "Spicy Thai-style Salmon Yum",
+        "price": 180,
+        "ingredients": [
+          "chili",
+          "fish sauce",
+          "salmon"
+        ]
+      }
+    ],
+    "raw": {
+      "ocr": "Soft Opening Menu\nSignature Dish ★★★\n1. เซ็ตสามชั้นย่าง ทานกับผักเบบี้คอส ออร์แกนิก\n180\n2. เซ็ตแซลมอนสด แช่ซีอิ้ว ทานกับเบบี้คอสออร์แกนิก\n250\n3. เซ็ตกุ้งสด แช่ซีอิ้ว ทานกับเบบี้คอสออร์แกนิก\n145\n4. สเต็กปลากระพง\n250\n5. ชนิทเซล ซีซาร์ไก่\n180\nSteak\n1. สเต็กสันคอหมูซอสเกรวี่\n180\n2. สเต็กสะโพกไก่ย่าง\n160\n3. สเต็กปลาแซลมอน\n280\nSpaghetti\n1. Carbonara ★\n125\n2. พริกแห้งกระเทียมเบคอน\n125\n3. ผัดขี้เมาทะเล\n135\n4. สปาเกตตีครีมไข่กุ้ง\n135\nSoft Opening Menu\nSalad ผักออร์แกนิกสดจากสวน\n1. ซีซาร์สลัด ★\n175\n2. สลัดสะโพกไก่ย่าง\n130\n3. สลัดหมูย่าง\n150\n4. สลัดแซลมอน\n240\n5. สลัดเต้าหู้นิ่ม\n120\n6. สลัดปูอัดสาหร่ายไข่กุ้ง\n120\n7. สลัดทูน่ายำแซ่บ\n120\nตำ & ยำ\n1. ตำไทย\n70\n2. ตำปูปลาร้า\n70\n3. ตำข้าวโพดไข่เค็ม\n80\n4. ตำกุ้งสด\n120\n5. ตำแซลมอน ★\n220\n6. ตำเส้นเล็กแคบหมู ★\n75\n7. ยำแซลมอนแซ่บแบบไทยๆ ★\n180",
+      "english": "Soft Opening Menu\nSignature Dish ★★★\n1. Grilled Pork Belly Set, served with organic baby Cos lettuce\n180\n2. Fresh Salmon in Soy Sauce Set, served with organic baby Cos lettuce\n250\n3. Fresh Prawns in Soy Sauce Set, served with organic baby Cos lettuce\n145\n4. Sea Bass Steak\n250\n5. Chicken Caesar Schnitzel\n180\nSteak\n1. Pork Neck Steak with Gravy Sauce\n180\n2. Grilled Chicken Thigh Steak\n160\n3. Salmon Steak\n280\nSpaghetti\n1. Carbonara ★\n125\n2. Dried Chili and Bacon Spaghetti\n125\n3. Spicy Seafood Spaghetti (Pad Kee Mao)\n135\n4. Spaghetti with Creamy Shrimp Roe\n135\nSoft Opening Menu\nSalad with fresh organic farm vegetables\n1. Caesar Salad ★\n175\n2. Grilled Chicken Thigh Salad\n130\n3. Grilled Pork Salad\n150\n4. Salmon Salad\n240\n5. Soft Tofu Salad\n120\n6. Crab Stick, Seaweed and Shrimp Roe Salad\n120\n7. Spicy Tuna Salad\n120\nSom Tum & Yum\n1. Som Tum Thai (Papaya Salad)\n70\n2. Som Tum Poo Pla Ra (Papaya Salad with Salted Crab and Fermented Fish)\n70\n3. Corn Som Tum with Salted Egg\n80\n4. Som Tum with Fresh Prawns\n120\n5. Salmon Som Tum ★\n220\n6. Rice Noodle Som Tum with Pork Rinds ★\n75\n7. Spicy Thai-style Salmon Yum ★\n180"
+    }
+  },
+  "v2-ocr-guide/real-cafe-menu.jpg": {
+    "dishes": [
+      {
+        "nameThai": "เซ็ตสามชั้นย่างทานกับผักเบบี้คอสออร์แกนิก",
+        "nameEn": "Grilled pork belly & vegetables set",
+        "price": 180,
+        "ingredients": [
+          "fish sauce",
+          "mixed vegetable",
+          "oyster sauce",
+          "pork",
+          "soy sauce"
+        ]
+      },
+      {
+        "nameThai": "เซ็ตแซลมอนสดแช่ซิอิ๊วทานกับเบบี้คอสออแกร์นิก",
+        "nameEn": "Salmon set",
+        "price": 250,
+        "ingredients": [
+          "fish"
+        ]
+      },
+      {
+        "nameThai": "เซ็ตกุ้งสดแช่ซีอิ๊วทานกับเบบี้คอสออร์แกนิก",
+        "nameEn": "Shrimp set with soy sauce",
+        "price": 145,
+        "ingredients": [
+          "shrimp",
+          "soy sauce"
+        ]
+      },
+      {
+        "nameThai": "สเต็กปลากระพง",
+        "nameEn": "Fish steak",
+        "price": 250,
+        "ingredients": [
+          "butter",
+          "fish",
+          "pepper"
+        ]
+      },
+      {
+        "nameThai": "ชนิทเซลซีซาร์ไก่",
+        "nameEn": "Schnitzel chicken with Caesar",
+        "price": 180,
+        "ingredients": [
+          "cheese",
+          "chicken",
+          "cooking oil",
+          "egg",
+          "fish",
+          "mayonnaise",
+          "wheat flour"
+        ]
+      },
+      {
+        "nameThai": "สเต็กสันคอหมูซอสเกรวี่",
+        "nameEn": "Pork neck steak",
+        "price": 180,
+        "ingredients": [
+          "butter",
+          "pepper",
+          "pork"
+        ]
+      },
+      {
+        "nameThai": "สเต็กสะโพกไก่ย่าง",
+        "nameEn": "Grilled chicken steak",
+        "price": 160,
+        "ingredients": [
+          "butter",
+          "chicken",
+          "fish sauce",
+          "oyster sauce",
+          "pepper",
+          "soy sauce"
+        ]
+      },
+      {
+        "nameThai": "สเต็กปลาแซลมอน",
+        "nameEn": "Salmon steak",
+        "price": 280,
+        "ingredients": [
+          "butter",
+          "fish",
+          "pepper"
+        ]
+      },
+      {
+        "nameThai": "Carbonara",
+        "nameEn": "Carbonara",
+        "price": 125,
+        "ingredients": []
+      },
+      {
+        "nameThai": "พริกแห้งกระเทียมเบคอน",
+        "nameEn": "Bacon with chili, garlic",
+        "price": 125,
+        "ingredients": [
+          "chili",
+          "garlic",
+          "pork"
+        ]
+      },
+      {
+        "nameThai": "ผัดขี้เมาทะเล",
+        "nameEn": "Drunken Noodles with mixed seafood",
+        "price": 135,
+        "ingredients": [
+          "chili",
+          "crab",
+          "fish",
+          "fish sauce",
+          "garlic",
+          "holy basil",
+          "mussel",
+          "oyster sauce",
+          "shrimp",
+          "soy sauce",
+          "squid",
+          "wide rice noodle"
+        ]
+      },
+      {
+        "nameThai": "สปาเกตตีครีมไข่กุ้ง",
+        "nameEn": "Egg & shrimp with cream (spaghetti)",
+        "price": 135,
+        "ingredients": [
+          "cream",
+          "egg",
+          "shrimp",
+          "wheat flour"
+        ]
+      },
+      {
+        "nameThai": "สลัดหมูย่าง",
+        "nameEn": "Grilled pork salad",
+        "price": null,
+        "ingredients": [
+          "fish sauce",
+          "mayonnaise",
+          "oyster sauce",
+          "pork",
+          "soy sauce"
+        ]
+      },
+      {
+        "nameThai": "สลัดแซลมอน",
+        "nameEn": "Salmon salad",
+        "price": null,
+        "ingredients": [
+          "fish",
+          "mayonnaise"
+        ]
+      },
+      {
+        "nameThai": "ตำไทย",
+        "nameEn": "Thai Papaya Salad",
+        "price": 70,
+        "ingredients": [
+          "chili",
+          "dried shrimp",
+          "fish sauce",
+          "garlic",
+          "green papaya",
+          "lime",
+          "long bean",
+          "palm sugar",
+          "peanut",
+          "tomato"
+        ]
+      },
+      {
+        "nameThai": "ตำปูปลาร้า",
+        "nameEn": "Papaya Salad with Salted Crab & Fermented Fish",
+        "price": 70,
+        "ingredients": [
+          "chili",
+          "fermented fish sauce",
+          "fish sauce",
+          "garlic",
+          "green papaya",
+          "lime",
+          "long bean",
+          "palm sugar",
+          "salted crab",
+          "tomato"
+        ]
+      },
+      {
+        "nameThai": "ตำข้าวโพดไข่เค็ม",
+        "nameEn": "Sweet Corn Salad (salted egg)",
+        "price": 80,
+        "ingredients": [
+          "chili",
+          "corn",
+          "dried shrimp",
+          "egg",
+          "fish sauce",
+          "lime",
+          "palm sugar",
+          "peanut"
+        ]
+      },
+      {
+        "nameThai": "ตำกุ้งสด",
+        "nameEn": "Shrimp pounded salad",
+        "price": 120,
+        "ingredients": [
+          "chili",
+          "fish sauce",
+          "garlic",
+          "lime",
+          "palm sugar",
+          "shrimp"
+        ]
+      },
+      {
+        "nameThai": "ตำแซลมอน",
+        "nameEn": "Salmon pounded salad",
+        "price": 220,
+        "ingredients": [
+          "chili",
+          "fish",
+          "fish sauce",
+          "garlic",
+          "lime",
+          "palm sugar"
+        ]
+      },
+      {
+        "nameThai": "ตำเส้นเล็กแคบหมู",
+        "nameEn": "Pork crackling pounded salad (rice noodles)",
+        "price": 75,
+        "ingredients": [
+          "chili",
+          "fish sauce",
+          "garlic",
+          "lime",
+          "palm sugar",
+          "pork crackling",
+          "rice noodle"
+        ]
+      },
+      {
+        "nameThai": "ยำแซลมอนแซ่บแบบไทยๆ",
+        "nameEn": "Spicy Thai Salad with salmon (special version)",
+        "price": 180,
+        "ingredients": [
+          "chili",
+          "coriander",
+          "fish",
+          "fish sauce",
+          "lime",
+          "onion",
+          "sugar",
+          "tomato"
+        ]
+      }
+    ],
+    "raw": {
+      "lines": [
+        "1:09 1",
+        "Soft Opening Menu",
+        "Signature Dish",
+        "1. เซ็ตสามชั้นย่าง ทานกับผักเบบี้คอส ออร์แกนิก",
+        "2. เซ็ตแซลมอนสด แช่ซิอิ๊ว ทานกับเบบี้คอสออแกร์นิก",
+        "3. เซ็ตกุ้งสด แช่ซีอิ๊ว ทานกับเบบี้คอสออร์แกนิก",
+        "4. สเต็กปลากระพง",
+        "5. ชนิทเซล ซีซาร์ไก่",
+        "Steak",
+        "1. สเต็กสันคอหมูซอสเกรวี่",
+        "2. สเต็กสะโพกไก่ย่าง",
+        "3. สเต็กปลาแซลมอน",
+        "Spaghetti",
+        "1. Carbonara",
+        "2. พริกแห้งกระเทียมเบคอน",
+        "3. ผัดขี้เมาทะเล",
+        "4. สปาเกตตีครีมไข่กุ้ง",
+        "15",
+        "n",
+        "180",
+        "250",
+        "145",
+        "250",
+        "180",
+        "180",
+        "160",
+        "280",
+        "125",
+        "125",
+        "135",
+        "135",
+        "Soft Opening Menu",
+        "Salad ผักออร์แกนิคสดจากสวน",
+        "1. ซีซาร์สลัด *",
+        "2. สลัดสะโพกไก่ย่าง",
+        "3. สลัดหมูย่าง",
+        "4. สลัดแซลมอน",
+        "5. สลัดเต้าหู้นิ่ม",
+        "6. สลัดปูอัดสาหร่ายไข่กุ้ง",
+        "7. สลัดทูน่ายำแซ่บ",
+        "ตำ&ยำ",
+        "1. ตำไทย",
+        "2. ตำปูปลาร้า",
+        "3. ตำข้าวโพดไข่เค็ม",
+        "4. ตำกุ้งสด",
+        "5.ตำแซลมอน *",
+        "6. ตำเส้นเล็กแคบหมู *",
+        "7. ยำแซลมอนแซ่บแบบไทยๆ *",
+        "70",
+        "70",
+        "80",
+        "120",
+        "220",
+        "75",
+        "180"
+      ]
+    }
+  }
+}
