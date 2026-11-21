@@ -24,3 +24,11 @@ No invented participant data, SUS score, or before/after real-user result is
 reported.
 
 ## Reflection
+
+Working as the QA / Tester for YummyNaKha! helped me understand how important testing is in software development. My main responsibility was to check whether the system worked correctly, especially the menu scanning, OCR, and profile-matching features. Through this project, I learned how to follow a test plan, record test results, identify issues, and document testing evidence.
+
+One challenge I faced was that some tests could not be completed because the OCR service was unavailable and some required test data was incomplete. This taught me that testing does not always go as planned, and it is important to report the actual results instead of assuming everything works.
+
+I also used AI to help prepare test drafts and organize documentation, but I reviewed the information to make sure it matched the real evidence. This experience improved my attention to detail, problem-solving skills, and understanding of software quality assurance.
+
+Overall, this project taught me that good testing is not only about finding bugs, but also about providing honest and reliable evidence of software quality. In future projects, I want to improve my test planning, prepare test environments earlier, and complete more automated tests.
